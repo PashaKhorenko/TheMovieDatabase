@@ -9,12 +9,15 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    private let uiManager = UIManager()
+    
     // MARK: - UI elements
-    private lazy var titleLabel = self.makeTitleLalel()
-    private lazy var emailTextField = self.makeEmailTextField()
-    private lazy var passwordTextField = self.makePasswordTextField()
-    private lazy var logInButton = self.makeLogInButton()
-
+    private lazy var titleLabel = uiManager.makeTitleLalel(text: "Log into \nyour account")
+    private lazy var textFieldsStackView = uiManager.makeStackView(asix: .vertical)
+    private lazy var emailTextField = uiManager.makeEmailTextField()
+    private lazy var passwordTextField = uiManager.makePasswordTextField()
+    private lazy var logInButton = uiManager.makeLogInButtonForLogin()
+    
     // MARK: - View lifecycle
     
     override func viewDidLoad() {
@@ -43,7 +46,7 @@ class LoginViewController: UIViewController {
     private func logIntoAccountAction() {
         print(#function)
         
-//        navigationController?.pushViewController(MainTabBarController(), animated: true)
+        //        navigationController?.pushViewController(MainTabBarController(), animated: true)
     }
 }
 
@@ -63,10 +66,11 @@ extension LoginViewController {
         setupNavigationBar()
         
         view.addSubview(titleLabel)
-
-        view.addSubview(emailTextField)
-        view.addSubview(passwordTextField)
-
+        
+        view.addSubview(textFieldsStackView)
+        textFieldsStackView.addArrangedSubview(emailTextField)
+        textFieldsStackView.addArrangedSubview(passwordTextField)
+        
         view.addSubview(logInButton)
         
         logInButton.addTarget(self, action: #selector(logInButtonPressed(_:)), for: .touchUpInside)
@@ -103,7 +107,7 @@ extension LoginViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-        
+    
     // create keyboard show/hide observers
     private func addKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UITextView.keyboardWillShowNotification, object: nil)
@@ -123,7 +127,7 @@ extension LoginViewController {
         guard let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         
         if self.view.frame.origin.y == 0 {
-            self.view.frame.origin.y -= keyboardSize.height / 4
+            self.view.frame.origin.y -= keyboardSize.height / 3
         }
     }
     
@@ -140,21 +144,18 @@ extension LoginViewController {
 extension LoginViewController {
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 200),
+            titleLabel.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-
-            emailTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
-            emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            
+            textFieldsStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 50),
+            textFieldsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            textFieldsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            
             emailTextField.heightAnchor.constraint(equalToConstant: 45),
-
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 15),
-            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             passwordTextField.heightAnchor.constraint(equalToConstant: 45),
-
-            logInButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 30),
+            
+            logInButton.topAnchor.constraint(equalTo: textFieldsStackView.bottomAnchor, constant: 30),
             logInButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             logInButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             logInButton.heightAnchor.constraint(equalToConstant: 50)

@@ -9,17 +9,23 @@ import UIKit
 
 class RegistrationViewController: UIViewController {
     
+    private let uiManager = UIManager()
+    
     // MARK: - UI elements
     
-    private lazy var titleLabel = self.makeTitleLalel()
-    private lazy var usernameTextField = self.makeUsernameTextField()
-    private lazy var emailTextField = self.makeEmailTextField()
-    private lazy var passwordTextField = self.makePasswordTextField()
-    private lazy var signUpButton = self.makeSignUpButton()
-    private lazy var appleButton = self.makeAppleButton()
-    private lazy var googleButton = self.makeGoogleButton()
-    private lazy var facebookButton = self.makeFacebookButton()
-    private lazy var logInButton = self.makeLogInButton()
+    private lazy var titleLabel = uiManager.makeTitleLalel(text: "Create \nyour account")
+    private lazy var textFieldsStack = uiManager.makeStackView(asix: .vertical)
+    private lazy var usernameTextField = uiManager.makeUsernameTextField()
+    private lazy var emailTextField = uiManager.makeEmailTextField()
+    private lazy var passwordTextField = uiManager.makePasswordTextField()
+    private lazy var signUpButton = uiManager.makeSignUpButtonForRegistration()
+    private lazy var separatorLabel = uiManager.makeSeparatorLabel()
+    private lazy var buttonsStackView = uiManager.makeStackView(asix: .horizontal)
+    private lazy var appleButton = uiManager.makeAppleButton()
+    private lazy var googleButton = uiManager.makeGoogleButton()
+    private lazy var facebookButton = uiManager.makeFacebookButton()
+    private lazy var logInButton = uiManager.makeLogInButtonForRegisration()
+    
     
     // MARK: - View lifecycle
     
@@ -51,7 +57,7 @@ class RegistrationViewController: UIViewController {
     
     private func createAccountAction() {
         print(#function)
-//        navigationController?.pushViewController(MainTabBarController(), animated: true)
+        //        navigationController?.pushViewController(MainTabBarController(), animated: true)
     }
     
 }
@@ -64,15 +70,20 @@ extension RegistrationViewController {
         view.backgroundColor = .systemBackground
         
         view.addSubview(titleLabel)
-
-        view.addSubview(usernameTextField)
-        view.addSubview(emailTextField)
-        view.addSubview(passwordTextField)
-
+        
+        view.addSubview(textFieldsStack)
+        textFieldsStack.addArrangedSubview(usernameTextField)
+        textFieldsStack.addArrangedSubview(emailTextField)
+        textFieldsStack.addArrangedSubview(passwordTextField)
+        
         view.addSubview(signUpButton)
-//        view.addSubview(appleButton)
-//        view.addSubview(googleButton)
-//        view.addSubview(facebookButton)
+        
+        view.addSubview(separatorLabel)
+        
+        view.addSubview(buttonsStackView)
+        buttonsStackView.addArrangedSubview(appleButton)
+        buttonsStackView.addArrangedSubview(googleButton)
+        buttonsStackView.addArrangedSubview(facebookButton)
         
         view.addSubview(logInButton)
         
@@ -108,7 +119,7 @@ extension RegistrationViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-        
+    
     // create keyboard show/hide observers
     private func addKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UITextView.keyboardWillShowNotification, object: nil)
@@ -128,7 +139,7 @@ extension RegistrationViewController {
         guard let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         
         if self.view.frame.origin.y == 0 {
-            self.view.frame.origin.y -= keyboardSize.height / 4
+            self.view.frame.origin.y -= keyboardSize.height / 3
         }
     }
     
@@ -163,48 +174,38 @@ extension RegistrationViewController: UITextFieldDelegate {
 extension RegistrationViewController {
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 200),
+            titleLabel.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-
-            usernameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
-            usernameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            usernameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            
+            textFieldsStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 50),
+            textFieldsStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            textFieldsStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            
             usernameTextField.heightAnchor.constraint(equalToConstant: 45),
-
-            emailTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 15),
-            emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             emailTextField.heightAnchor.constraint(equalToConstant: 45),
-
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 15),
-            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             passwordTextField.heightAnchor.constraint(equalToConstant: 45),
-
-            signUpButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 30),
+            
+            signUpButton.topAnchor.constraint(equalTo: textFieldsStack.bottomAnchor, constant: 30),
             signUpButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             signUpButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             signUpButton.heightAnchor.constraint(equalToConstant: 50),
-
-//            appleButton.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 15),
-//            appleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-//            appleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-//            appleButton.heightAnchor.constraint(equalToConstant: 50),
-//
-//            googleButton.topAnchor.constraint(equalTo: appleButton.bottomAnchor, constant: 15),
-//            googleButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-//            googleButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-//            googleButton.heightAnchor.constraint(equalToConstant: 50),
-//
-//            facebookButton.topAnchor.constraint(equalTo: googleButton.bottomAnchor, constant: 15),
-//            facebookButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-//            facebookButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-//            facebookButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            separatorLabel.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 15),
+            separatorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            separatorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            
+            buttonsStackView.topAnchor.constraint(equalTo: separatorLabel.bottomAnchor, constant: 15),
+            buttonsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            buttonsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            buttonsStackView.heightAnchor.constraint(equalToConstant: 50),
+            
+            googleButton.widthAnchor.constraint(equalTo: appleButton.widthAnchor, multiplier: 1),
+            facebookButton.widthAnchor.constraint(equalTo: appleButton.widthAnchor, multiplier: 1),
             
             logInButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             logInButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            logInButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30)
+            logInButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
         ])
     }
 }
