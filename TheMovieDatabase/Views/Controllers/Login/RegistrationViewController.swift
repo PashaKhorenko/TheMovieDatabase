@@ -9,7 +9,7 @@ import UIKit
 
 class RegistrationViewController: UIViewController {
     
-    private let uiManager = UIManager()
+    private var uiManager: LoginUIHelperProtocol!
     
     // MARK: - UI elements
     
@@ -32,8 +32,12 @@ class RegistrationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        uiManager = LoginUIHelper()
+        
         delegatesSetup()
         setupViews()
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,7 +61,6 @@ class RegistrationViewController: UIViewController {
     
     private func createAccountAction() {
         print(#function)
-        //        navigationController?.pushViewController(MainTabBarController(), animated: true)
     }
     
 }

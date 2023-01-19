@@ -9,12 +9,13 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
-    private let uiManager = UIManager()
+    private var uiManager: LoginUIHelperProtocol!
+    private let viewModel = LoginViewModel()
     
     // MARK: - UI elements
     private lazy var titleLabel = uiManager.makeTitleLalel(text: "Log into \nyour account")
     private lazy var textFieldsStackView = uiManager.makeStackView(asix: .vertical)
-    private lazy var emailTextField = uiManager.makeEmailTextField()
+    private lazy var usernameTextField = uiManager.makeUsernameTextField()
     private lazy var passwordTextField = uiManager.makePasswordTextField()
     private lazy var logInButton = uiManager.makeLogInButtonForLogin()
     
@@ -22,6 +23,8 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        uiManager = LoginUIHelper()
         
         delegatesSetup()
         setupViews()
@@ -39,14 +42,35 @@ class LoginViewController: UIViewController {
     
     // MARK: - Private
     private func delegatesSetup() {
-        emailTextField.delegate = self
+        usernameTextField.delegate = self
         passwordTextField.delegate = self
     }
     
     private func logIntoAccountAction() {
         print(#function)
         
-        //        navigationController?.pushViewController(MainTabBarController(), animated: true)
+        guard let usernameText = self.usernameTextField.text, !usernameText.isEmpty,
+              let passwordText = self.passwordTextField.text, !passwordText.isEmpty else {
+            print("Empty username or password text field")
+            return
+        }
+        
+        let username = self.viewModel.getValidText(usernameText)
+        let password = self.viewModel.getValidText(passwordText)
+        
+        self.viewModel.fetchRequestToken {
+            print("Token received")
+            self.viewModel.validateUser(withName: username,
+                                        password: password) {
+                print("Validation User")
+                self.viewModel.featchSessionID { id in
+                    print("SessionID: \(id)")
+                    
+                    let tabBarController = MainTabBarController()
+                    self.present(tabBarController, animated: true)
+                }
+            }
+        }
     }
 }
 
@@ -68,7 +92,7 @@ extension LoginViewController {
         view.addSubview(titleLabel)
         
         view.addSubview(textFieldsStackView)
-        textFieldsStackView.addArrangedSubview(emailTextField)
+        textFieldsStackView.addArrangedSubview(usernameTextField)
         textFieldsStackView.addArrangedSubview(passwordTextField)
         
         view.addSubview(logInButton)
@@ -88,7 +112,7 @@ extension LoginViewController {
 extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
-        case emailTextField:
+        case usernameTextField:
             passwordTextField.becomeFirstResponder()
         case passwordTextField:
             passwordTextField.resignFirstResponder()
@@ -152,7 +176,7 @@ extension LoginViewController {
             textFieldsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             textFieldsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             
-            emailTextField.heightAnchor.constraint(equalToConstant: 45),
+            usernameTextField.heightAnchor.constraint(equalToConstant: 45),
             passwordTextField.heightAnchor.constraint(equalToConstant: 45),
             
             logInButton.topAnchor.constraint(equalTo: textFieldsStackView.bottomAnchor, constant: 30),

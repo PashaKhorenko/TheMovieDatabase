@@ -25,8 +25,13 @@ class MainTabBarController: UITabBarController {
                        image: UIImage(systemName: "magnifyingglass")),
             generateVC(viewController: FavoritesViewController(),
                        title: "Favorites",
-                       image: UIImage(systemName: "star.fill"))
+                       image: UIImage(systemName: "star.fill")),
+            generateVC(viewController: SettingsViewController(),
+                       title: "Settings",
+                       image: UIImage(systemName: "gear"))
         ]
+        
+        UITabBar.appearance().tintColor = UIColor.label
     }
     
     private func generateVC(viewController: UIViewController, title: String, image: UIImage?) -> UINavigationController {

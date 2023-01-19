@@ -7,7 +7,22 @@
 
 import UIKit
 
-struct UIManager {
+protocol LoginUIHelperProtocol {
+    func makeTitleLalel(text: String) -> UILabel
+    func makeSeparatorLabel() -> UILabel
+    func makeUsernameTextField() -> UITextField
+    func makeEmailTextField() -> UITextField
+    func makePasswordTextField() -> UITextField
+    func makeStackView(asix: NSLayoutConstraint.Axis) -> UIStackView
+    func makeSignUpButtonForRegistration() -> UIButton
+    func makeAppleButton() -> UIButton
+    func makeGoogleButton() -> UIButton
+    func makeFacebookButton() -> UIButton
+    func makeLogInButtonForRegisration() -> UIButton
+    func makeLogInButtonForLogin() -> UIButton
+}
+
+struct LoginUIHelper: LoginUIHelperProtocol {
     
     // MARK: - Shared
     
