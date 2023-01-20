@@ -1,5 +1,5 @@
 //
-//  RegistrationViewController.swift
+//  SignUpViewController.swift
 //  TheMovieDatabase
 //
 //  Created by Паша Хоренко on 18.01.2023.
@@ -8,7 +8,7 @@
 import UIKit
 import Lottie
 
-class RegistrationViewController: UIViewController {
+class SignUpViewController: UIViewController {
     
     private var uiManager: LoginUIHelperProtocol!
     
@@ -26,25 +26,21 @@ class RegistrationViewController: UIViewController {
         
         uiManager = LoginUIHelper()
         
-        delegatesSetup()
         setupViews()
     }
     
     // MARK: - Private
-    
-    private func delegatesSetup() {
         
-    }
-    
     private func createAccountAction() {
         print(#function)
+        self.navigationController?.present(SignUpWebViewController(), animated: true)
     }
     
 }
 
 // MARK: - Settings
 
-extension RegistrationViewController {
+extension SignUpViewController {
     
     private func setupViews() {
         view.backgroundColor = .systemBackground
@@ -72,7 +68,7 @@ extension RegistrationViewController {
 
 // MARK: - Constraints
 
-extension RegistrationViewController {
+extension SignUpViewController {
     private func setConstraints() {
         NSLayoutConstraint.activate([
             animationView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),

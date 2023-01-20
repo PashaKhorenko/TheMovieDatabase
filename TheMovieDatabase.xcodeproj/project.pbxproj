@@ -19,8 +19,9 @@
 		46092BBC2976A202002C489D /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46092BBB2976A202002C489D /* FavoritesViewController.swift */; };
 		46092BBE2976A47E002C489D /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46092BBD2976A47E002C489D /* DetailsViewController.swift */; };
 		46092BC22976AAC5002C489D /* TestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46092BC12976AAC5002C489D /* TestCollectionViewCell.swift */; };
+		4614B707297AAF0400E7E4EF /* SignUpWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4614B706297AAF0400E7E4EF /* SignUpWebViewController.swift */; };
 		4615EFDE29786AAD006C5A54 /* LoginUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4615EFDD29786AAD006C5A54 /* LoginUIHelper.swift */; };
-		4648BBD02977E0D1009BA708 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4648BBCF2977E0D1009BA708 /* RegistrationViewController.swift */; };
+		4648BBD02977E0D1009BA708 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4648BBCF2977E0D1009BA708 /* SignUpViewController.swift */; };
 		4648BBD529780FDF009BA708 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4648BBD429780FDF009BA708 /* LoginViewController.swift */; };
 		4682611E297957670031A90D /* LoginNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682611D297957670031A90D /* LoginNetworkManager.swift */; };
 		468261202979627D0031A90D /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682611F2979627D0031A90D /* LoginViewModel.swift */; };
@@ -47,8 +48,9 @@
 		46092BBB2976A202002C489D /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		46092BBD2976A47E002C489D /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		46092BC12976AAC5002C489D /* TestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCollectionViewCell.swift; sourceTree = "<group>"; };
+		4614B706297AAF0400E7E4EF /* SignUpWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpWebViewController.swift; sourceTree = "<group>"; };
 		4615EFDD29786AAD006C5A54 /* LoginUIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIHelper.swift; sourceTree = "<group>"; };
-		4648BBCF2977E0D1009BA708 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		4648BBCF2977E0D1009BA708 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		4648BBD429780FDF009BA708 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4682611D297957670031A90D /* LoginNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkManager.swift; sourceTree = "<group>"; };
 		4682611F2979627D0031A90D /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -163,7 +165,8 @@
 		4648BBD329780FC8009BA708 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				4648BBCF2977E0D1009BA708 /* RegistrationViewController.swift */,
+				4648BBCF2977E0D1009BA708 /* SignUpViewController.swift */,
+				4614B706297AAF0400E7E4EF /* SignUpWebViewController.swift */,
 				4648BBD429780FDF009BA708 /* LoginViewController.swift */,
 			);
 			path = Login;
@@ -385,7 +388,7 @@
 				4682612529797A380031A90D /* SessionID.swift in Sources */,
 				46C381E42979402D00553768 /* RequestToken.swift in Sources */,
 				4648BBD529780FDF009BA708 /* LoginViewController.swift in Sources */,
-				4648BBD02977E0D1009BA708 /* RegistrationViewController.swift in Sources */,
+				4648BBD02977E0D1009BA708 /* SignUpViewController.swift in Sources */,
 				4608495F29756696009B7096 /* HomeViewController.swift in Sources */,
 				46826129297994EE0031A90D /* SettingsViewController.swift in Sources */,
 				468261202979627D0031A90D /* LoginViewModel.swift in Sources */,
@@ -401,6 +404,7 @@
 				4682611E297957670031A90D /* LoginNetworkManager.swift in Sources */,
 				4608495D29756696009B7096 /* SceneDelegate.swift in Sources */,
 				46092BB62976963E002C489D /* Genres.swift in Sources */,
+				4614B707297AAF0400E7E4EF /* SignUpWebViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
