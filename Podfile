@@ -6,6 +6,7 @@ target 'TheMovieDatabase' do
   use_frameworks!
 
   # Pods for TheMovieDatabase
+  pod 'lottie-ios'
   pod 'Alamofire'
 
 end

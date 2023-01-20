@@ -6,26 +6,22 @@
 //
 
 import UIKit
+import Lottie
 
 protocol LoginUIHelperProtocol {
     func makeTitleLalel(text: String) -> UILabel
-    func makeSeparatorLabel() -> UILabel
     func makeUsernameTextField() -> UITextField
-    func makeEmailTextField() -> UITextField
     func makePasswordTextField() -> UITextField
     func makeStackView(asix: NSLayoutConstraint.Axis) -> UIStackView
     func makeSignUpButtonForRegistration() -> UIButton
-    func makeAppleButton() -> UIButton
-    func makeGoogleButton() -> UIButton
-    func makeFacebookButton() -> UIButton
     func makeLogInButtonForRegisration() -> UIButton
     func makeLogInButtonForLogin() -> UIButton
+    func makeAnimationView() -> LottieAnimationView
 }
 
 struct LoginUIHelper: LoginUIHelperProtocol {
     
     // MARK: - Shared
-    
     func makeTitleLalel(text: String) -> UILabel {
         let label = UILabel()
         label.text = text
@@ -34,17 +30,44 @@ struct LoginUIHelper: LoginUIHelperProtocol {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }
-    func makeSeparatorLabel() -> UILabel {
-        let label = UILabel()
-        label.text = "Or sign up using"
-        label.textAlignment = .center
-        label.textColor = .secondaryLabel
-        label.font = .systemFont(ofSize: 18)
-        label.numberOfLines = 1
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    func makeStackView(asix: NSLayoutConstraint.Axis) -> UIStackView {
+        let stack = UIStackView()
+        stack.spacing = 15
+        stack.axis = asix
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }
+    func makeAnimationView() -> LottieAnimationView {
+        let view = LottieAnimationView(name: "loginAnimation")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .systemBackground
+        view.loopMode = .loop
+        view.animationSpeed = 1
+        view.play()
+        return view
+    }
+
+    // MARK: - For registration
+    func makeSignUpButtonForRegistration() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("Sign Up", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 20)
+        button.setTitleColor(.label, for: .normal)
+        button.backgroundColor = .secondaryLabel
+        button.layer.cornerRadius = 10
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }
+    func makeLogInButtonForRegisration() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("Already have account? Log In.", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17)
+        button.setTitleColor(.label, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }
     
+    // MARK: - For login
     func makeUsernameTextField() -> UITextField {
         let textField = UITextField()
         textField.placeholder = "Your username"
@@ -55,20 +78,6 @@ struct LoginUIHelper: LoginUIHelperProtocol {
         textField.returnKeyType = .done
         textField.clearButtonMode = .whileEditing
         textField.autocorrectionType = .no
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }
-    func makeEmailTextField() -> UITextField {
-        let textField = UITextField()
-        textField.placeholder = "Email"
-        textField.borderStyle = .roundedRect
-        textField.tintColor = .lightGray
-        textField.setIcon(UIImage(systemName: "envelope")!)
-        textField.autocapitalizationType = .none
-        textField.returnKeyType = .done
-        textField.clearButtonMode = .whileEditing
-        textField.autocorrectionType = .no
-        textField.keyboardType = .emailAddress
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }
@@ -86,69 +95,6 @@ struct LoginUIHelper: LoginUIHelperProtocol {
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }
-    
-    func makeStackView(asix: NSLayoutConstraint.Axis) -> UIStackView {
-        let stack = UIStackView()
-        stack.spacing = 15
-        stack.axis = asix
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }
-
-    
-    // MARK: - For registration
-    func makeSignUpButtonForRegistration() -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle("Sign Up", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.setTitleColor(.label, for: .normal)
-        button.backgroundColor = .secondaryLabel
-        button.layer.cornerRadius = 10
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }
-    
-    func makeAppleButton() -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle("Apple", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.setTitleColor(.label, for: .normal)
-        button.backgroundColor = .secondarySystemFill
-        button.layer.cornerRadius = 10
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }
-    func makeGoogleButton() -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle("Google", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.setTitleColor(.label, for: .normal)
-        button.backgroundColor = .secondarySystemFill
-        button.layer.cornerRadius = 10
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }
-    func makeFacebookButton() -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle("Facebook", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.setTitleColor(.label, for: .normal)
-        button.backgroundColor = .secondarySystemFill
-        button.layer.cornerRadius = 10
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }
-    
-    func makeLogInButtonForRegisration() -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle("Already have account? Log In.", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 17)
-        button.setTitleColor(.label, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }
-    
-    // MARK: - For login
     func makeLogInButtonForLogin() -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle("Log In", for: .normal)

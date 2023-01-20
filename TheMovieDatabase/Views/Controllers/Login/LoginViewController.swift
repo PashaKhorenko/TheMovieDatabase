@@ -13,6 +13,7 @@ class LoginViewController: UIViewController {
     private let viewModel = LoginViewModel()
     
     // MARK: - UI elements
+    private lazy var animationView = uiManager.makeAnimationView()
     private lazy var titleLabel = uiManager.makeTitleLalel(text: "Log into \nyour account")
     private lazy var textFieldsStackView = uiManager.makeStackView(asix: .vertical)
     private lazy var usernameTextField = uiManager.makeUsernameTextField()
@@ -89,6 +90,7 @@ extension LoginViewController {
         view.backgroundColor = .systemBackground
         setupNavigationBar()
         
+        view.addSubview(animationView)
         view.addSubview(titleLabel)
         
         view.addSubview(textFieldsStackView)
@@ -151,7 +153,7 @@ extension LoginViewController {
         guard let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         
         if self.view.frame.origin.y == 0 {
-            self.view.frame.origin.y -= keyboardSize.height / 3
+            self.view.frame.origin.y -= keyboardSize.height / 1.5
         }
     }
     
@@ -168,7 +170,12 @@ extension LoginViewController {
 extension LoginViewController {
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
+            animationView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            animationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            animationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            animationView.heightAnchor.constraint(equalTo: animationView.widthAnchor, multiplier: 0.6),
+            
+            titleLabel.topAnchor.constraint(equalTo: animationView.bottomAnchor, constant: 30),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             
