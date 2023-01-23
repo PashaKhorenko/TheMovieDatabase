@@ -28,6 +28,10 @@
 		4682612529797A380031A90D /* SessionID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682612429797A380031A90D /* SessionID.swift */; };
 		4682612729797A450031A90D /* ValidUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682612629797A450031A90D /* ValidUser.swift */; };
 		46826129297994EE0031A90D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46826128297994EE0031A90D /* SettingsViewController.swift */; };
+		46A76192297E911300AF5B39 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A76191297E911300AF5B39 /* HomeViewModel.swift */; };
+		46A76194297E914500AF5B39 /* HomeNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A76193297E914500AF5B39 /* HomeNetworkManager.swift */; };
+		46A76198297EC29400AF5B39 /* Movies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A76197297EC29400AF5B39 /* Movies.swift */; };
+		46A7619C297EDAAF00AF5B39 /* HeaderSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A7619B297EDAAF00AF5B39 /* HeaderSupplementaryView.swift */; };
 		46C381E42979402D00553768 /* RequestToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C381E32979402D00553768 /* RequestToken.swift */; };
 		46C4D7DC297A9CB200DA3997 /* loginAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 46C4D7DB297A9CB200DA3997 /* loginAnimation.json */; };
 		57A3740A02EAA20E67DBBB0C /* Pods_TheMovieDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F41EE0F02ABB0EB586B668F /* Pods_TheMovieDatabase.framework */; };
@@ -57,6 +61,10 @@
 		4682612429797A380031A90D /* SessionID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionID.swift; sourceTree = "<group>"; };
 		4682612629797A450031A90D /* ValidUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidUser.swift; sourceTree = "<group>"; };
 		46826128297994EE0031A90D /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		46A76191297E911300AF5B39 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		46A76193297E914500AF5B39 /* HomeNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNetworkManager.swift; sourceTree = "<group>"; };
+		46A76197297EC29400AF5B39 /* Movies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movies.swift; sourceTree = "<group>"; };
+		46A7619B297EDAAF00AF5B39 /* HeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSupplementaryView.swift; sourceTree = "<group>"; };
 		46C381E32979402D00553768 /* RequestToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestToken.swift; sourceTree = "<group>"; };
 		46C4D7DB297A9CB200DA3997 /* loginAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loginAnimation.json; sourceTree = "<group>"; };
 		7F41EE0F02ABB0EB586B668F /* Pods_TheMovieDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TheMovieDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				4682611F2979627D0031A90D /* LoginViewModel.swift */,
+				46A76191297E911300AF5B39 /* HomeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -148,6 +157,7 @@
 		46092BBF2976A861002C489D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				46A7619B297EDAAF00AF5B39 /* HeaderSupplementaryView.swift */,
 				4648BBD329780FC8009BA708 /* Login */,
 				4605F92D29783C28004570C6 /* Main */,
 			);
@@ -186,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				4682611D297957670031A90D /* LoginNetworkManager.swift */,
+				46A76193297E914500AF5B39 /* HomeNetworkManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -232,6 +243,7 @@
 			children = (
 				4682612329797A000031A90D /* Authorization */,
 				46092BB52976963E002C489D /* Genres.swift */,
+				46A76197297EC29400AF5B39 /* Movies.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -390,19 +402,23 @@
 				4648BBD529780FDF009BA708 /* LoginViewController.swift in Sources */,
 				4648BBD02977E0D1009BA708 /* SignUpViewController.swift in Sources */,
 				4608495F29756696009B7096 /* HomeViewController.swift in Sources */,
+				46A7619C297EDAAF00AF5B39 /* HeaderSupplementaryView.swift in Sources */,
 				46826129297994EE0031A90D /* SettingsViewController.swift in Sources */,
 				468261202979627D0031A90D /* LoginViewModel.swift in Sources */,
 				46092BB829769861002C489D /* SearchViewController.swift in Sources */,
 				4615EFDE29786AAD006C5A54 /* LoginUIHelper.swift in Sources */,
 				46092BBC2976A202002C489D /* FavoritesViewController.swift in Sources */,
+				46A76198297EC29400AF5B39 /* Movies.swift in Sources */,
 				4682612729797A450031A90D /* ValidUser.swift in Sources */,
 				46092BC22976AAC5002C489D /* TestCollectionViewCell.swift in Sources */,
 				4605F92B2978392D004570C6 /* UITextField+setIcon.swift in Sources */,
 				46092BBE2976A47E002C489D /* DetailsViewController.swift in Sources */,
 				46092BBA2976A068002C489D /* MainTabBarController.swift in Sources */,
 				4608495B29756696009B7096 /* AppDelegate.swift in Sources */,
+				46A76192297E911300AF5B39 /* HomeViewModel.swift in Sources */,
 				4682611E297957670031A90D /* LoginNetworkManager.swift in Sources */,
 				4608495D29756696009B7096 /* SceneDelegate.swift in Sources */,
+				46A76194297E914500AF5B39 /* HomeNetworkManager.swift in Sources */,
 				46092BB62976963E002C489D /* Genres.swift in Sources */,
 				4614B707297AAF0400E7E4EF /* SignUpWebViewController.swift in Sources */,
 			);

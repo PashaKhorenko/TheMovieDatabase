@@ -11,6 +11,8 @@ class TestCollectionViewCell: UICollectionViewCell {
     
     private let testLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 4
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -33,8 +35,10 @@ class TestCollectionViewCell: UICollectionViewCell {
         layer.cornerRadius = 10
         
         NSLayoutConstraint.activate([
-            testLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            testLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+            testLabel.topAnchor.constraint(equalTo: topAnchor),
+            testLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            testLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            testLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
     
