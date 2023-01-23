@@ -67,8 +67,14 @@ class LoginViewController: UIViewController {
                 self.viewModel.featchSessionID { id in
                     print("SessionID: \(id)")
                     
-                    let tabBarController = MainTabBarController()
-                    self.present(tabBarController, animated: true)
+                    let scene = UIApplication.shared.connectedScenes.first
+                    if let sceneDelegate: SceneDelegate = scene?.delegate as? SceneDelegate {
+                        print("Got to sceneDelegate")
+                        
+                        sceneDelegate.window?.rootViewController = MainTabBarController()
+                        print("Changed rootViewController to MainTabBarController")
+                        
+                    }
                 }
             }
         }

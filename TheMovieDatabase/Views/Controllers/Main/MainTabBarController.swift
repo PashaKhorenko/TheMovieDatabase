@@ -17,16 +17,16 @@ class MainTabBarController: UITabBarController {
     
     private func generateTabBar() {
         viewControllers = [
-            generateVC(viewController: HomeViewController(),
+            generateVC(HomeViewController(),
                        title: "Home",
                        image: UIImage(systemName: "house.fill")),
-            generateVC(viewController: SearchViewController(),
+            generateVC(SearchViewController(),
                        title: "Search",
                        image: UIImage(systemName: "magnifyingglass")),
-            generateVC(viewController: FavoritesViewController(),
+            generateVC(FavoritesViewController(),
                        title: "Favorites",
                        image: UIImage(systemName: "star.fill")),
-            generateVC(viewController: SettingsViewController(),
+            generateVC(SettingsViewController(),
                        title: "Settings",
                        image: UIImage(systemName: "gear"))
         ]
@@ -34,7 +34,7 @@ class MainTabBarController: UITabBarController {
         UITabBar.appearance().tintColor = #colorLiteral(red: 0.2901960784, green: 0.4235294118, blue: 0.8196078431, alpha: 1)
     }
     
-    private func generateVC(viewController: UIViewController, title: String, image: UIImage?) -> UINavigationController {
+    private func generateVC(_ viewController: UIViewController, title: String, image: UIImage?) -> UINavigationController {
         
         viewController.navigationItem.title = title
         viewController.tabBarItem.title = title
