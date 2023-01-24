@@ -11,8 +11,8 @@ class HomeViewModel {
     
     private let networkManager = HomeNetworkManager()
     
-    var genres: [GenreServerResponse] = []
-    var movies: [Movie] = []
+    var genres: [Genre] = []
+    var movies: [MovieForCollection] = []
     
     func getGenres(_ completion: @escaping () -> ()) {
         networkManager.downloadGenres { [weak self] genres in
@@ -41,15 +41,14 @@ class HomeViewModel {
     }
     
     func numberOfItemsIn(_ section: Int) -> Int {
-        guard let genreID = genres[section].id else { return 0 }
-                
         var count = 0
         
+        guard let sectionGenreID = genres[section].id else { return count }
+                
         for movie in movies {
-            for movieGengeID in movie.genreIDS! {
-                if movieGengeID == genreID {
-                    count += 1
-                }
+            guard let movieGenreIDs = movie.genreIDS else { return count}
+            if movieGenreIDs.contains(sectionGenreID) {
+                count += 1
             }
         }
         

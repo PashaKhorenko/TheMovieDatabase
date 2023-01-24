@@ -23,9 +23,6 @@ class HomeViewController: UIViewController {
         
         viewModel.getMovies {
             self.collectionView.reloadData()
-            
-            let megan = self.viewModel.movies.filter({ $0.title == "M3GAN" })
-            print(megan)
         }
         
         view.backgroundColor = .systemBackground
@@ -34,7 +31,7 @@ class HomeViewController: UIViewController {
         configureHierarchy()
         configureDataSource()
         
-        collectionView.register(TestCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.register(HeaderSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderSupplementaryView")
         
         collectionView.dataSource = self
@@ -54,9 +51,17 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TestCollectionViewCell else { return UICollectionViewCell() }
-        let movie = viewModel.movies[indexPath.item]
-        cell.configure(with: movie.title ?? "\(indexPath.item)")
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? PosterCollectionViewCell else { return UICollectionViewCell() }
+        
+        guard let sectionGenreID = viewModel.genres[indexPath.section].id else {
+            return UICollectionViewCell() }
+        
+        let moviesArray = viewModel.movies
+        let validMovies = moviesArray.filter({ $0.genreIDS!.contains(sectionGenreID) })
+
+        let movie = validMovies[indexPath.item]
+        
+        cell.configure(forMovie: movie)
         return cell
     }
     
@@ -110,7 +115,7 @@ extension HomeViewController {
         let sectionProvider = { (sectionIndex: Int,
                                  layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             // Item
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95),
                                                   heightDimension: .fractionalHeight(1))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             
@@ -122,8 +127,8 @@ extension HomeViewController {
             // Section
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .continuous
-            section.interGroupSpacing = 10
-            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
+            section.interGroupSpacing = 5
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
             
             let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                   heightDimension: .estimated(44))

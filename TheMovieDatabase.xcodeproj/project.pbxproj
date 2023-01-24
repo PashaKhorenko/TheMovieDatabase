@@ -18,7 +18,7 @@
 		46092BBA2976A068002C489D /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46092BB92976A068002C489D /* MainTabBarController.swift */; };
 		46092BBC2976A202002C489D /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46092BBB2976A202002C489D /* FavoritesViewController.swift */; };
 		46092BBE2976A47E002C489D /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46092BBD2976A47E002C489D /* DetailsViewController.swift */; };
-		46092BC22976AAC5002C489D /* TestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46092BC12976AAC5002C489D /* TestCollectionViewCell.swift */; };
+		46092BC22976AAC5002C489D /* PosterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46092BC12976AAC5002C489D /* PosterCollectionViewCell.swift */; };
 		4614B707297AAF0400E7E4EF /* SignUpWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4614B706297AAF0400E7E4EF /* SignUpWebViewController.swift */; };
 		4615EFDE29786AAD006C5A54 /* LoginUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4615EFDD29786AAD006C5A54 /* LoginUIHelper.swift */; };
 		4648BBD02977E0D1009BA708 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4648BBCF2977E0D1009BA708 /* SignUpViewController.swift */; };
@@ -30,7 +30,7 @@
 		46826129297994EE0031A90D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46826128297994EE0031A90D /* SettingsViewController.swift */; };
 		46A76192297E911300AF5B39 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A76191297E911300AF5B39 /* HomeViewModel.swift */; };
 		46A76194297E914500AF5B39 /* HomeNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A76193297E914500AF5B39 /* HomeNetworkManager.swift */; };
-		46A76198297EC29400AF5B39 /* Movies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A76197297EC29400AF5B39 /* Movies.swift */; };
+		46A76198297EC29400AF5B39 /* MoviesForCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A76197297EC29400AF5B39 /* MoviesForCollection.swift */; };
 		46A7619C297EDAAF00AF5B39 /* HeaderSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A7619B297EDAAF00AF5B39 /* HeaderSupplementaryView.swift */; };
 		46C381E42979402D00553768 /* RequestToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C381E32979402D00553768 /* RequestToken.swift */; };
 		46C4D7DC297A9CB200DA3997 /* loginAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 46C4D7DB297A9CB200DA3997 /* loginAnimation.json */; };
@@ -51,7 +51,7 @@
 		46092BB92976A068002C489D /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		46092BBB2976A202002C489D /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		46092BBD2976A47E002C489D /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
-		46092BC12976AAC5002C489D /* TestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCollectionViewCell.swift; sourceTree = "<group>"; };
+		46092BC12976AAC5002C489D /* PosterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterCollectionViewCell.swift; sourceTree = "<group>"; };
 		4614B706297AAF0400E7E4EF /* SignUpWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpWebViewController.swift; sourceTree = "<group>"; };
 		4615EFDD29786AAD006C5A54 /* LoginUIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIHelper.swift; sourceTree = "<group>"; };
 		4648BBCF2977E0D1009BA708 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -63,7 +63,7 @@
 		46826128297994EE0031A90D /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		46A76191297E911300AF5B39 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		46A76193297E914500AF5B39 /* HomeNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNetworkManager.swift; sourceTree = "<group>"; };
-		46A76197297EC29400AF5B39 /* Movies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movies.swift; sourceTree = "<group>"; };
+		46A76197297EC29400AF5B39 /* MoviesForCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesForCollection.swift; sourceTree = "<group>"; };
 		46A7619B297EDAAF00AF5B39 /* HeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSupplementaryView.swift; sourceTree = "<group>"; };
 		46C381E32979402D00553768 /* RequestToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestToken.swift; sourceTree = "<group>"; };
 		46C4D7DB297A9CB200DA3997 /* loginAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loginAnimation.json; sourceTree = "<group>"; };
@@ -167,7 +167,7 @@
 		46092BC02976AAA9002C489D /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				46092BC12976AAC5002C489D /* TestCollectionViewCell.swift */,
+				46092BC12976AAC5002C489D /* PosterCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -243,7 +243,7 @@
 			children = (
 				4682612329797A000031A90D /* Authorization */,
 				46092BB52976963E002C489D /* Genres.swift */,
-				46A76197297EC29400AF5B39 /* Movies.swift */,
+				46A76197297EC29400AF5B39 /* MoviesForCollection.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -408,9 +408,9 @@
 				46092BB829769861002C489D /* SearchViewController.swift in Sources */,
 				4615EFDE29786AAD006C5A54 /* LoginUIHelper.swift in Sources */,
 				46092BBC2976A202002C489D /* FavoritesViewController.swift in Sources */,
-				46A76198297EC29400AF5B39 /* Movies.swift in Sources */,
+				46A76198297EC29400AF5B39 /* MoviesForCollection.swift in Sources */,
 				4682612729797A450031A90D /* ValidUser.swift in Sources */,
-				46092BC22976AAC5002C489D /* TestCollectionViewCell.swift in Sources */,
+				46092BC22976AAC5002C489D /* PosterCollectionViewCell.swift in Sources */,
 				4605F92B2978392D004570C6 /* UITextField+setIcon.swift in Sources */,
 				46092BBE2976A47E002C489D /* DetailsViewController.swift in Sources */,
 				46092BBA2976A068002C489D /* MainTabBarController.swift in Sources */,

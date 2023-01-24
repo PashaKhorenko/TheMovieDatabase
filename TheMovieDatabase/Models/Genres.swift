@@ -9,11 +9,11 @@ import Foundation
 
 // MARK: - Genres
 struct Genres: Codable {
-    var genres: [GenreServerResponse]?
+    var genres: [Genre]?
 }
 
 // MARK: - Genre
-struct GenreServerResponse: Codable {
+struct Genre: Codable {
     var id: Int?
     var name: String?
 }

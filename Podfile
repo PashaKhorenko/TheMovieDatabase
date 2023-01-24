@@ -8,5 +8,6 @@ target 'TheMovieDatabase' do
   # Pods for TheMovieDatabase
   pod 'lottie-ios'
   pod 'Alamofire'
+  pod 'SDWebImage'
 
 end
