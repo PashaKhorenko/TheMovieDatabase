@@ -80,7 +80,15 @@ extension HomeViewController: UICollectionViewDataSource {
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = DetailsViewController()
-        vc.testText = "\(indexPath)"
+        
+        guard let sectionGenreID = viewModel.genres[indexPath.section].id else { return }
+        
+        let moviesArray = viewModel.movies
+        let validMovies = moviesArray.filter({ $0.genreIDS!.contains(sectionGenreID) })
+        guard let movieID = validMovies[indexPath.item].id else { return }
+        
+        vc.movieID = movieID
+        
         navigationController?.pushViewController(vc, animated: true)
     }
 }

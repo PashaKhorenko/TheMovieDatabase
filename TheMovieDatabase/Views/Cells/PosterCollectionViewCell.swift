@@ -19,13 +19,7 @@ class PosterCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let activityIndicator: UIActivityIndicatorView = {
-        let spinner = UIActivityIndicatorView()
-        spinner.style = .large
-        spinner.hidesWhenStopped = true
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        return spinner
-    }()
+    private let activityIndicator = StandartActivityIndicator(frame: .zero)
     
     // MARK: - Init
     override init(frame: CGRect) {

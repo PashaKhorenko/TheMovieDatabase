@@ -9,15 +9,7 @@ import Foundation
 
 // MARK: - Movies
 struct MoviesForCollection: Codable {
-    let page: Int?
     let results: [MovieForCollection]?
-    let totalResults, totalPages: Int?
-
-    enum CodingKeys: String, CodingKey {
-        case page, results
-        case totalResults = "total_results"
-        case totalPages = "total_pages"
-    }
 }
 
 // MARK: - Movie
