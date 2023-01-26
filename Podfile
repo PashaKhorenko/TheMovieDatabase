@@ -9,5 +9,6 @@ target 'TheMovieDatabase' do
   pod 'lottie-ios'
   pod 'Alamofire'
   pod 'SDWebImage'
+  pod 'youtube-ios-player-helper'
 
 end

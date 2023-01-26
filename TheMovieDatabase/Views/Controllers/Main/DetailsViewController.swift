@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SDWebImage
 
 class DetailsViewController: UIViewController {
     
@@ -16,6 +15,7 @@ class DetailsViewController: UIViewController {
     // MARK: - UI elements
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
+        scrollView.showsVerticalScrollIndicator = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
@@ -45,6 +45,30 @@ class DetailsViewController: UIViewController {
     
     private var overviewSubtitleLabel = SubtitleLabel()
     private var overviewLabel = StandartLabel()
+    
+    private let backgroundForBlurImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .systemBackground
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    private let blurView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .light)
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.layer.cornerRadius = 25
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let videoCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        collectionView.backgroundColor = .red
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+    
 
     // MARK: - Views Lifecycle
     
@@ -54,13 +78,16 @@ class DetailsViewController: UIViewController {
         viewModel.getMovie(withID: movieID) { [weak self] (movie) in
             self?.populateUIFor(movie: movie)
         }
+        viewModel.getVideo(byMovieID: movieID) {
+            print("Video downloaded")
+        }
         
         setupViews()
     }
     
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
-     
+
         var insets = view.safeAreaInsets
         insets.top = 0
         scrollView.contentInset = insets
@@ -68,11 +95,12 @@ class DetailsViewController: UIViewController {
     
     // MARK: - Settings
     private func setupViews() {
-//        navigationItem.title = "Details"
         navigationItem.largeTitleDisplayMode = .never
         scrollView.contentInsetAdjustmentBehavior = .never
         
         self.view.backgroundColor = .systemBackground
+        self.navigationController?.hidesBarsOnSwipe = true
+        self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.2901960784, green: 0.4235294118, blue: 0.8196078431, alpha: 1)
         self.posterImageView.backgroundColor = .systemGray
         
         generalSubtitleLabel.text = "General Information"
@@ -82,24 +110,30 @@ class DetailsViewController: UIViewController {
         posterImageView.addSubview(activityIndicator)
 
         scrollView.addSubview(posterImageView)
-        scrollView.addSubview(titleLabel)
+        
+        backgroundForBlurImageView.addSubview(blurView)
+        scrollView.addSubview(backgroundForBlurImageView)
+        
+        blurView.contentView.addSubview(titleLabel)
         
         generalStackView.addArrangedSubview(generalSubtitleLabel)
         generalStackView.addArrangedSubview(releaseDateLabel)
         generalStackView.addArrangedSubview(genresLabel)
         generalStackView.addArrangedSubview(ageRestrictionsLabel)
-        
-        scrollView.addSubview(generalStackView)
-        
+
+        blurView.contentView.addSubview(generalStackView)
+
         reactionStackView.addArrangedSubview(reactionSubtitleLabel)
         reactionStackView.addArrangedSubview(popularityLabel)
-        
-        scrollView.addSubview(reactionStackView)
-        
+
+        blurView.contentView.addSubview(reactionStackView)
+
         overviewStackView.addArrangedSubview(overviewSubtitleLabel)
         overviewStackView.addArrangedSubview(overviewLabel)
         
-        scrollView.addSubview(overviewStackView)
+        blurView.contentView.addSubview(overviewStackView)
+        
+        blurView.contentView.addSubview(videoCollectionView)
         
         view.addSubview(scrollView)
         
@@ -107,40 +141,25 @@ class DetailsViewController: UIViewController {
     }
     
     private func populateUIFor(movie: MovieForDetails) {
-        titleLabel.text = movie.title
-        
-        let url = URL(string: "https://image.tmdb.org/t/p/w500/\(movie.posterPath!)")!
-        posterImageView.sd_setImage(with: url) { (_, _, _, _) in
+        viewModel.getImage(byPath: movie.posterPath) { [weak self] imageData in
+            guard let self else { return }
+            
+            self.posterImageView.image = UIImage(data: imageData)
+            self.backgroundForBlurImageView.image = UIImage(data: imageData)
+            
             self.activityIndicator.stopAnimating()
         }
         
-        releaseDateLabel.text = "Relise date: \(movie.releaseDate!)"
-//        genresLabel.text = getMovieGenre(from: movie.genreIDS.convertToArray())
-
-        if movie.adult! {
-            ageRestrictionsLabel.text = "Age restrictions: Children are prohibited"
-        } else {
-            ageRestrictionsLabel.text = "Age restrictions: Missing"
-        }
+        titleLabel.text = movie.title
         
-        popularityLabel.text = "Popularity: \(movie.popularity!)"
+        releaseDateLabel.text = "Relise date: \(movie.releaseDate ?? "Unknown")"
+        popularityLabel.text = "Popularity: \(movie.popularity ?? 0.0)"
+        overviewLabel.text = movie.overview ?? "Unknown"
+//        overviewLabel.text = String(repeating: "\(movie.overview!)", count: 55)
         
-        overviewLabel.text = String(repeating: "\(movie.overview!)", count: 5)
+        genresLabel.text = viewModel.getGenreNamesFrom(list: movie.genres)
+        ageRestrictionsLabel.text = viewModel.getAgeRestrictions(movie.adult)
     }
-    
-//    private func getMovieGenre(from movieGenres: [Int]) -> String {
-//        var result = "Genre: "
-//
-//        for movieGenreID in movieGenres {
-//            for genre in genresArray {
-//                if movieGenreID == genre.id {
-//                    result.append("\(genre.name), ")
-//                }
-//            }
-//        }
-//
-//        return String(result.dropLast(2))
-//    }
 }
 
 // MARK: - Constraints
@@ -161,6 +180,16 @@ extension DetailsViewController {
             posterImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             posterImageView.widthAnchor.constraint(equalToConstant: view.frame.width),
             posterImageView.heightAnchor.constraint(equalTo: posterImageView.widthAnchor, multiplier: 1.5),
+            
+            backgroundForBlurImageView.topAnchor.constraint(equalTo: posterImageView.bottomAnchor),
+            backgroundForBlurImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            backgroundForBlurImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            backgroundForBlurImageView.widthAnchor.constraint(equalToConstant: view.frame.width),
+            
+            blurView.topAnchor.constraint(equalTo: backgroundForBlurImageView.topAnchor, constant: -25),
+            blurView.leadingAnchor.constraint(equalTo: backgroundForBlurImageView.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: backgroundForBlurImageView.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: backgroundForBlurImageView.bottomAnchor, constant: 25),
 
             titleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 15),
             titleLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
@@ -179,7 +208,12 @@ extension DetailsViewController {
             overviewStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
             overviewStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
 
-            overviewLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 40)
+            overviewLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 40),
+            
+            videoCollectionView.topAnchor.constraint(equalTo: overviewStackView.bottomAnchor, constant: 20),
+            videoCollectionView.leadingAnchor.constraint(equalTo: blurView.leadingAnchor),
+            videoCollectionView.trailingAnchor.constraint(equalTo: blurView.trailingAnchor),
+            videoCollectionView.bottomAnchor.constraint(equalTo: blurView.bottomAnchor)
         ])
     }
 }

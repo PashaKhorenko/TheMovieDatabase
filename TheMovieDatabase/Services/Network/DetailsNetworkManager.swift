@@ -29,5 +29,38 @@ class DetailsNetworkManager {
                     print("Error downloading details movie: \(error.localizedDescription)")
                 }
             }
-    }    
+    }
+    
+    func downloadImageData(byPath path: String, _ completion: @escaping (Data) -> ()) {
+        let url = "https://image.tmdb.org/t/p/w500/\(path)"
+        
+        AF.request(url)
+            .response { response in
+                guard response.error == nil else {
+                    print(response.error!.localizedDescription)
+                    return
+                }
+                guard let data = response.data else { return }
+                completion(data)
+            }
+    }
+    
+    func downloadVideo(withID movieId: Int, _ completion: @escaping (Video) -> ()) {
+        let url = "https://api.themoviedb.org/3/movie/\(movieId)/videos?api_key=\(self.apiKey)&language=en-US"
+        
+        AF.request(url)
+            .validate()
+            .responseDecodable(of: Video.self) { (response) in
+                switch response.result {
+                case .success:
+                    guard let video = response.value else {
+                        print("Empty response data when downloading video")
+                        return
+                    }
+                    completion(video)
+                case .failure(let error):
+                    print("Error downloading details movie: \(error.localizedDescription)")
+                }
+            }
+    }
 }
