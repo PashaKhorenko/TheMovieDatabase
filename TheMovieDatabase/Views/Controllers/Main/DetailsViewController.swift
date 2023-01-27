@@ -12,10 +12,15 @@ class DetailsViewController: UIViewController {
     private let viewModel = DetailsViewModel()
     var movieID: Int = 0
     
+    private let itemsPerRow: CGFloat = 1
+    private let sectionInserts = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+    
     // MARK: - UI elements
-    private lazy var scrollView: UIScrollView = {
+    private lazy var mainScrollView: UIScrollView = {
         let scrollView = UIScrollView()
+        scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.bounces = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
@@ -27,6 +32,8 @@ class DetailsViewController: UIViewController {
     private var activityIndicator = StandartActivityIndicator(frame: .zero)
     private var posterImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.layer.cornerRadius = 35
+        imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .systemGray4
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,25 +53,14 @@ class DetailsViewController: UIViewController {
     private var overviewSubtitleLabel = SubtitleLabel()
     private var overviewLabel = StandartLabel()
     
-    private let backgroundForBlurImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = .systemBackground
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    private let blurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .light)
-        let view = UIVisualEffectView(effect: blurEffect)
-        view.layer.cornerRadius = 25
-        view.clipsToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private let videoCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-        collectionView.backgroundColor = .red
+    private lazy var videoCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero,
+                                              collectionViewLayout: layout)
+        layout.scrollDirection = .horizontal
+        collectionView.register(VideoCollectionViewCell.self, forCellWithReuseIdentifier: "VideoCell")
+        collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -74,12 +70,13 @@ class DetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         viewModel.getMovie(withID: movieID) { [weak self] (movie) in
             self?.populateUIFor(movie: movie)
         }
         viewModel.getVideo(byMovieID: movieID) {
             print("Video downloaded")
+            self.videoCollectionView.reloadData()
         }
         
         setupViews()
@@ -90,16 +87,14 @@ class DetailsViewController: UIViewController {
 
         var insets = view.safeAreaInsets
         insets.top = 0
-        scrollView.contentInset = insets
+        mainScrollView.contentInset = insets
     }
     
     // MARK: - Settings
     private func setupViews() {
-        navigationItem.largeTitleDisplayMode = .never
-        scrollView.contentInsetAdjustmentBehavior = .never
+        self.navigationController?.navigationItem.largeTitleDisplayMode = .never
         
         self.view.backgroundColor = .systemBackground
-        self.navigationController?.hidesBarsOnSwipe = true
         self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.2901960784, green: 0.4235294118, blue: 0.8196078431, alpha: 1)
         self.posterImageView.backgroundColor = .systemGray
         
@@ -109,33 +104,29 @@ class DetailsViewController: UIViewController {
         
         posterImageView.addSubview(activityIndicator)
 
-        scrollView.addSubview(posterImageView)
-        
-        backgroundForBlurImageView.addSubview(blurView)
-        scrollView.addSubview(backgroundForBlurImageView)
-        
-        blurView.contentView.addSubview(titleLabel)
+        mainScrollView.addSubview(posterImageView)
+        mainScrollView.addSubview(titleLabel)
         
         generalStackView.addArrangedSubview(generalSubtitleLabel)
         generalStackView.addArrangedSubview(releaseDateLabel)
         generalStackView.addArrangedSubview(genresLabel)
         generalStackView.addArrangedSubview(ageRestrictionsLabel)
 
-        blurView.contentView.addSubview(generalStackView)
+        mainScrollView.addSubview(generalStackView)
 
         reactionStackView.addArrangedSubview(reactionSubtitleLabel)
         reactionStackView.addArrangedSubview(popularityLabel)
 
-        blurView.contentView.addSubview(reactionStackView)
-
+        mainScrollView.addSubview(reactionStackView)
+        
         overviewStackView.addArrangedSubview(overviewSubtitleLabel)
         overviewStackView.addArrangedSubview(overviewLabel)
         
-        blurView.contentView.addSubview(overviewStackView)
+        mainScrollView.addSubview(overviewStackView)
         
-        blurView.contentView.addSubview(videoCollectionView)
+        mainScrollView.addSubview(videoCollectionView)
         
-        view.addSubview(scrollView)
+        view.addSubview(mainScrollView)
         
         setConstraints()
     }
@@ -143,10 +134,7 @@ class DetailsViewController: UIViewController {
     private func populateUIFor(movie: MovieForDetails) {
         viewModel.getImage(byPath: movie.posterPath) { [weak self] imageData in
             guard let self else { return }
-            
             self.posterImageView.image = UIImage(data: imageData)
-            self.backgroundForBlurImageView.image = UIImage(data: imageData)
-            
             self.activityIndicator.stopAnimating()
         }
         
@@ -162,58 +150,93 @@ class DetailsViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDataSource
+extension DetailsViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        viewModel.numberOfItemsInSection()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoCell", for: indexPath) as! VideoCollectionViewCell
+        
+        cell.configureWith(viewModel.videoArray, index: indexPath.item)
+        
+        return cell
+    }
+    
+}
+
+//MARK: - UICollectionViewDelegateFlowLayout
+extension DetailsViewController: UICollectionViewDelegateFlowLayout {
+    
+    // Сell size
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let paddingWidth = sectionInserts.left * (itemsPerRow + 1)
+        let availableWidth = collectionView.frame.width - paddingWidth
+        
+        let widthPerItem = availableWidth / itemsPerRow
+        let heigthPerItem = widthPerItem * 1.5
+        
+        return CGSize(width: widthPerItem, height: heigthPerItem)
+    }
+    
+    // Indent the section outward
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInserts
+    }
+    
+    // Indentation within a section
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return sectionInserts.top
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return sectionInserts.top
+    }
+}
+
 // MARK: - Constraints
 
 extension DetailsViewController {
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            mainScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            mainScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            mainScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            mainScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             
             activityIndicator.centerYAnchor.constraint(equalTo: posterImageView.centerYAnchor),
             activityIndicator.centerXAnchor.constraint(equalTo: posterImageView.centerXAnchor),
             
-            posterImageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            posterImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            posterImageView.topAnchor.constraint(equalTo: mainScrollView.topAnchor),
+            posterImageView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
             posterImageView.widthAnchor.constraint(equalToConstant: view.frame.width),
             posterImageView.heightAnchor.constraint(equalTo: posterImageView.widthAnchor, multiplier: 1.5),
             
-            backgroundForBlurImageView.topAnchor.constraint(equalTo: posterImageView.bottomAnchor),
-            backgroundForBlurImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            backgroundForBlurImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            backgroundForBlurImageView.widthAnchor.constraint(equalToConstant: view.frame.width),
-            
-            blurView.topAnchor.constraint(equalTo: backgroundForBlurImageView.topAnchor, constant: -25),
-            blurView.leadingAnchor.constraint(equalTo: backgroundForBlurImageView.leadingAnchor),
-            blurView.trailingAnchor.constraint(equalTo: backgroundForBlurImageView.trailingAnchor),
-            blurView.bottomAnchor.constraint(equalTo: backgroundForBlurImageView.bottomAnchor, constant: 25),
-
             titleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 15),
-            titleLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
+            titleLabel.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor, constant: -20),
 
             generalStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-            generalStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
-            generalStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
+            generalStackView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor, constant: 20),
+            generalStackView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor, constant: -20),
 
             reactionStackView.topAnchor.constraint(equalTo: generalStackView.bottomAnchor, constant: 20),
-            reactionStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
-            reactionStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
+            reactionStackView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor, constant: 20),
+            reactionStackView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor, constant: -20),
 
             overviewStackView.topAnchor.constraint(equalTo: reactionStackView.bottomAnchor, constant: 20),
-            overviewStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
-            overviewStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
-            overviewStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            overviewStackView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor, constant: 20),
+            overviewStackView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor, constant: -20),
 
             overviewLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 40),
             
             videoCollectionView.topAnchor.constraint(equalTo: overviewStackView.bottomAnchor, constant: 20),
-            videoCollectionView.leadingAnchor.constraint(equalTo: blurView.leadingAnchor),
-            videoCollectionView.trailingAnchor.constraint(equalTo: blurView.trailingAnchor),
-            videoCollectionView.bottomAnchor.constraint(equalTo: blurView.bottomAnchor)
+            videoCollectionView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            videoCollectionView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
+            videoCollectionView.heightAnchor.constraint(equalTo: videoCollectionView.widthAnchor, multiplier: 0.5),
+            videoCollectionView.bottomAnchor.constraint(equalTo: mainScrollView.bottomAnchor),
         ])
     }
 }

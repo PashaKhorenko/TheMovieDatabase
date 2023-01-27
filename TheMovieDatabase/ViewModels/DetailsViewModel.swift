@@ -36,7 +36,7 @@ class DetailsViewModel {
         }
     }
     
-    func numberItemInSection() -> Int {
+    func numberOfItemsInSection() -> Int {
         guard let count = videoArray?.results?.count else { return 0 }
         return count
     }

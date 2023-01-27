@@ -39,6 +39,7 @@ class VideoCollectionViewCell: UICollectionViewCell {
         
         backgroundColor = .systemGray
         layer.cornerRadius = 15
+        clipsToBounds = true
         
         NSLayoutConstraint.activate([
             playerView.topAnchor.constraint(equalTo: topAnchor),
@@ -52,11 +53,15 @@ class VideoCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Public
-    func configureWith(_ videoKey: String) {
+    func configureWith(_ video: Video?, index: Int) {
         self.activityIndicator.startAnimating()
         
-        playerView.load(withVideoId: videoKey)
+        guard let video else { return }
+        guard let array = video.results else { return }
+        guard let videoKey = array[index].key else { return }
         
-        
+        DispatchQueue.main.async {
+            self.playerView.load(withVideoId: videoKey)
+        }
     }
 }

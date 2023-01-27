@@ -14,6 +14,7 @@ struct Video: Codable {
 
 // MARK: - Result
 struct Result: Codable {
+    let official: Bool?
     let site: String?
     let key: String?
 }
