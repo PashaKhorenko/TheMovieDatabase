@@ -18,9 +18,10 @@ class DetailsViewController: UIViewController {
     // MARK: - UI elements
     private lazy var mainScrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.contentInsetAdjustmentBehavior = .never
+        scrollView.layer.cornerRadius = 30
+        scrollView.delegate = self
+        scrollView.backgroundColor = .systemBackground
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.bounces = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
@@ -29,29 +30,31 @@ class DetailsViewController: UIViewController {
     private let reactionStackView = StandartStackView()
     private let overviewStackView = StandartStackView()
     
-    private var activityIndicator = StandartActivityIndicator(frame: .zero)
-    private var posterImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.cornerRadius = 35
+    private let activityIndicator = StandartActivityIndicator(frame: .zero)
+    private lazy var posterImageView: UIImageView = {
+        let viewWidth = self.view.bounds.width
+        let frame = CGRect(x: 0, y: 0,
+                           width: viewWidth,
+                           height: viewWidth * 1.1)
+        let imageView = UIImageView(frame: frame)
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .systemGray4
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     private var titleLabel = TitleLabel()
     
-    private var generalSubtitleLabel = SubtitleLabel()
-    private var releaseDateLabel = StandartLabel()
-    private var genresLabel = StandartLabel()
-    private var ageRestrictionsLabel = StandartLabel()
+    private let generalSubtitleLabel = SubtitleLabel()
+    private let releaseDateLabel = StandartLabel()
+    private let genresLabel = StandartLabel()
+    private let ageRestrictionsLabel = StandartLabel()
     
-    private var reactionSubtitleLabel = SubtitleLabel()
-    private var popularityLabel = StandartLabel()
+    private let reactionSubtitleLabel = SubtitleLabel()
+    private let popularityLabel = StandartLabel()
     
-    private var overviewSubtitleLabel = SubtitleLabel()
-    private var overviewLabel = StandartLabel()
+    private let overviewSubtitleLabel = SubtitleLabel()
+    private let overviewLabel = StandartLabel()
     
     private lazy var videoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -82,20 +85,24 @@ class DetailsViewController: UIViewController {
         setupViews()
     }
     
-    override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
-
-        var insets = view.safeAreaInsets
-        insets.top = 0
-        mainScrollView.contentInset = insets
+    // MARK: - Settings
+    private func makeNavigationBarTransparent() {
+        // Some settings
+        self.navigationController?.navigationItem.largeTitleDisplayMode = .never
+        self.navigationController?.navigationBar.tintColor = .label
+        
+        // Transparency settings
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = .clear
     }
     
-    // MARK: - Settings
     private func setupViews() {
-        self.navigationController?.navigationItem.largeTitleDisplayMode = .never
+        makeNavigationBarTransparent()
         
         self.view.backgroundColor = .systemBackground
-        self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.2901960784, green: 0.4235294118, blue: 0.8196078431, alpha: 1)
+        
         self.posterImageView.backgroundColor = .systemGray
         
         generalSubtitleLabel.text = "General Information"
@@ -104,7 +111,7 @@ class DetailsViewController: UIViewController {
         
         posterImageView.addSubview(activityIndicator)
 
-        mainScrollView.addSubview(posterImageView)
+        view.addSubview(posterImageView)
         mainScrollView.addSubview(titleLabel)
         
         generalStackView.addArrangedSubview(generalSubtitleLabel)
@@ -142,11 +149,49 @@ class DetailsViewController: UIViewController {
         
         releaseDateLabel.text = "Relise date: \(movie.releaseDate ?? "Unknown")"
         popularityLabel.text = "Popularity: \(movie.popularity ?? 0.0)"
-        overviewLabel.text = movie.overview ?? "Unknown"
-//        overviewLabel.text = String(repeating: "\(movie.overview!)", count: 55)
+//        overviewLabel.text = movie.overview ?? "Unknown"
+        overviewLabel.text = String(repeating: "\(movie.overview!)", count: 10)
         
         genresLabel.text = viewModel.getGenreNamesFrom(list: movie.genres)
         ageRestrictionsLabel.text = viewModel.getAgeRestrictions(movie.adult)
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension DetailsViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard scrollView == self.mainScrollView else { return }
+        
+        let viewWidth = self.view.bounds.width
+        let imageHeigth = viewWidth * 1.1
+        let y = imageHeigth + (scrollView.contentOffset.y - imageHeigth)
+        
+        var heigth: CGFloat = 0
+
+        if y < 0 {
+            heigth = imageHeigth + (-y)
+        } else {
+            heigth = max(150, imageHeigth - y)
+        }
+        
+        if heigth < imageHeigth {
+            UIView.animate(withDuration: 0.3) {
+//                self.mainScrollView.isScrollEnabled = false
+                self.posterImageView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: 150)
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+//                self.mainScrollView.isScrollEnabled = true
+            }
+        } else {
+            UIView.animate(withDuration: 0.3, delay: 0) {
+//                self.mainScrollView.isScrollEnabled = false
+                self.posterImageView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewWidth * 1.1)
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+//                self.mainScrollView.isScrollEnabled = true
+            }
+        }
     }
 }
 
@@ -201,20 +246,15 @@ extension DetailsViewController {
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            mainScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: posterImageView.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: posterImageView.centerXAnchor),
+            
+            mainScrollView.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: -30),
             mainScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             mainScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             mainScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             
-            activityIndicator.centerYAnchor.constraint(equalTo: posterImageView.centerYAnchor),
-            activityIndicator.centerXAnchor.constraint(equalTo: posterImageView.centerXAnchor),
-            
-            posterImageView.topAnchor.constraint(equalTo: mainScrollView.topAnchor),
-            posterImageView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
-            posterImageView.widthAnchor.constraint(equalToConstant: view.frame.width),
-            posterImageView.heightAnchor.constraint(equalTo: posterImageView.widthAnchor, multiplier: 1.5),
-            
-            titleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 15),
+            titleLabel.topAnchor.constraint(equalTo: mainScrollView.topAnchor, constant: 15),
             titleLabel.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor, constant: 20),
             titleLabel.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor, constant: -20),
 
