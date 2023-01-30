@@ -25,17 +25,10 @@ class HomeViewController: UIViewController {
             self.collectionView.reloadData()
         }
         
-        view.backgroundColor = .systemBackground
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
         configureHierarchy()
         configureDataSource()
-        
-        collectionView.register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(HeaderSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderSupplementaryView")
-        
-        collectionView.dataSource = self
-        collectionView.delegate = self
     }
 }
 
@@ -99,7 +92,9 @@ extension HomeViewController {
     private func configureHierarchy() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .systemBackground
+        collectionView.backgroundColor = .secondarySystemBackground
+        collectionView.register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(HeaderSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderSupplementaryView")
         
         view.addSubview(collectionView)
         
@@ -112,7 +107,8 @@ extension HomeViewController {
     }
     
     private func configureDataSource() {
-        
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
 }
 
@@ -123,13 +119,13 @@ extension HomeViewController {
         let sectionProvider = { (sectionIndex: Int,
                                  layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             // Item
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95),
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                   heightDimension: .fractionalHeight(1))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             
             // Group
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4),
-                                                   heightDimension: .absolute(200))
+                                                   heightDimension: .absolute(230))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
             // Section

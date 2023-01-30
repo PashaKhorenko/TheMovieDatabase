@@ -13,10 +13,18 @@ class PosterCollectionViewCell: UICollectionViewCell {
     // MARK: - UI elements
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.cornerRadius = 10
+        imageView.layer.cornerRadius = 8
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
+    }()
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.minimumScaleFactor = 0.7
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private let activityIndicator = StandartActivityIndicator(frame: .zero)
@@ -34,26 +42,33 @@ class PosterCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Private
     private func setupViews() {
-        addSubview(posterImageView)
         posterImageView.addSubview(activityIndicator)
+        addSubview(posterImageView)
+        addSubview(titleLabel)
         
-        backgroundColor = .systemGray
+        backgroundColor = .systemBackground
         layer.cornerRadius = 10
         
         NSLayoutConstraint.activate([
-            posterImageView.topAnchor.constraint(equalTo: topAnchor),
-            posterImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            posterImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            posterImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: posterImageView.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: posterImageView.centerYAnchor),
             
-            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
+            posterImageView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            posterImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+            posterImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
+            posterImageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -5),
+            
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
         ])
     }
     
     // MARK: - Public
     func configure(forMovie movie: MovieForCollection) {
         self.activityIndicator.startAnimating()
+        
+        self.titleLabel.text = movie.title
         
         guard let postenPath = movie.posterPath else {
             print("Failed to get poster path")
