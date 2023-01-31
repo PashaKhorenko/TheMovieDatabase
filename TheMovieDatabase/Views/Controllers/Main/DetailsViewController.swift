@@ -12,9 +12,6 @@ class DetailsViewController: UIViewController {
     private let viewModel = DetailsViewModel()
     var movieID: Int = 0
     
-    private let itemsPerRow: CGFloat = 1
-    private let sectionInserts = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-    
     // MARK: - UI elements
     private lazy var mainScrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -56,30 +53,30 @@ class DetailsViewController: UIViewController {
     private let overviewSubtitleLabel = SubtitleLabel()
     private let overviewLabel = StandartLabel()
     
-    private lazy var videoCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+    private let trailersSubtitleLabel = SubtitleLabel()
+    private lazy var trailersCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero,
-                                              collectionViewLayout: layout)
-        layout.scrollDirection = .horizontal
+                                              collectionViewLayout: createLayout())
         collectionView.register(VideoCollectionViewCell.self, forCellWithReuseIdentifier: "VideoCell")
         collectionView.dataSource = self
-        collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
-
     // MARK: - Views Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         viewModel.getMovie(withID: movieID) { [weak self] (movie) in
-            self?.populateUIFor(movie: movie)
+            DispatchQueue.main.async {
+                self?.populateUIFor(movie: movie)
+            }
         }
         viewModel.getVideo(byMovieID: movieID) {
-            print("Video downloaded")
-            self.videoCollectionView.reloadData()
+            DispatchQueue.main.async {
+                self.trailersCollectionView.reloadData()
+            }
         }
         
         setupViews()
@@ -104,13 +101,9 @@ class DetailsViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         
         self.posterImageView.backgroundColor = .systemGray
-        
-        generalSubtitleLabel.text = "General Information"
-        reactionSubtitleLabel.text = "Reactions"
-        overviewSubtitleLabel.text = "Overview"
-        
+                
         posterImageView.addSubview(activityIndicator)
-
+        
         view.addSubview(posterImageView)
         mainScrollView.addSubview(titleLabel)
         
@@ -118,12 +111,12 @@ class DetailsViewController: UIViewController {
         generalStackView.addArrangedSubview(releaseDateLabel)
         generalStackView.addArrangedSubview(genresLabel)
         generalStackView.addArrangedSubview(ageRestrictionsLabel)
-
+        
         mainScrollView.addSubview(generalStackView)
-
+        
         reactionStackView.addArrangedSubview(reactionSubtitleLabel)
         reactionStackView.addArrangedSubview(popularityLabel)
-
+        
         mainScrollView.addSubview(reactionStackView)
         
         overviewStackView.addArrangedSubview(overviewSubtitleLabel)
@@ -131,7 +124,8 @@ class DetailsViewController: UIViewController {
         
         mainScrollView.addSubview(overviewStackView)
         
-        mainScrollView.addSubview(videoCollectionView)
+        mainScrollView.addSubview(trailersSubtitleLabel)
+        mainScrollView.addSubview(trailersCollectionView)
         
         view.addSubview(mainScrollView)
         
@@ -139,59 +133,28 @@ class DetailsViewController: UIViewController {
     }
     
     private func populateUIFor(movie: MovieForDetails) {
+        generalSubtitleLabel.text = "General Information"
+        reactionSubtitleLabel.text = "Reactions"
+        overviewSubtitleLabel.text = "Overview"
+        trailersSubtitleLabel.text = "Trailers and stills"
+        
         viewModel.getImage(byPath: movie.posterPath) { [weak self] imageData in
             guard let self else { return }
-            self.posterImageView.image = UIImage(data: imageData)
-            self.activityIndicator.stopAnimating()
+            DispatchQueue.main.async {
+                self.posterImageView.image = UIImage(data: imageData)
+                self.activityIndicator.stopAnimating()
+            }
         }
         
         titleLabel.text = movie.title
         
         releaseDateLabel.text = "Relise date: \(movie.releaseDate ?? "Unknown")"
         popularityLabel.text = "Popularity: \(movie.popularity ?? 0.0)"
-//        overviewLabel.text = movie.overview ?? "Unknown"
-        overviewLabel.text = String(repeating: "\(movie.overview!)", count: 10)
+        overviewLabel.text = movie.overview ?? "Unknown"
+//        overviewLabel.text = String(repeating: "\(movie.overview!)", count: 10)
         
         genresLabel.text = viewModel.getGenreNamesFrom(list: movie.genres)
         ageRestrictionsLabel.text = viewModel.getAgeRestrictions(movie.adult)
-    }
-}
-
-// MARK: - UIScrollViewDelegate
-extension DetailsViewController: UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard scrollView == self.mainScrollView else { return }
-        
-        let viewWidth = self.view.bounds.width
-        let imageHeigth = viewWidth * 1.1
-        let y = imageHeigth + (scrollView.contentOffset.y - imageHeigth)
-        
-        var heigth: CGFloat = 0
-
-        if y < 0 {
-            heigth = imageHeigth + (-y)
-        } else {
-            heigth = max(150, imageHeigth - y)
-        }
-        
-        if heigth < imageHeigth {
-            UIView.animate(withDuration: 0.3) {
-//                self.mainScrollView.isScrollEnabled = false
-                self.posterImageView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: 150)
-                self.view.layoutIfNeeded()
-            } completion: { _ in
-//                self.mainScrollView.isScrollEnabled = true
-            }
-        } else {
-            UIView.animate(withDuration: 0.3, delay: 0) {
-//                self.mainScrollView.isScrollEnabled = false
-                self.posterImageView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewWidth * 1.1)
-                self.view.layoutIfNeeded()
-            } completion: { _ in
-//                self.mainScrollView.isScrollEnabled = true
-            }
-        }
     }
 }
 
@@ -208,42 +171,77 @@ extension DetailsViewController: UICollectionViewDataSource {
         
         return cell
     }
-    
 }
 
-//MARK: - UICollectionViewDelegateFlowLayout
-extension DetailsViewController: UICollectionViewDelegateFlowLayout {
+// MARK: - UIScrollViewDelegate
+extension DetailsViewController: UIScrollViewDelegate {
     
-    // Сell size
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard scrollView == self.mainScrollView else { return }
         
-        let paddingWidth = sectionInserts.left * (itemsPerRow + 1)
-        let availableWidth = collectionView.frame.width - paddingWidth
+        let viewWidth = self.view.bounds.width
+        let imageHeigth = viewWidth * 1.1
+        let y = imageHeigth + (scrollView.contentOffset.y - imageHeigth)
         
-        let widthPerItem = availableWidth / itemsPerRow
-        let heigthPerItem = widthPerItem * 1.5
+        var heigth: CGFloat = 0
         
-        return CGSize(width: widthPerItem, height: heigthPerItem)
+        if y < 0 {
+            heigth = imageHeigth + (-y)
+        } else {
+            heigth = max(150, imageHeigth - y)
+        }
+        
+        if heigth < imageHeigth {
+            UIView.animate(withDuration: 0.3) {
+                self.posterImageView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: 150)
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            UIView.animate(withDuration: 0.3, delay: 0) {
+                self.posterImageView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewWidth * 1.1)
+                self.view.layoutIfNeeded()
+            }
+        }
     }
-    
-    // Indent the section outward
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInserts
-    }
-    
-    // Indentation within a section
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return sectionInserts.top
-    }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return sectionInserts.top
+}
+
+// MARK: - Layout for collection view
+
+extension DetailsViewController {
+    private func createLayout() -> UICollectionViewLayout {
+        let sectionProvider = { (sectionIndex: Int,
+                                 layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            // Item
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                                  heightDimension: .fractionalHeight(1))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            // Group
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
+                                                   heightDimension: .fractionalHeight(1))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            
+            // Section
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .groupPaging
+            section.interGroupSpacing = 8
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
+            
+            return section
+        }
+        
+        let config = UICollectionViewCompositionalLayoutConfiguration()
+        config.interSectionSpacing = 20
+        
+        let layout = UICollectionViewCompositionalLayout(
+            sectionProvider: sectionProvider, configuration: config)
+        return layout
     }
 }
 
 // MARK: - Constraints
 
 extension DetailsViewController {
-    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             activityIndicator.centerYAnchor.constraint(equalTo: posterImageView.centerYAnchor),
@@ -257,26 +255,30 @@ extension DetailsViewController {
             titleLabel.topAnchor.constraint(equalTo: mainScrollView.topAnchor, constant: 15),
             titleLabel.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor, constant: 20),
             titleLabel.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor, constant: -20),
-
+            
             generalStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
             generalStackView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor, constant: 20),
             generalStackView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor, constant: -20),
-
+            
             reactionStackView.topAnchor.constraint(equalTo: generalStackView.bottomAnchor, constant: 20),
             reactionStackView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor, constant: 20),
             reactionStackView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor, constant: -20),
-
+            
             overviewStackView.topAnchor.constraint(equalTo: reactionStackView.bottomAnchor, constant: 20),
             overviewStackView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor, constant: 20),
             overviewStackView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor, constant: -20),
-
+            
             overviewLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 40),
             
-            videoCollectionView.topAnchor.constraint(equalTo: overviewStackView.bottomAnchor, constant: 20),
-            videoCollectionView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
-            videoCollectionView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
-            videoCollectionView.heightAnchor.constraint(equalTo: videoCollectionView.widthAnchor, multiplier: 0.5),
-            videoCollectionView.bottomAnchor.constraint(equalTo: mainScrollView.bottomAnchor),
+            trailersSubtitleLabel.topAnchor.constraint(equalTo: overviewStackView.bottomAnchor, constant: 20),
+            trailersSubtitleLabel.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor, constant: 20),
+            trailersSubtitleLabel.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor, constant: -20),
+            
+            trailersCollectionView.topAnchor.constraint(equalTo: trailersSubtitleLabel.bottomAnchor, constant: 10),
+            trailersCollectionView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            trailersCollectionView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
+            trailersCollectionView.heightAnchor.constraint(equalTo: trailersCollectionView.widthAnchor, multiplier: 0.5),
+            trailersCollectionView.bottomAnchor.constraint(equalTo: mainScrollView.bottomAnchor, constant: -30),
         ])
     }
 }
