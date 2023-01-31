@@ -45,4 +45,11 @@ class LoginViewModel {
             }
         }
     }
+    
+    
+    func featchAccountDetails(_ sessionID: String, _ completionHandler: @escaping (User) -> ()) {
+        networkManager.downloadAccountDetails(sessionID: sessionID) { accountDetails in
+            completionHandler(accountDetails)
+        }
+    }
 }

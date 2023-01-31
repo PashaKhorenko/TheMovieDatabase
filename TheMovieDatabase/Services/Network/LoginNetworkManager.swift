@@ -86,4 +86,23 @@ class LoginNetworkManager {
                 }
             }
     }
+    
+    func downloadAccountDetails(sessionID: String, _ completion: @escaping (User) -> ()) {
+        let url = "https://api.themoviedb.org/3/account?api_key=\(self.apiKey)&session_id=\(sessionID)"
+        
+        AF.request(url, method: .get)
+            .validate()
+            .responseDecodable(of: User.self) { (response) in
+                switch response.result {
+                case .success:
+                    guard let user = response.value else {
+                        print("Empty response data when receiving account information")
+                        return
+                    }
+                    completion(user)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+    }
 }

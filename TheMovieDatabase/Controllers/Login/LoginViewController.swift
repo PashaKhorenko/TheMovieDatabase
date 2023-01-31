@@ -9,6 +9,7 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    private let storageManager = StorageManager()
     private var uiManager: LoginUIHelperProtocol!
     private let viewModel = LoginViewModel()
     
@@ -66,6 +67,11 @@ class LoginViewController: UIViewController {
                 print("Validation User")
                 self.viewModel.featchSessionID { id in
                     print("SessionID: \(id)")
+                    
+                    self.viewModel.featchAccountDetails(id) { accountDetails in
+                        print(accountDetails)
+                        self.storageManager.saveAccountDetails(accountDetails)
+                    }
                     
                     let scene = UIApplication.shared.connectedScenes.first
                     if let sceneDelegate: SceneDelegate = scene?.delegate as? SceneDelegate {
