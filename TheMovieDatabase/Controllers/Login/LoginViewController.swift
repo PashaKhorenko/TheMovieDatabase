@@ -68,6 +68,8 @@ class LoginViewController: UIViewController {
                 self.viewModel.featchSessionID { id in
                     print("SessionID: \(id)")
                     
+                    self.storageManager.saveSessionID(id)
+                    
                     self.viewModel.featchAccountDetails(id) { accountDetails in
                         print(accountDetails)
                         self.storageManager.saveAccountDetails(accountDetails)

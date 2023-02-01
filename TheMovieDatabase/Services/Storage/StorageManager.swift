@@ -11,6 +11,20 @@ import RealmSwift
 class StorageManager {
     private let realm = try! Realm()
     
+    func saveSessionID(_ id: String) {
+        do {
+            try realm.write({
+                let object = SessionIDRealm()
+                
+                object.id = id
+                
+                realm.add(object)
+            })
+        } catch {
+            print("Error sessionID saving: \(error.localizedDescription)")
+        }
+    }
+    
     func saveAccountDetails(_ user: User) {
         do {
             try realm.write({
@@ -21,7 +35,7 @@ class StorageManager {
                 object.username = user.username!
                 object.avatarPath = (user.avatar?.gravatar?.hash)!
                 
-                realm.add(object, update: .modified)
+                realm.add(object)
             })
         } catch {
             print("Error account details saving: \(error.localizedDescription)")

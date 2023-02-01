@@ -6,11 +6,18 @@
 //
 
 import UIKit
+import RealmSwift
 
 class DetailsViewController: UIViewController {
     
+    private let realm = try! Realm()
     private let viewModel = DetailsViewModel()
     var movieID: Int = 0
+    
+    private var accountDetails: Results<AccountDetailsRealm>!
+    private var sessionID: Results<SessionIDRealm>!
+    
+    var isFavouriteMovie: Bool = false
     
     // MARK: - UI elements
     private lazy var mainScrollView: UIScrollView = {
@@ -68,6 +75,9 @@ class DetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        accountDetails = realm.objects(AccountDetailsRealm.self)
+        sessionID = realm.objects(SessionIDRealm.self)
+        
         viewModel.getMovie(withID: movieID) { [weak self] (movie) in
             DispatchQueue.main.async {
                 self?.populateUIFor(movie: movie)
@@ -82,9 +92,32 @@ class DetailsViewController: UIViewController {
         setupViews()
     }
     
+    @objc func rightBarButtonTapped(_ sender: UIBarButtonItem) {
+        print(#function)
+        
+        guard let accountID = accountDetails.first?.id,
+              let sessionID = sessionID.first?.id else { return }
+        
+        viewModel.markAsFavourites(accountID: accountID,
+                                   sessionID: sessionID,
+                                   movieID: self.movieID,
+                                   status: !isFavouriteMovie) { statusBool in
+            self.isFavouriteMovie = statusBool
+            self.configurationRightBarButtonItem()
+        }
+    }
+    
     // MARK: - Settings
-    private func makeNavigationBarTransparent() {
+    private func configurationRightBarButtonItem() {
+        let imageName = isFavouriteMovie ? "star.fill" : "star"
+        let image = UIImage(systemName: imageName)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: nil, image: image, target: self, action: #selector(rightBarButtonTapped(_:)))
+    }
+    
+    private func configurationNavigationBar() {
         // Some settings
+        configurationRightBarButtonItem()
         self.navigationController?.navigationItem.largeTitleDisplayMode = .never
         self.navigationController?.navigationBar.tintColor = .label
         
@@ -96,7 +129,7 @@ class DetailsViewController: UIViewController {
     }
     
     private func setupViews() {
-        makeNavigationBarTransparent()
+        configurationNavigationBar()
         
         self.view.backgroundColor = .systemBackground
         

@@ -66,5 +66,14 @@ class DetailsViewModel {
         case false: return "Age restrictions: Missing"
         }
     }
+    
+    func markAsFavourites(accountID: Int, sessionID: String, movieID: Int, status: Bool, _ completion: @escaping (Bool)->()) {
+        networkManager.markAsFavorite(accountID: accountID,
+                                      sessionID: sessionID,
+                                      movieID: movieID,
+                                      status: status) { statusBool in
+            completion(statusBool)
+        }
+    }
 
 }

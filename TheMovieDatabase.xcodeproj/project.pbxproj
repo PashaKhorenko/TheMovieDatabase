@@ -43,6 +43,9 @@
 		46A76194297E914500AF5B39 /* HomeNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A76193297E914500AF5B39 /* HomeNetworkManager.swift */; };
 		46A76198297EC29400AF5B39 /* MoviesForCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A76197297EC29400AF5B39 /* MoviesForCollection.swift */; };
 		46A7619C297EDAAF00AF5B39 /* HeaderSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A7619B297EDAAF00AF5B39 /* HeaderSupplementaryView.swift */; };
+		46AF4BF6298A5D9300FE7223 /* FavouritesStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AF4BF5298A5D9300FE7223 /* FavouritesStatusResponse.swift */; };
+		46AF4BF8298A5F3A00FE7223 /* SessionIDRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AF4BF7298A5F3A00FE7223 /* SessionIDRealm.swift */; };
+		46AF4BFA298A662500FE7223 /* FavouritesMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AF4BF9298A662500FE7223 /* FavouritesMovies.swift */; };
 		46BDFF802982BC0500C09A5A /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BDFF7F2982BC0500C09A5A /* Video.swift */; };
 		46BDFF822982CE8C00C09A5A /* VideoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BDFF812982CE8C00C09A5A /* VideoCollectionViewCell.swift */; };
 		46C381E42979402D00553768 /* RequestToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C381E32979402D00553768 /* RequestToken.swift */; };
@@ -89,6 +92,9 @@
 		46A76193297E914500AF5B39 /* HomeNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNetworkManager.swift; sourceTree = "<group>"; };
 		46A76197297EC29400AF5B39 /* MoviesForCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesForCollection.swift; sourceTree = "<group>"; };
 		46A7619B297EDAAF00AF5B39 /* HeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSupplementaryView.swift; sourceTree = "<group>"; };
+		46AF4BF5298A5D9300FE7223 /* FavouritesStatusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesStatusResponse.swift; sourceTree = "<group>"; };
+		46AF4BF7298A5F3A00FE7223 /* SessionIDRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionIDRealm.swift; sourceTree = "<group>"; };
+		46AF4BF9298A662500FE7223 /* FavouritesMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesMovies.swift; sourceTree = "<group>"; };
 		46BDFF7F2982BC0500C09A5A /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		46BDFF812982CE8C00C09A5A /* VideoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCollectionViewCell.swift; sourceTree = "<group>"; };
 		46C381E32979402D00553768 /* RequestToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestToken.swift; sourceTree = "<group>"; };
@@ -220,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				466A7F302989577B00C841D3 /* AccountDetailsRealm.swift */,
+				46AF4BF7298A5F3A00FE7223 /* SessionIDRealm.swift */,
 			);
 			path = RealmModels;
 			sourceTree = "<group>";
@@ -233,6 +240,8 @@
 				46A76197297EC29400AF5B39 /* MoviesForCollection.swift */,
 				46A429C9297FEBF800DC8DD3 /* MovieForDetails.swift */,
 				46BDFF7F2982BC0500C09A5A /* Video.swift */,
+				46AF4BF5298A5D9300FE7223 /* FavouritesStatusResponse.swift */,
+				46AF4BF9298A662500FE7223 /* FavouritesMovies.swift */,
 			);
 			path = ModelsForNetwork;
 			sourceTree = "<group>";
@@ -487,9 +496,11 @@
 				46BDFF802982BC0500C09A5A /* Video.swift in Sources */,
 				46A7619C297EDAAF00AF5B39 /* HeaderSupplementaryView.swift in Sources */,
 				46826129297994EE0031A90D /* SettingsViewController.swift in Sources */,
+				46AF4BF8298A5F3A00FE7223 /* SessionIDRealm.swift in Sources */,
 				46A429CC297FF1C500DC8DD3 /* DetailsNetworkManager.swift in Sources */,
 				466A7F312989577B00C841D3 /* AccountDetailsRealm.swift in Sources */,
 				468261202979627D0031A90D /* LoginViewModel.swift in Sources */,
+				46AF4BF6298A5D9300FE7223 /* FavouritesStatusResponse.swift in Sources */,
 				46A429D7297FF72500DC8DD3 /* StandartStackView.swift in Sources */,
 				46092BB829769861002C489D /* SearchViewController.swift in Sources */,
 				46A429CA297FEBF800DC8DD3 /* MovieForDetails.swift in Sources */,
@@ -510,6 +521,7 @@
 				46A76194297E914500AF5B39 /* HomeNetworkManager.swift in Sources */,
 				46A429D3297FF6BF00DC8DD3 /* SubtitleLabel.swift in Sources */,
 				46BDFF822982CE8C00C09A5A /* VideoCollectionViewCell.swift in Sources */,
+				46AF4BFA298A662500FE7223 /* FavouritesMovies.swift in Sources */,
 				46092BB62976963E002C489D /* Genres.swift in Sources */,
 				4614B707297AAF0400E7E4EF /* SignUpWebViewController.swift in Sources */,
 				46A429CE297FF22E00DC8DD3 /* DetailsViewModel.swift in Sources */,

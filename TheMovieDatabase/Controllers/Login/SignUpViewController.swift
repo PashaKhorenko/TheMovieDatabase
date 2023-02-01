@@ -7,6 +7,7 @@
 
 import UIKit
 import Lottie
+import RealmSwift
 
 class SignUpViewController: UIViewController {
     
@@ -27,6 +28,21 @@ class SignUpViewController: UIViewController {
         uiManager = LoginUIHelper()
         
         setupViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let realm = try! Realm()
+        
+        do {
+            try realm.write({
+                realm.deleteAll()
+                print("Deleted all data from realm storage")
+            })
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     // MARK: - Private

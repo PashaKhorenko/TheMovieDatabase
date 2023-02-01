@@ -6,8 +6,14 @@
 //
 
 import UIKit
+import Alamofire
+import RealmSwift
 
 class FavoritesViewController: UIViewController {
+    
+    private let realm = try! Realm()
+    private var accountDetails: Results<AccountDetailsRealm>!
+    private var sessionID: Results<SessionIDRealm>!
     
     private let detailsButton: UIButton = {
         let button = UIButton(type: .system)
@@ -21,6 +27,9 @@ class FavoritesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        accountDetails = realm.objects(AccountDetailsRealm.self)
+        sessionID = realm.objects(SessionIDRealm.self)
 
         view.backgroundColor = .systemBackground
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -34,6 +43,35 @@ class FavoritesViewController: UIViewController {
             detailsButton.widthAnchor.constraint(equalToConstant: 150),
             detailsButton.heightAnchor.constraint(equalToConstant: 60)
         ])
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        getFavouritesMovie()
+    }
+    
+    private func getFavouritesMovie() {
+        guard let accountID = accountDetails.first?.id,
+              let sessionID = sessionID.first?.id else { return }
+        
+        let apiKey = "de9681923f09382fe42f437144685b94"
+        let url = "https://api.themoviedb.org/3/account/\(accountID)/favorite/movies?api_key=\(apiKey)&session_id=\(sessionID)&sort_by=created_at.asc"
+        
+        AF.request(url)
+            .validate()
+            .responseDecodable(of: FavoriteMovies.self) { (response) in
+                switch response.result {
+                case .success:
+                    guard let movies = response.value?.results else {
+                        print("Empty response data when downloading favoirite movies")
+                        return
+                    }
+                    print(movies)
+                case .failure(let error):
+                    print("Error downloading favoirite movies: \(error.localizedDescription)")
+                }
+            }
     }
     
     @objc func detailsButtonPressed(_ sender: UIButton) {

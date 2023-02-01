@@ -6,22 +6,15 @@
 //
 
 import UIKit
-import RealmSwift
 
 class HomeViewController: UIViewController {
     
-    private let realm = try! Realm()
     private let viewModel = HomeViewModel()
     private var collectionView: UICollectionView! = nil
-    
-    private var accountDetails: Results<AccountDetailsRealm>!
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        accountDetails = realm.objects(AccountDetailsRealm.self)
-        print(accountDetails)
         
         viewModel.getGenres {
             self.collectionView.reloadData()
