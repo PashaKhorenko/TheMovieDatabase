@@ -1,5 +1,5 @@
 //
-//  FavouritesMovies.swift
+//  FavoritesMovies.swift
 //  TheMovieDatabase
 //
 //  Created by Паша Хоренко on 01.02.2023.
@@ -9,11 +9,11 @@ import Foundation
 
 // MARK: - FavoriteMovies
 struct FavoriteMovies: Codable {
-    let results: [FavouriteMovie]?
+    let results: [FavoriteMovie]?
 }
 
-// MARK: - FavouriteMovie
-struct FavouriteMovie: Codable {
+// MARK: - FavoriteMovie
+struct FavoriteMovie: Codable {
     let id: Int?
     let title: String?
     let posterPath: String?

@@ -10,7 +10,10 @@ import UIKit
 class HomeViewController: UIViewController {
     
     private let viewModel = HomeViewModel()
+    
     private var collectionView: UICollectionView! = nil
+    private let movieCellID = "MovieCellID"
+    private let sectionHeaderID = "SectionHeaderID"
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -43,7 +46,7 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? PosterCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: movieCellID, for: indexPath) as? PosterCollectionViewCell else { return UICollectionViewCell() }
         
         guard let sectionGenreID = viewModel.genres[indexPath.section].id else {
             return UICollectionViewCell() }
@@ -58,7 +61,7 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderSupplementaryView", for: indexPath) as! HeaderSupplementaryView
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: sectionHeaderID, for: indexPath) as! HeaderSupplementaryView
         
         let title = viewModel.genres[indexPath.section].name
         headerView.configure(withText: title ?? "Section \(indexPath.section)")
@@ -92,8 +95,8 @@ extension HomeViewController {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .secondarySystemBackground
-        collectionView.register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(HeaderSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderSupplementaryView")
+        collectionView.register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: movieCellID)
+        collectionView.register(HeaderSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: sectionHeaderID)
         
         view.addSubview(collectionView)
         

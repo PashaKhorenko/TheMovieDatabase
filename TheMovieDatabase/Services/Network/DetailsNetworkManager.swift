@@ -96,6 +96,5 @@ class DetailsNetworkManager {
                     print(error.localizedDescription)
                 }
             }
-        
     }
 }

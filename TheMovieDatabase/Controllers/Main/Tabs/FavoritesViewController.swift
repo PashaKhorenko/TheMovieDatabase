@@ -6,75 +6,127 @@
 //
 
 import UIKit
-import Alamofire
-import RealmSwift
 
 class FavoritesViewController: UIViewController {
     
-    private let realm = try! Realm()
-    private var accountDetails: Results<AccountDetailsRealm>!
-    private var sessionID: Results<SessionIDRealm>!
+    private let viewModel = FavoriteViewModel()
     
-    private let detailsButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Details", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = 10
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private var collectionView: UICollectionView! = nil
+    private let favoriteCellID = "FavoriteCell"
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        accountDetails = realm.objects(AccountDetailsRealm.self)
-        sessionID = realm.objects(SessionIDRealm.self)
-
-        view.backgroundColor = .systemBackground
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        detailsButton.addTarget(self, action: #selector(detailsButtonPressed(_:)), for: .touchUpInside)
-
-        view.addSubview(detailsButton)
         
-        NSLayoutConstraint.activate([
-            detailsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            detailsButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            detailsButton.widthAnchor.constraint(equalToConstant: 150),
-            detailsButton.heightAnchor.constraint(equalToConstant: 60)
-        ])
+        configureHierarchy()
+        configureDataSource()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        getFavouritesMovie()
-    }
-    
-    private func getFavouritesMovie() {
-        guard let accountID = accountDetails.first?.id,
-              let sessionID = sessionID.first?.id else { return }
-        
-        let apiKey = "de9681923f09382fe42f437144685b94"
-        let url = "https://api.themoviedb.org/3/account/\(accountID)/favorite/movies?api_key=\(apiKey)&session_id=\(sessionID)&sort_by=created_at.asc"
-        
-        AF.request(url)
-            .validate()
-            .responseDecodable(of: FavoriteMovies.self) { (response) in
-                switch response.result {
-                case .success:
-                    guard let movies = response.value?.results else {
-                        print("Empty response data when downloading favoirite movies")
-                        return
-                    }
-                    print(movies)
-                case .failure(let error):
-                    print("Error downloading favoirite movies: \(error.localizedDescription)")
-                }
-            }
-    }
-    
-    @objc func detailsButtonPressed(_ sender: UIButton) {
-        navigationController?.pushViewController(DetailsViewController(), animated: true)
+        viewModel.featchFavoriteMovies {
+            self.collectionView.reloadData()
+        }
     }
 }
+
+// MARK: - UICollectionViewDataSource
+
+extension FavoritesViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        viewModel.numberOfItemsInSection()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.favoriteCellID, for: indexPath) as? FavoriteMovieCollectionViewCell else { return UICollectionViewCell() }
+        
+        guard let movie = viewModel.favoriteMovies?.results?[indexPath.item] else { return UICollectionViewCell() }
+        
+        cell.configure(forMovie: movie)
+        
+        return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension FavoritesViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = DetailsViewController()
+                
+        let moviesArray = viewModel.favoriteMovies?.results
+        guard let movieID = moviesArray?[indexPath.item].id else { return }
+        
+        vc.movieID = movieID
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: - Configuration
+
+extension FavoritesViewController {
+    private func configureHierarchy() {
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .secondarySystemBackground
+        collectionView.register(FavoriteMovieCollectionViewCell.self,
+                                forCellWithReuseIdentifier: self.favoriteCellID)
+        
+        view.addSubview(collectionView)
+        
+        NSLayoutConstraint.activate([
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func configureDataSource() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+    }
+}
+
+// MARK: - Layout
+
+extension FavoritesViewController {
+    func createLayout() -> UICollectionViewLayout {
+        let sectionProvider = { (sectionIndex: Int,
+                                 layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            // Item
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9),
+                                                  heightDimension: .fractionalHeight(1))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            // Group
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                                   heightDimension: .fractionalHeight(0.7))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            
+            // Section
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .groupPaging
+            section.interGroupSpacing = 5
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
+            
+            return section
+        }
+        
+        let config = UICollectionViewCompositionalLayoutConfiguration()
+//        config.scrollDirection = .vertical
+        config.interSectionSpacing = 20
+        
+        let layout = UICollectionViewCompositionalLayout(
+            sectionProvider: sectionProvider, configuration: config)
+        return layout
+    }
+}
+

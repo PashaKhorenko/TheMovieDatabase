@@ -1,5 +1,5 @@
 //
-//  FavouritesStatusResponse.swift
+//  FavoritesStatusResponse.swift
 //  TheMovieDatabase
 //
 //  Created by Паша Хоренко on 01.02.2023.

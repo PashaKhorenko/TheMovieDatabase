@@ -10,6 +10,7 @@ import Foundation
 class DetailsViewModel {
     
     private let networkManager = DetailsNetworkManager()
+    private let storageManager = StorageManager()
     
     var movie: MovieForDetails?
     var videoArray: Video?
@@ -67,7 +68,10 @@ class DetailsViewModel {
         }
     }
     
-    func markAsFavourites(accountID: Int, sessionID: String, movieID: Int, status: Bool, _ completion: @escaping (Bool)->()) {
+    func markAsFavorites(movieID: Int, status: Bool, _ completion: @escaping (Bool)->()) {
+        let accountID = storageManager.getAccountID()
+        let sessionID = storageManager.getSessionID()
+        
         networkManager.markAsFavorite(accountID: accountID,
                                       sessionID: sessionID,
                                       movieID: movieID,
@@ -75,5 +79,4 @@ class DetailsViewModel {
             completion(statusBool)
         }
     }
-
 }

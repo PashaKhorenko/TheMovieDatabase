@@ -41,5 +41,17 @@ class StorageManager {
             print("Error account details saving: \(error.localizedDescription)")
         }
     }
+    
+    func getAccountID() -> Int {
+        let object = realm.objects(AccountDetailsRealm.self)
+        guard let accountID = object.first?.id else { return 0}
+        return accountID
+    }
+    
+    func getSessionID() -> String {
+        let object = realm.objects(SessionIDRealm.self)
+        guard let sessionID = object.first?.id else { return "" }
+        return sessionID
+    }
 }
 
