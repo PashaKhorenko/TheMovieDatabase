@@ -31,7 +31,7 @@ class MainTabBarController: UITabBarController {
                        image: UIImage(systemName: "gear"))
         ]
         
-        UITabBar.appearance().tintColor = #colorLiteral(red: 0.2901960784, green: 0.4235294118, blue: 0.8196078431, alpha: 1)
+        UITabBar.appearance().tintColor = .systemIndigo
     }
     
     private func generateVC(_ viewController: UIViewController, title: String, image: UIImage?) -> UINavigationController {

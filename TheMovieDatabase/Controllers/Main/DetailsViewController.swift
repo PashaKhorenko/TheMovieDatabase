@@ -65,8 +65,7 @@ class DetailsViewController: UIViewController {
         return collectionView
     }()
     
-    // MARK: - Views Lifecycle
-    
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -103,7 +102,7 @@ class DetailsViewController: UIViewController {
         // Some settings
         configurationRightBarButtonItem()
         self.navigationController?.navigationItem.largeTitleDisplayMode = .never
-        self.navigationController?.navigationBar.tintColor = .label
+        self.navigationController?.navigationBar.tintColor = .systemIndigo
         
         // Transparency settings
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)

@@ -11,7 +11,7 @@ import RealmSwift
 class StorageManager {
     private let realm = try! Realm()
     
-    func saveSessionID(_ id: String) {
+    func saveSessionIDToStorage(_ id: String) {
         do {
             try realm.write({
                 let object = SessionIDRealm()
@@ -25,7 +25,7 @@ class StorageManager {
         }
     }
     
-    func saveAccountDetails(_ user: User) {
+    func saveAccountDetailsToStorage(_ user: User) {
         do {
             try realm.write({
                 let object = AccountDetailsRealm()
@@ -42,13 +42,19 @@ class StorageManager {
         }
     }
     
-    func getAccountID() -> Int {
+    func getAccountDetailsFromStorage() -> AccountDetailsRealm? {
         let object = realm.objects(AccountDetailsRealm.self)
-        guard let accountID = object.first?.id else { return 0}
+        let accountDetails = object.first
+        return accountDetails
+    }
+    
+    func getAccountIDFromStorage() -> Int {
+        guard let accountDetails = self.getAccountDetailsFromStorage() else { return 0 }
+        let accountID = accountDetails.id
         return accountID
     }
     
-    func getSessionID() -> String {
+    func getSessionIDFromStorage() -> String {
         let object = realm.objects(SessionIDRealm.self)
         guard let sessionID = object.first?.id else { return "" }
         return sessionID

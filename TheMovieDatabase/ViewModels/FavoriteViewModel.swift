@@ -15,8 +15,8 @@ class FavoriteViewModel {
     var favoriteMovies: FavoriteMovies?
     
     func featchFavoriteMovies(_ completion: @escaping () -> ()) {
-        let accountID = storageManager.getAccountID()
-        let sessionID = storageManager.getSessionID()
+        let accountID = storageManager.getAccountIDFromStorage()
+        let sessionID = storageManager.getSessionIDFromStorage()
         
         networkManager.downloadFavoriteMovies(accountID: accountID,
                                               sessionID: sessionID) { movies in
@@ -31,8 +31,8 @@ class FavoriteViewModel {
     }
     
     func removeFromFavorites(movieID: Int, _ completion: @escaping () -> ()) {
-        let accountID = storageManager.getAccountID()
-        let sessionID = storageManager.getSessionID()
+        let accountID = storageManager.getAccountIDFromStorage()
+        let sessionID = storageManager.getSessionIDFromStorage()
         
         networkManager.removeFromFavorites(accountID: accountID,
                                            sessionID: sessionID,

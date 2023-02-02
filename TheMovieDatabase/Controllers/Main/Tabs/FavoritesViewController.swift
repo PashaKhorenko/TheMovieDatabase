@@ -14,6 +14,7 @@ class FavoritesViewController: UIViewController {
     private var collectionView: UICollectionView! = nil
     private let favoriteCellID = "FavoriteCell"
 
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -52,8 +52,8 @@ struct LoginUIHelper: LoginUIHelperProtocol {
         let button = UIButton(type: .system)
         button.setTitle("Sign Up", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.setTitleColor(.label, for: .normal)
-        button.backgroundColor = .secondaryLabel
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemIndigo
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -99,8 +99,8 @@ struct LoginUIHelper: LoginUIHelperProtocol {
         let button = UIButton(type: .system)
         button.setTitle("Log In", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.setTitleColor(.label, for: .normal)
-        button.backgroundColor = .secondaryLabel
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemIndigo
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

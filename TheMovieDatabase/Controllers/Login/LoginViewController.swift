@@ -68,21 +68,13 @@ class LoginViewController: UIViewController {
                 self.viewModel.featchSessionID { id in
                     print("SessionID: \(id)")
                     
-                    self.storageManager.saveSessionID(id)
+                    self.storageManager.saveSessionIDToStorage(id)
                     
                     self.viewModel.featchAccountDetails(id) { accountDetails in
-                        print(accountDetails)
-                        self.storageManager.saveAccountDetails(accountDetails)
+                        self.storageManager.saveAccountDetailsToStorage(accountDetails)
                     }
                     
-                    let scene = UIApplication.shared.connectedScenes.first
-                    if let sceneDelegate: SceneDelegate = scene?.delegate as? SceneDelegate {
-                        print("Got to sceneDelegate")
-                        
-                        sceneDelegate.window?.rootViewController = MainTabBarController()
-                        print("Changed rootViewController to MainTabBarController")
-                        
-                    }
+                    self.viewModel.loginToTheAccount()
                 }
             }
         }

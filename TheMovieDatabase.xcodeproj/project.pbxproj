@@ -29,6 +29,7 @@
 		466A7F2C2989507E00C841D3 /* AccountDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466A7F2B2989507E00C841D3 /* AccountDetails.swift */; };
 		466A7F2F298955FA00C841D3 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466A7F2E298955FA00C841D3 /* StorageManager.swift */; };
 		466A7F312989577B00C841D3 /* AccountDetailsRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466A7F302989577B00C841D3 /* AccountDetailsRealm.swift */; };
+		466C9DD5298BC9B100DF2F03 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466C9DD4298BC9B100DF2F03 /* SettingsViewModel.swift */; };
 		4682611E297957670031A90D /* LoginNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682611D297957670031A90D /* LoginNetworkManager.swift */; };
 		468261202979627D0031A90D /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682611F2979627D0031A90D /* LoginViewModel.swift */; };
 		4682612529797A380031A90D /* SessionID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682612429797A380031A90D /* SessionID.swift */; };
@@ -81,6 +82,7 @@
 		466A7F2B2989507E00C841D3 /* AccountDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetails.swift; sourceTree = "<group>"; };
 		466A7F2E298955FA00C841D3 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		466A7F302989577B00C841D3 /* AccountDetailsRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailsRealm.swift; sourceTree = "<group>"; };
+		466C9DD4298BC9B100DF2F03 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		4682611D297957670031A90D /* LoginNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkManager.swift; sourceTree = "<group>"; };
 		4682611F2979627D0031A90D /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		4682612429797A380031A90D /* SessionID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionID.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				46A76191297E911300AF5B39 /* HomeViewModel.swift */,
 				46A429CD297FF22E00DC8DD3 /* DetailsViewModel.swift */,
 				466520F0298A938000B381BC /* FavoriteViewModel.swift */,
+				466C9DD4298BC9B100DF2F03 /* SettingsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -513,6 +516,7 @@
 				468261202979627D0031A90D /* LoginViewModel.swift in Sources */,
 				46AF4BF6298A5D9300FE7223 /* FavoritesStatusResponse.swift in Sources */,
 				46A429D7297FF72500DC8DD3 /* StandartStackView.swift in Sources */,
+				466C9DD5298BC9B100DF2F03 /* SettingsViewModel.swift in Sources */,
 				46092BB829769861002C489D /* SearchViewController.swift in Sources */,
 				46A429CA297FEBF800DC8DD3 /* MovieForDetails.swift in Sources */,
 				46A429D1297FF69600DC8DD3 /* StandartLabel.swift in Sources */,

@@ -69,8 +69,8 @@ class DetailsViewModel {
     }
     
     func markAsFavorites(movieID: Int, _ completion: @escaping (Bool)->()) {
-        let accountID = storageManager.getAccountID()
-        let sessionID = storageManager.getSessionID()
+        let accountID = storageManager.getAccountIDFromStorage()
+        let sessionID = storageManager.getSessionIDFromStorage()
         
         networkManager.markAsFavorite(accountID: accountID,
                                       sessionID: sessionID,
