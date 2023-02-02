@@ -12,7 +12,7 @@ class DetailsViewController: UIViewController {
     private let viewModel = DetailsViewModel()
     var movieID: Int = 0
     
-    var isFavoriteMovie: Bool = false
+    private var isFavoriteMovie: Bool = false
     
     // MARK: - UI elements
     private lazy var mainScrollView: UIScrollView = {
@@ -85,8 +85,7 @@ class DetailsViewController: UIViewController {
     }
     
     @objc func rightBarButtonTapped(_ sender: UIBarButtonItem) {
-        viewModel.markAsFavorites(movieID: self.movieID,
-                                  status: !isFavoriteMovie) { statusBool in
+        viewModel.markAsFavorites(movieID: self.movieID) { statusBool in
             self.isFavoriteMovie = statusBool
             self.configurationRightBarButtonItem()
         }

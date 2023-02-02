@@ -28,6 +28,39 @@ class FavoriteNetworkManager {
                     print("Error downloading favoirite movies: \(error.localizedDescription)")
                 }
             }
+    }
+    
+    func removeFromFavorites(accountID: Int, sessionID: String, movieID: Int, _ completion: @escaping () -> ()) {
+        let pathString = "https://api.themoviedb.org/3/account/\(accountID)/favorite?api_key=\(self.apiKey)&session_id=\(sessionID)"
+        
+        let parameters: [String: Any] = [
+            "media_type": "movie",
+              "media_id": movieID,
+              "favorite": false
+        ]
+        
+        guard let url = URL(string: pathString) else {
+            print("Failed to generate URL for validation")
+            return
+        }
+        
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .validate()
+            .responseDecodable(of: FavoritesStatusResponse.self) { (response) in
+                switch response.result {
+                case .success:
+                    guard let statusMessage = response.value?.statusMessage else {
+                        print("Empty response data during user validation")
+                        return
+                    }
+                    switch statusMessage {
+                    case "The item/record was deleted successfully.": completion()
+                    default: print(statusMessage)
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
         
     }
 }

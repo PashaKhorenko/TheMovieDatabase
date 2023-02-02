@@ -67,11 +67,10 @@ class FavoriteMovieCollectionViewCell: UICollectionViewCell {
     // MARK: - Public
     func configure(forMovie movie: FavoriteMovie) {
         self.activityIndicator.startAnimating()
-        
-        self.titleLabel.text = movie.title
-        
-        guard let postenPath = movie.posterPath else {
-            print("Failed to get poster path")
+                
+        guard let postenPath = movie.posterPath,
+              let movieTitle = movie.title else {
+            print("Failed to get poster path or title")
             return
         }
         let URLstring = "https://image.tmdb.org/t/p/w500/\(postenPath)"
@@ -81,6 +80,7 @@ class FavoriteMovieCollectionViewCell: UICollectionViewCell {
         }
         
         posterImageView.sd_setImage(with: url) { (_, _, _, _) in
+            self.titleLabel.text = movieTitle
             self.activityIndicator.stopAnimating()
         }
     }

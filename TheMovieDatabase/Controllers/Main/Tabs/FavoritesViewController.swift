@@ -67,6 +67,28 @@ extension FavoritesViewController: UICollectionViewDelegate {
         
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        let removeFromFavoriteAction = UIAction(title: "Remove From Favorite",
+                                                image: UIImage(systemName: "trash"),
+                                                attributes: .destructive) { [weak self] _ in
+            guard let self,
+                  let indexPath = indexPaths.first,
+                  let movieID = self.viewModel.favoriteMovies?.results?[indexPath.item].id  else { return }
+
+            self.viewModel.removeFromFavorites(movieID: movieID) {
+                self.viewModel.featchFavoriteMovies {
+                    collectionView.reloadData()
+                }
+            }
+        }
+        
+        let uiMenu = UIMenu(children: [removeFromFavoriteAction])
+        let uiContextMenu = UIContextMenuConfiguration(actionProvider:  { _ in
+            return uiMenu
+        })
+        return uiContextMenu
+    }
 }
 
 // MARK: - Configuration
@@ -121,7 +143,6 @@ extension FavoritesViewController {
         }
         
         let config = UICollectionViewCompositionalLayoutConfiguration()
-//        config.scrollDirection = .vertical
         config.interSectionSpacing = 20
         
         let layout = UICollectionViewCompositionalLayout(

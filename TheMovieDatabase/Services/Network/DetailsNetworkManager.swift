@@ -64,13 +64,13 @@ class DetailsNetworkManager {
             }
     }
     
-    func markAsFavorite(accountID: Int, sessionID: String, movieID: Int, status: Bool, _ completion: @escaping (Bool) -> ()) {
+    func markAsFavorite(accountID: Int, sessionID: String, movieID: Int, _ completion: @escaping (Bool) -> ()) {
         let pathString = "https://api.themoviedb.org/3/account/\(accountID)/favorite?api_key=\(self.apiKey)&session_id=\(sessionID)"
         
         let parameters: [String: Any] = [
             "media_type": "movie",
               "media_id": movieID,
-              "favorite": status
+              "favorite": true
         ]
         
         guard let url = URL(string: pathString) else {

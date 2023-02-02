@@ -30,5 +30,16 @@ class FavoriteViewModel {
         return count
     }
     
+    func removeFromFavorites(movieID: Int, _ completion: @escaping () -> ()) {
+        let accountID = storageManager.getAccountID()
+        let sessionID = storageManager.getSessionID()
+        
+        networkManager.removeFromFavorites(accountID: accountID,
+                                           sessionID: sessionID,
+                                           movieID: movieID) {
+            completion()
+        }
+    }
+    
 
 }
