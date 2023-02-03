@@ -10,15 +10,10 @@ import UIKit
 class SettingsViewModel {
     
     private let storageManeger = StorageManager()
-    
-    func printAccountDetails() {
-        guard let accountDetails = storageManeger.getAccountDetailsFromStorage() else { return }
-        print("""
-              ID: \(accountDetails.id)
-              Username: \(accountDetails.username)
-              Name: \(accountDetails.name)
-              Avatar: \(accountDetails.avatarPath)
-              """)
+        
+    func getAccountDetails() -> AccountDetailsRealm? {
+        let accountDetails = storageManeger.getAccountDetailsFromStorage()
+        return accountDetails
     }
     
     func signOutOfTheAccount() {

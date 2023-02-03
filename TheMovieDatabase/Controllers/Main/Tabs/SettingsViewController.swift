@@ -12,6 +12,7 @@ class SettingsViewController: UIViewController {
     private let viewModel = SettingsViewModel()
     
     // MARK: - UI elements
+    private var accountInfoView = AccountInfoView()
     private lazy var signOutButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Sign Out", for: .normal)
@@ -28,28 +29,46 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.printAccountDetails()
-        
+       setupViews()
+    }
+    
+    // MARK: - Private
+    @objc private func signOutButtonTapped(_ sender: UIButton) {
+        viewModel.signOutOfTheAccount()
+    }
+    
+    // MARK: settings
+    private func configureAccountInfoView() {
+        guard let accountDetails = viewModel.getAccountDetails() else { return }
+        accountInfoView.configure(with: accountDetails)
+    }
+    
+    private func setupViews() {
         view.backgroundColor = .secondarySystemBackground
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
+        view.addSubview(accountInfoView)
         view.addSubview(signOutButton)
+        
+        configureAccountInfoView()
         
         setConstraints()
     }
     
-    @objc private func signOutButtonTapped(_ sender: UIButton) {
-        viewModel.signOutOfTheAccount()
-    }
 }
 
 // MARK: - Constraints
 extension SettingsViewController {
     private func setConstraints() {
         NSLayoutConstraint.activate([
+            accountInfoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            accountInfoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            accountInfoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            accountInfoView.heightAnchor.constraint(equalToConstant: 100),
+            
             signOutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
-            signOutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-            signOutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            signOutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            signOutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             signOutButton.heightAnchor.constraint(equalToConstant: 50),
         ])
     }

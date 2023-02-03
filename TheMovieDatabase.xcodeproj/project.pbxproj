@@ -35,6 +35,8 @@
 		4682612529797A380031A90D /* SessionID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682612429797A380031A90D /* SessionID.swift */; };
 		4682612729797A450031A90D /* ValidUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682612629797A450031A90D /* ValidUser.swift */; };
 		46826129297994EE0031A90D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46826128297994EE0031A90D /* SettingsViewController.swift */; };
+		46A0EAA3298D288000B2E29B /* AccountInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A0EAA2298D288000B2E29B /* AccountInfoView.swift */; };
+		46A0EAA5298D3A1B00B2E29B /* UIColor+randomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A0EAA4298D3A1B00B2E29B /* UIColor+randomColor.swift */; };
 		46A429CA297FEBF800DC8DD3 /* MovieForDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A429C9297FEBF800DC8DD3 /* MovieForDetails.swift */; };
 		46A429CC297FF1C500DC8DD3 /* DetailsNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A429CB297FF1C500DC8DD3 /* DetailsNetworkManager.swift */; };
 		46A429CE297FF22E00DC8DD3 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A429CD297FF22E00DC8DD3 /* DetailsViewModel.swift */; };
@@ -88,6 +90,8 @@
 		4682612429797A380031A90D /* SessionID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionID.swift; sourceTree = "<group>"; };
 		4682612629797A450031A90D /* ValidUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidUser.swift; sourceTree = "<group>"; };
 		46826128297994EE0031A90D /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		46A0EAA2298D288000B2E29B /* AccountInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoView.swift; sourceTree = "<group>"; };
+		46A0EAA4298D3A1B00B2E29B /* UIColor+randomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+randomColor.swift"; sourceTree = "<group>"; };
 		46A429C9297FEBF800DC8DD3 /* MovieForDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieForDetails.swift; sourceTree = "<group>"; };
 		46A429CB297FF1C500DC8DD3 /* DetailsNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsNetworkManager.swift; sourceTree = "<group>"; };
 		46A429CD297FF22E00DC8DD3 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
@@ -136,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				4605F92A2978392D004570C6 /* UITextField+setIcon.swift */,
+				46A0EAA4298D3A1B00B2E29B /* UIColor+randomColor.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -328,6 +333,7 @@
 		46A26806297568FB000208C2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				46A0EAA2298D288000B2E29B /* AccountInfoView.swift */,
 				46A429D6297FF72500DC8DD3 /* StandartStackView.swift */,
 				46A429D8297FF76A00DC8DD3 /* StandartActivityIndicator.swift */,
 				46A429CF297FF67300DC8DD3 /* Labels */,
@@ -520,12 +526,14 @@
 				46092BB829769861002C489D /* SearchViewController.swift in Sources */,
 				46A429CA297FEBF800DC8DD3 /* MovieForDetails.swift in Sources */,
 				46A429D1297FF69600DC8DD3 /* StandartLabel.swift in Sources */,
+				46A0EAA3298D288000B2E29B /* AccountInfoView.swift in Sources */,
 				4615EFDE29786AAD006C5A54 /* LoginUIHelper.swift in Sources */,
 				46092BBC2976A202002C489D /* FavoritesViewController.swift in Sources */,
 				46A76198297EC29400AF5B39 /* MoviesForCollection.swift in Sources */,
 				4682612729797A450031A90D /* ValidUser.swift in Sources */,
 				466520EF298A91D700B381BC /* FavoriteNetworkManager.swift in Sources */,
 				46092BC22976AAC5002C489D /* PosterCollectionViewCell.swift in Sources */,
+				46A0EAA5298D3A1B00B2E29B /* UIColor+randomColor.swift in Sources */,
 				4605F92B2978392D004570C6 /* UITextField+setIcon.swift in Sources */,
 				46092BBE2976A47E002C489D /* DetailsViewController.swift in Sources */,
 				46092BBA2976A068002C489D /* MainTabBarController.swift in Sources */,
