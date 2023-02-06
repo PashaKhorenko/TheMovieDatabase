@@ -41,7 +41,20 @@ extension FavoritesViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfItemsInSection()
+        let numberOfItems = viewModel.numberOfItemsInSection()
+        
+        if numberOfItems == 0 {
+            let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0,
+                                                   width: self.view.bounds.size.width,
+                                                   height: self.view.bounds.size.height))
+            emptyLabel.text = "The list of favorite movies is empty."
+            emptyLabel.textAlignment = NSTextAlignment.center
+            collectionView.backgroundView = emptyLabel
+            return 0
+        } else {
+            collectionView.backgroundView = nil
+            return numberOfItems
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -139,6 +152,16 @@ extension FavoritesViewController {
             section.orthogonalScrollingBehavior = .groupPaging
             section.interGroupSpacing = 5
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
+            
+            section.visibleItemsInvalidationHandler = { (items, offset, environment) in
+                items.forEach { item in
+                    let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
+                    let minScale: CGFloat = 0.9
+                    let maxScale: CGFloat = 1
+                    let scale = max(maxScale - (distanceFromCenter / environment.container.contentSize.width), minScale)
+                    item.transform = CGAffineTransform(scaleX: scale, y: scale)
+                }
+            }
             
             return section
         }

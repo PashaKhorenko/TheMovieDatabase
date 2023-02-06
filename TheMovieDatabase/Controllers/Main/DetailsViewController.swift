@@ -177,7 +177,20 @@ class DetailsViewController: UIViewController {
 // MARK: - UICollectionViewDataSource
 extension DetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfItemsInSection()
+        let numberOfItems = viewModel.numberOfItemsInSection()
+        
+        if numberOfItems == 0 {
+            let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0,
+                                                   width: self.view.bounds.size.width,
+                                                   height: self.view.bounds.size.height))
+            emptyLabel.text = "Unfortunately, this movie has no trailers or footage."
+            emptyLabel.textAlignment = NSTextAlignment.center
+            collectionView.backgroundView = emptyLabel
+            return numberOfItems
+        } else {
+            collectionView.backgroundView = nil
+            return numberOfItems
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
