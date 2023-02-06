@@ -20,8 +20,7 @@ struct MovieForDetails: Codable {
     let productionCountries: [ProductionCountry]?
     let releaseDate: String?
     let revenue, runtime: Int?
-    let tagline, title: String?
-    let video: Bool?
+    let title: String?
 
     enum CodingKeys: String, CodingKey {
         case adult
@@ -32,7 +31,7 @@ struct MovieForDetails: Codable {
         case productionCountries = "production_countries"
         case releaseDate = "release_date"
         case revenue, runtime
-        case tagline, title, video
+        case title
     }
 }
 

@@ -21,7 +21,7 @@ class SubtitleLabel: UILabel {
     
     private func setupViews() {
         numberOfLines = 2
-        font = UIFont(name: "Avenir Next Bold", size: 18)
+        font = .boldSystemFont(ofSize: 18)
         translatesAutoresizingMaskIntoConstraints = false
     }
 

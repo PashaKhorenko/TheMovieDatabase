@@ -14,6 +14,10 @@ class DetailsViewController: UIViewController {
     
     private var isFavoriteMovie: Bool = false
     
+    private let trailetCellID = "TrailerCell"
+    private let companyCellID = "CompanyCell"
+    private let sectionHeaderID = "SectionHeader"
+    
     // MARK: - UI elements
     private lazy var mainScrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -46,20 +50,26 @@ class DetailsViewController: UIViewController {
     
     private let generalSubtitleLabel = SubtitleLabel()
     private let releaseDateLabel = StandartLabel()
+    private let runtimeLabel = StandartLabel()
     private let genresLabel = StandartLabel()
+    private let budgetLabel = StandartLabel()
     private let ageRestrictionsLabel = StandartLabel()
+    private let contriesLabel = StandartLabel()
     
     private let reactionSubtitleLabel = SubtitleLabel()
+    private let revenueLabel = StandartLabel()
     private let popularityLabel = StandartLabel()
     
     private let overviewSubtitleLabel = SubtitleLabel()
     private let overviewLabel = StandartLabel()
     
     private let trailersSubtitleLabel = SubtitleLabel()
-    private lazy var trailersCollectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero,
                                               collectionViewLayout: createLayout())
-        collectionView.register(VideoCollectionViewCell.self, forCellWithReuseIdentifier: "VideoCell")
+        collectionView.register(TrailerCollectionViewCell.self, forCellWithReuseIdentifier: trailetCellID)
+        collectionView.register(CompanyCollectionViewCell.self, forCellWithReuseIdentifier: companyCellID)
+        collectionView.register(HeaderSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: sectionHeaderID)
         collectionView.dataSource = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -76,7 +86,7 @@ class DetailsViewController: UIViewController {
         }
         viewModel.getVideo(byMovieID: movieID) {
             DispatchQueue.main.async {
-                self.trailersCollectionView.reloadData()
+                self.collectionView.reloadData()
             }
         }
         
@@ -115,7 +125,6 @@ class DetailsViewController: UIViewController {
         configurationNavigationBar()
         
         self.view.backgroundColor = .systemBackground
-        
         self.posterImageView.backgroundColor = .systemGray
                 
         posterImageView.addSubview(activityIndicator)
@@ -125,8 +134,12 @@ class DetailsViewController: UIViewController {
         
         generalStackView.addArrangedSubview(generalSubtitleLabel)
         generalStackView.addArrangedSubview(releaseDateLabel)
+        generalStackView.addArrangedSubview(runtimeLabel)
         generalStackView.addArrangedSubview(genresLabel)
+        generalStackView.addArrangedSubview(budgetLabel)
+        generalStackView.addArrangedSubview(revenueLabel)
         generalStackView.addArrangedSubview(ageRestrictionsLabel)
+        generalStackView.addArrangedSubview(contriesLabel)
         
         mainScrollView.addSubview(generalStackView)
         
@@ -139,9 +152,7 @@ class DetailsViewController: UIViewController {
         overviewStackView.addArrangedSubview(overviewLabel)
         
         mainScrollView.addSubview(overviewStackView)
-        
-        mainScrollView.addSubview(trailersSubtitleLabel)
-        mainScrollView.addSubview(trailersCollectionView)
+        mainScrollView.addSubview(collectionView)
         
         view.addSubview(mainScrollView)
         
@@ -152,7 +163,6 @@ class DetailsViewController: UIViewController {
         generalSubtitleLabel.text = "General Information"
         reactionSubtitleLabel.text = "Reactions"
         overviewSubtitleLabel.text = "Overview"
-        trailersSubtitleLabel.text = "Trailers and stills"
         
         viewModel.getImage(byPath: movie.posterPath) { [weak self] imageData in
             guard let self else { return }
@@ -164,10 +174,13 @@ class DetailsViewController: UIViewController {
         
         titleLabel.text = movie.title
         
-        releaseDateLabel.text = "Relise date: \(movie.releaseDate ?? "Unknown")"
-        popularityLabel.text = "Popularity: \(movie.popularity ?? 0.0)"
+        releaseDateLabel.text = viewModel.convertReleaseDateToString(movie.releaseDate)
+        runtimeLabel.text = viewModel.convertRuntimeToNormalFormat(movie.runtime)
+        budgetLabel.text = viewModel.convertBudgetToString(movie.budget)
+        popularityLabel.text = viewModel.convertPopularityToString(movie.popularity)
+        revenueLabel.text = viewModel.convertRevenueToString(movie.revenue)
+        contriesLabel.text = viewModel.convertCountriesToString(movie.productionCountries)
         overviewLabel.text = movie.overview ?? "Unknown"
-//        overviewLabel.text = String(repeating: "\(movie.overview!)", count: 10)
         
         genresLabel.text = viewModel.getGenreNamesFrom(list: movie.genres)
         ageRestrictionsLabel.text = viewModel.getAgeRestrictions(movie.adult)
@@ -176,29 +189,44 @@ class DetailsViewController: UIViewController {
 
 // MARK: - UICollectionViewDataSource
 extension DetailsViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        2
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let numberOfItems = viewModel.numberOfItemsInSection()
-        
-        if numberOfItems == 0 {
-            let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0,
-                                                   width: self.view.bounds.size.width,
-                                                   height: self.view.bounds.size.height))
-            emptyLabel.text = "Unfortunately, this movie has no trailers or footage."
-            emptyLabel.textAlignment = NSTextAlignment.center
-            collectionView.backgroundView = emptyLabel
-            return numberOfItems
-        } else {
-            collectionView.backgroundView = nil
-            return numberOfItems
-        }
+        viewModel.numberOfItemsIn(section: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoCell", for: indexPath) as! VideoCollectionViewCell
+        switch indexPath.section {
+        case 0:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: trailetCellID, for: indexPath) as! TrailerCollectionViewCell
+            
+            cell.configureWith(viewModel.videoArray, index: indexPath.item)
+            
+            return cell
+        default:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: companyCellID, for: indexPath) as! CompanyCollectionViewCell
+            
+            let company = viewModel.movie?.productionCompanies?[indexPath.item]
+            cell.configureWith(company)
+            
+            return cell
+        }
         
-        cell.configureWith(viewModel.videoArray, index: indexPath.item)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: sectionHeaderID, for: indexPath) as! HeaderSupplementaryView
         
-        return cell
+        switch indexPath.section {
+        case 0:
+            headerView.configure(withText: "Trailers")
+        default:
+            headerView.configure(withText: "Production Companies")
+        }
+        
+        return headerView
     }
 }
 
@@ -247,7 +275,7 @@ extension DetailsViewController {
             
             // Group
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
-                                                   heightDimension: .fractionalHeight(1))
+                                                   heightDimension: .fractionalHeight(0.4))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
             // Section
@@ -255,6 +283,14 @@ extension DetailsViewController {
             section.orthogonalScrollingBehavior = .groupPaging
             section.interGroupSpacing = 8
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
+            
+            let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                   heightDimension: .estimated(44))
+            let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: titleSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top)
+            section.boundarySupplementaryItems = [titleSupplementary]
             
             return section
         }
@@ -299,15 +335,11 @@ extension DetailsViewController {
             
             overviewLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 40),
             
-            trailersSubtitleLabel.topAnchor.constraint(equalTo: overviewStackView.bottomAnchor, constant: 20),
-            trailersSubtitleLabel.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor, constant: 20),
-            trailersSubtitleLabel.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor, constant: -20),
-            
-            trailersCollectionView.topAnchor.constraint(equalTo: trailersSubtitleLabel.bottomAnchor, constant: 10),
-            trailersCollectionView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
-            trailersCollectionView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
-            trailersCollectionView.heightAnchor.constraint(equalTo: trailersCollectionView.widthAnchor, multiplier: 0.5),
-            trailersCollectionView.bottomAnchor.constraint(equalTo: mainScrollView.bottomAnchor, constant: -30),
+            collectionView.topAnchor.constraint(equalTo: overviewStackView.bottomAnchor, constant: 20),
+            collectionView.leadingAnchor.constraint(equalTo: mainScrollView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: mainScrollView.trailingAnchor),
+            collectionView.heightAnchor.constraint(equalTo: collectionView.widthAnchor, multiplier: 1.1),
+            collectionView.bottomAnchor.constraint(equalTo: mainScrollView.bottomAnchor, constant: -30),
         ])
     }
 }

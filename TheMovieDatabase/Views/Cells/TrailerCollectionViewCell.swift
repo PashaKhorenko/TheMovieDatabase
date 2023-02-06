@@ -1,5 +1,5 @@
 //
-//  VideoCollectionViewCell.swift
+//  TrailerCollectionViewCell.swift
 //  TheMovieDatabase
 //
 //  Created by Паша Хоренко on 26.01.2023.
@@ -8,7 +8,7 @@
 import UIKit
 import youtube_ios_player_helper
 
-class VideoCollectionViewCell: UICollectionViewCell {
+class TrailerCollectionViewCell: UICollectionViewCell {
     
     // MARK: - UI elements
     private let playerView: YTPlayerView = {

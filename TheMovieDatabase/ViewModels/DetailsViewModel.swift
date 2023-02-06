@@ -37,9 +37,15 @@ class DetailsViewModel {
         }
     }
     
-    func numberOfItemsInSection() -> Int {
-        guard let count = videoArray?.results?.count else { return 0 }
-        return count
+    func numberOfItemsIn(section: Int) -> Int {
+        switch section {
+        case 0:
+            guard let count = videoArray?.results?.count else { return 0 }
+            return count
+        default:
+            guard let count = movie?.productionCompanies?.count else { return 0 }
+            return count
+        }
     }
     
     func getGenreNamesFrom(list: [Genre]?) -> String {
@@ -77,5 +83,57 @@ class DetailsViewModel {
                                       movieID: movieID) { statusBool in
             completion(statusBool)
         }
+    }
+    
+    func convertReleaseDateToString(_ releaseDate: String?) -> String {
+        guard let releaseDate else { return "Release date: Unknown" }
+        return "Release date: \(releaseDate)"
+    }
+    
+    func convertPopularityToString(_ popularity: Double?) -> String {
+        guard let popularity else { return "Popularity: Unknown" }
+        return "Popularity: \(popularity)"
+    }
+    
+    func convertRuntimeToNormalFormat(_ runtime: Int?) -> String {
+        guard let runtime else { return "Runtime: Unknown" }
+        
+        let hours = runtime / 60
+        let minutes = runtime % 60
+        
+        return "Runtime: \(hours) hour \(minutes) minutes"
+    }
+    
+    func convertBudgetToString(_ budget: Int?) -> String {
+        guard let budget else { return "Budget: Unknown" }
+        
+        if budget == 0 {
+            return "Budget: Unknown"
+        } else {
+            return "Butget: \(budget)$"
+        }
+    }
+    
+    func convertRevenueToString(_ revenue: Int?) -> String {
+        guard let revenue else { return "Revenue: Unknown" }
+        
+        if revenue == 0 {
+            return "Revenue: Unknown"
+        } else {
+            return "Revenue: \(revenue)$"
+        }
+    }
+    
+    func convertCountriesToString(_ contries: [ProductionCountry]?) -> String {
+        var base = "Production contry:"
+        
+        guard let contries else { return "\(base) Unknown" }
+        
+        for country in contries {
+            guard let name = country.name else { continue }
+            base += " \(name),"
+        }
+        
+        return String(base.dropLast())
     }
 }
