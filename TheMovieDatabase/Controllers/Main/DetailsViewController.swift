@@ -66,7 +66,7 @@ class DetailsViewController: UIViewController {
     private let trailersSubtitleLabel = SubtitleLabel()
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero,
-                                              collectionViewLayout: createLayout())
+                                              collectionViewLayout: createCollectionLayout())
         collectionView.register(TrailerCollectionViewCell.self, forCellWithReuseIdentifier: trailetCellID)
         collectionView.register(CompanyCollectionViewCell.self, forCellWithReuseIdentifier: companyCellID)
         collectionView.register(HeaderSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: sectionHeaderID)
@@ -259,48 +259,6 @@ extension DetailsViewController: UIScrollViewDelegate {
                 self.view.layoutIfNeeded()
             }
         }
-    }
-}
-
-// MARK: - Layout for collection view
-
-extension DetailsViewController {
-    private func createLayout() -> UICollectionViewLayout {
-        let sectionProvider = { (sectionIndex: Int,
-                                 layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            // Item
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                  heightDimension: .fractionalHeight(1))
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            // Group
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
-                                                   heightDimension: .fractionalHeight(0.4))
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-            
-            // Section
-            let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .groupPaging
-            section.interGroupSpacing = 8
-            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
-            
-            let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                   heightDimension: .estimated(44))
-            let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: titleSize,
-                elementKind: UICollectionView.elementKindSectionHeader,
-                alignment: .top)
-            section.boundarySupplementaryItems = [titleSupplementary]
-            
-            return section
-        }
-        
-        let config = UICollectionViewCompositionalLayoutConfiguration()
-        config.interSectionSpacing = 20
-        
-        let layout = UICollectionViewCompositionalLayout(
-            sectionProvider: sectionProvider, configuration: config)
-        return layout
     }
 }
 
