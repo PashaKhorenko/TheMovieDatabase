@@ -31,22 +31,22 @@ class HomeNetworkManager {
             }
     }
     
-    func downloadMovies(fromPage page: Int, _ completion: @escaping (MoviesForCollection) -> ()) {
-        let url = "https://api.themoviedb.org/3/movie/popular?api_key=\(apiKey)&language=en-US&page=\(page)"
+    func downloadMoviesByGenre(_ genreID: String, _ completion: @escaping (MoviesForCollection) -> ()) {
+        let url = "https://api.themoviedb.org/3/discover/movie?api_key=\(self.apiKey)&language=en-US&sort_by=popularity.desc&page=1&with_genres=\(genreID)"
+        
         AF.request(url)
             .validate()
             .responseDecodable(of: MoviesForCollection.self) { (response) in
                 switch response.result {
                 case .success:
                     guard let movies = response.value else {
-                        print("Empty response data when downloading movies")
+                        print("Empty response data when downloading movies by genre")
                         return
                     }
                     completion(movies)
                 case .failure(let error):
-                    print("Error downloading movies: \(error.localizedDescription)")
+                    print("Error downloading movies by genre: \(error.localizedDescription)")
                 }
             }
     }
 }
-

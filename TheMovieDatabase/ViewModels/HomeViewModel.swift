@@ -12,7 +12,7 @@ class HomeViewModel {
     private let networkManager = HomeNetworkManager()
     
     var genres: [Genre] = []
-    var movies: [MovieForCollection] = []
+    var moviesDictionary: [Int: [MovieForCollection]] = [:]
     
     func getGenres(_ completion: @escaping () -> ()) {
         networkManager.downloadGenres { [weak self] genres in
@@ -23,16 +23,30 @@ class HomeViewModel {
     }
     
     func getMovies(_ completion: @escaping () -> ()) {
-        for page in 1...5 {
-            networkManager.downloadMovies(fromPage: page) { [weak self] moviesRespose in
-                guard let self,
-                      let movies = moviesRespose.results else { return }
+        for (index, _) in genres.enumerated() {
+            self.getMoviesForSection(index) { [weak self] movies in
+                guard let self else { return }
+                self.moviesDictionary[index] = movies
                 
-                for movie in movies {
-                    self.movies.append(movie)
-                }
                 completion()
             }
+        }
+    }
+    
+    private func getMoviesForSection(_ index: Int,
+                                     _ completion: @escaping ([MovieForCollection]) -> ()) {
+        guard let genreId = self.genres[index].id else {
+            print("Failed to get genre id for section \(index)")
+            return
+        }
+        let genreIdString = String(genreId)
+        
+        networkManager.downloadMoviesByGenre(genreIdString) { data in
+            guard let movieArray = data.results else {
+                print("It was not possible to get an array of films with the genre \(genreIdString)")
+                return
+            }
+            completion(movieArray)
         }
     }
     
@@ -41,17 +55,8 @@ class HomeViewModel {
     }
     
     func numberOfItemsIn(_ section: Int) -> Int {
-        var count = 0
-        
-        guard let sectionGenreID = genres[section].id else { return count }
-                
-        for movie in movies {
-            guard let movieGenreIDs = movie.genreIDS else { return count}
-            if movieGenreIDs.contains(sectionGenreID) {
-                count += 1
-            }
-        }
-        
-        return count
+        guard let array = self.moviesDictionary[section] else { return 0 }
+        return array.count
     }
+
 }
