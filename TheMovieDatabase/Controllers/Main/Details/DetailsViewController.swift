@@ -248,25 +248,19 @@ extension DetailsViewController: UIScrollViewDelegate {
         guard scrollView == self.mainScrollView else { return }
         
         let viewWidth = self.view.bounds.width
-        let imageHeigth = viewWidth * 1.1
-        let y = imageHeigth + (scrollView.contentOffset.y - imageHeigth)
-        
-        var heigth: CGFloat = 0
-        
-        if y < 0 {
-            heigth = imageHeigth + (-y)
-        } else {
-            heigth = max(150, imageHeigth - y)
-        }
-        
-        if heigth < imageHeigth {
+        let initialImageHeight = viewWidth * 1.1
+        let scrollPositionY = initialImageHeight + (scrollView.contentOffset.y - initialImageHeight)
+                        
+        if scrollPositionY > 0 {
             UIView.animate(withDuration: 0.3) {
-                self.posterImageView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: 150)
+                self.posterImageView.frame = CGRect(x: 0, y: 0,
+                                                    width: viewWidth, height: 150)
                 self.view.layoutIfNeeded()
             }
         } else {
-            UIView.animate(withDuration: 0.3, delay: 0) {
-                self.posterImageView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewWidth * 1.1)
+            UIView.animate(withDuration: 0.3) {
+                self.posterImageView.frame = CGRect(x: 0, y: 0,
+                                                    width: viewWidth, height: initialImageHeight)
                 self.view.layoutIfNeeded()
             }
         }

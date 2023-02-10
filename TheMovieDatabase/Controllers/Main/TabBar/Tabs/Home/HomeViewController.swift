@@ -26,9 +26,11 @@ class HomeViewController: UIViewController {
     }
     
     private func getAllData() {
-        self.viewModel.getGenres {
-            self.viewModel.getMovies {
-                self.collectionView.reloadData()
+        DispatchQueue.main.async {
+            self.viewModel.getGenres {
+                self.viewModel.getMovies {
+                    self.collectionView.reloadData()
+                }
             }
         }
     }
