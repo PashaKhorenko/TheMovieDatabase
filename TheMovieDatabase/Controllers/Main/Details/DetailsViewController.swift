@@ -93,6 +93,25 @@ class DetailsViewController: UIViewController {
         setupViews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Transparency settings for nav bar
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        // Restore the nav bar to default
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+    }
+    
+    
+    // MARK: - Settings
     @objc func rightBarButtonTapped(_ sender: UIBarButtonItem) {
         viewModel.markAsFavorites(movieID: self.movieID) { statusBool in
             self.isFavoriteMovie = statusBool
@@ -100,7 +119,6 @@ class DetailsViewController: UIViewController {
         }
     }
     
-    // MARK: - Settings
     private func configurationRightBarButtonItem() {
         let imageName = isFavoriteMovie ? "star.fill" : "star"
         let image = UIImage(systemName: imageName)
@@ -112,18 +130,11 @@ class DetailsViewController: UIViewController {
         // Some settings
         configurationRightBarButtonItem()
         self.navigationController?.navigationItem.largeTitleDisplayMode = .never
-        self.navigationController?.navigationBar.tintColor = .systemIndigo
-        
-        // Transparency settings
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = .clear
+        self.navigationController?.navigationBar.tintColor = .label
     }
     
     private func setupViews() {
         configurationNavigationBar()
-        
         self.view.backgroundColor = .systemBackground
         self.posterImageView.backgroundColor = .systemGray
                 
