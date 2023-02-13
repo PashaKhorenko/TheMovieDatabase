@@ -84,6 +84,7 @@ struct LoginUIHelper: LoginUIHelperProtocol {
     func makePasswordTextField() -> UITextField {
         let textField = UITextField()
         textField.placeholder = "Password"
+        textField.textContentType = .password
         textField.isSecureTextEntry = true
         textField.borderStyle = .roundedRect
         textField.tintColor = .lightGray
@@ -98,8 +99,10 @@ struct LoginUIHelper: LoginUIHelperProtocol {
     func makeLogInButtonForLogin() -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle("Log In", for: .normal)
+        button.isEnabled = false
         button.titleLabel?.font = .systemFont(ofSize: 20)
         button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.secondaryLabel, for: .disabled)
         button.backgroundColor = .systemIndigo
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false

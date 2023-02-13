@@ -26,13 +26,13 @@ class LoginViewModel {
         }
     }
     
-    func validateUser(withName name: String, password: String, _ completionHandler: @escaping () -> ()) {
+    func validateUser(withName name: String, password: String, _ completionHandler: @escaping (Bool) -> ()) {
         guard let requestToken else { return }
         networkManager.validateUser(withName: name,
                                     password: password,
                                     forToken: requestToken) { [weak self] isValid in
             self?.validUser = isValid
-            completionHandler()
+            completionHandler(isValid)
         }
     }
     

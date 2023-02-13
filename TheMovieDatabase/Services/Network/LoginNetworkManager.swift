@@ -56,6 +56,7 @@ class LoginNetworkManager {
                     }
                     completion(validateStatus)
                 case .failure(let error):
+                    completion(false)
                     print(error.localizedDescription)
                 }
             }

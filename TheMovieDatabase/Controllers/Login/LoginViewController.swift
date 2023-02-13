@@ -20,6 +20,7 @@ class LoginViewController: UIViewController {
     private lazy var usernameTextField = uiManager.makeUsernameTextField()
     private lazy var passwordTextField = uiManager.makePasswordTextField()
     private lazy var logInButton = uiManager.makeLogInButtonForLogin()
+    private let activityIndicator = StandartActivityIndicator(frame: .zero)
     
     // MARK: - View lifecycle
     
@@ -57,17 +58,27 @@ class LoginViewController: UIViewController {
             return
         }
         
+        self.activityIndicator.startAnimating()
+        
         let username = self.viewModel.getValidText(usernameText)
         let password = self.viewModel.getValidText(passwordText)
         
         self.viewModel.fetchRequestToken {
             print("Token received")
             self.viewModel.validateUser(withName: username,
-                                        password: password) {
+                                        password: password) { isValid in
                 print("Validation User")
+                
+                guard isValid else {
+                    self.activityIndicator.stopAnimating()
+                    self.showAlert()
+                    return
+                }
+                    
+                
                 self.viewModel.featchSessionID { id in
                     print("SessionID: \(id)")
-                    
+                    self.activityIndicator.stopAnimating()
                     self.storageManager.saveSessionIDToStorage(id)
                     
                     self.viewModel.featchAccountDetails(id) { accountDetails in
@@ -78,6 +89,16 @@ class LoginViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    private func showAlert() {
+        let alertController = UIAlertController(title: "Login error",
+                                                message: "Incorrectly entered username or password",
+                                                preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
     }
 }
 
@@ -93,6 +114,7 @@ extension LoginViewController {
     }
     
     private func setupViews() {
+        activityIndicator.stopAnimating()
         view.backgroundColor = .systemBackground
         setupNavigationBar()
         
@@ -104,6 +126,7 @@ extension LoginViewController {
         textFieldsStackView.addArrangedSubview(passwordTextField)
         
         view.addSubview(logInButton)
+        view.addSubview(activityIndicator)
         
         logInButton.addTarget(self, action: #selector(logInButtonPressed(_:)), for: .touchUpInside)
         
@@ -118,6 +141,18 @@ extension LoginViewController {
 // MARK: - UITextFieldDelegate
 
 extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let userNameText = usernameTextField.text,
+              let passwordText = passwordTextField.text else { return }
+        
+        if userNameText.count != 0 && passwordText.count >= 4 {
+            logInButton.isEnabled = true
+        } else {
+            logInButton.isEnabled = false
+        }
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
         case usernameTextField:
@@ -195,7 +230,10 @@ extension LoginViewController {
             logInButton.topAnchor.constraint(equalTo: textFieldsStackView.bottomAnchor, constant: 30),
             logInButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             logInButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            logInButton.heightAnchor.constraint(equalToConstant: 50)
+            logInButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 20),
         ])
     }
 }
