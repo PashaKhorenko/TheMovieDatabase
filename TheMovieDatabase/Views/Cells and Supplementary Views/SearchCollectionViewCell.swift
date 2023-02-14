@@ -82,8 +82,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
             overviewLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
             overviewLabel.leadingAnchor.constraint(equalTo: posterImageView.trailingAnchor, constant: 10),
             overviewLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            overviewLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -7),
+            overviewLabel.bottomAnchor.constraint(equalTo: posterImageView.bottomAnchor),
         ])
     }
-    
 }

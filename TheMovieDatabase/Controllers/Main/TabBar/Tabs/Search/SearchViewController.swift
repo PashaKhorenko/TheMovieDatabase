@@ -11,7 +11,9 @@ class SearchViewController: UIViewController {
     
     private let viewModel = SearchViewModel()
     private let collectionViewCellId = "searchCell"
+    private let mockCollectionViewCellId = "mockSearchCell"
     
+    private var isSearching: Bool = false
     private var timer: Timer? = nil
     
     // MARK: - UI elements
@@ -20,6 +22,8 @@ class SearchViewController: UIViewController {
                                               collectionViewLayout: createCollectionLayout())
         collectionView.register(SearchCollectionViewCell.self,
                                 forCellWithReuseIdentifier: collectionViewCellId)
+        collectionView.register(MockSearchCollectionViewCell.self,
+                                forCellWithReuseIdentifier: mockCollectionViewCellId)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .secondarySystemBackground
@@ -66,22 +70,34 @@ extension SearchViewController {
 // MARK: - UICollectionViewDataSource
 extension SearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfItemsInSection()
+        switch isSearching {
+        case true: return viewModel.numberOfItemsInSection()
+        case false: return 4
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellId, for: indexPath) as! SearchCollectionViewCell
         
-        let movie = viewModel.movies[indexPath.item]
-        cell.configure(with: movie)
-        
-        return cell
+        switch isSearching {
+        case false:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mockCollectionViewCellId,
+                                                          for: indexPath) as! MockSearchCollectionViewCell
+            return cell
+        case true:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellId, for: indexPath) as! SearchCollectionViewCell
+            
+            let movie = viewModel.movies[indexPath.item]
+            cell.configure(with: movie)
+            
+            return cell
+        }
     }
 }
 
 // MARK: - UICollectionViewDelegate
 extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard isSearching else { return }
         guard let id = viewModel.movies[indexPath.item].id else { return }
         
         let vc = DetailsViewController()
@@ -98,12 +114,13 @@ extension SearchViewController: UISearchBarDelegate {
         self.activityIndicator.startAnimating()
 
         if searchText == "" {
-            
+            self.isSearching = false
             self.clearTheScreen()
             self.activityIndicator.stopAnimating()
             self.timer?.invalidate()
             
         } else {
+            self.isSearching = true
             self.clearTheScreen()
             
             // destroy the previously started timer
@@ -123,6 +140,7 @@ extension SearchViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.isSearching = false
         self.clearTheScreen()
         self.activityIndicator.stopAnimating()
         searchBar.text = ""
