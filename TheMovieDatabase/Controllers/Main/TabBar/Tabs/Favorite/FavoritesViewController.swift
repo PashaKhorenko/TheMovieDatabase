@@ -9,9 +9,19 @@ import UIKit
 
 class FavoritesViewController: UIViewController {
     
-    private let viewModel = FavoriteViewModel(networkManager: FavoriteNetworkManager(),
-                                              storageManager: StorageManager())
+    private let viewModel: FavoriteViewModelProtocol?
     
+    // MARK: - Init
+    init(viewModel: FavoriteViewModelProtocol?) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Properties
     private var collectionView: UICollectionView! = nil
     private let favoriteCellID = "FavoriteCell"
 
@@ -28,7 +38,7 @@ class FavoritesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel.featchFavoriteMovies {
+        viewModel?.featchFavoriteMovies {
             self.collectionView.reloadData()
         }
     }
@@ -42,7 +52,7 @@ extension FavoritesViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let numberOfItems = viewModel.numberOfItemsInSection()
+        let numberOfItems = viewModel?.numberOfItemsInSection() ?? 0
         
         if numberOfItems == 0 {
             let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0,
@@ -61,7 +71,7 @@ extension FavoritesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.favoriteCellID, for: indexPath) as? FavoriteMovieCollectionViewCell else { return UICollectionViewCell() }
         
-        guard let movie = viewModel.favoriteMovies?.results?[indexPath.item] else { return UICollectionViewCell() }
+        guard let movie = viewModel?.favoriteMovies?.results?[indexPath.item] else { return UICollectionViewCell() }
         
         cell.configure(forMovie: movie)
         
@@ -73,14 +83,16 @@ extension FavoritesViewController: UICollectionViewDataSource {
 
 extension FavoritesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = DetailsViewController()
+        let detailsVM = DetailsViewModel(networkManager: DetailsNetworkManager(),
+                                         storageManager: StorageManager())
+        let detailsVC = DetailsViewController(viewModel: detailsVM)
                 
-        let moviesArray = viewModel.favoriteMovies?.results
+        let moviesArray = viewModel?.favoriteMovies?.results
         guard let movieID = moviesArray?[indexPath.item].id else { return }
         
-        vc.movieID = movieID
+        detailsVC.movieID = movieID
         
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(detailsVC, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
@@ -89,10 +101,11 @@ extension FavoritesViewController: UICollectionViewDelegate {
                                                 attributes: .destructive) { [weak self] _ in
             guard let self,
                   let indexPath = indexPaths.first,
-                  let movieID = self.viewModel.favoriteMovies?.results?[indexPath.item].id  else { return }
-
-            self.viewModel.removeFromFavorites(movieID: movieID) {
-                self.viewModel.featchFavoriteMovies {
+                  let viewModel = self.viewModel,
+                  let movieID = viewModel.favoriteMovies?.results?[indexPath.item].id  else { return }
+            
+            viewModel.removeFromFavorites(movieID: movieID) {
+                viewModel.featchFavoriteMovies {
                     collectionView.reloadData()
                 }
             }

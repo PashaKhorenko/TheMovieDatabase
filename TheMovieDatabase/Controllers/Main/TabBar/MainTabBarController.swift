@@ -16,17 +16,22 @@ class MainTabBarController: UITabBarController {
     }
     
     private func generateTabBar() {
+        let homeVM: HomeViewModelProtocol = HomeViewModel(networkManager: HomeNetworkManager())
+        let searchVM: SearchViewModelProtocol = SearchViewModel(networkManeger: SearchNetworkManager())
+        let favoriteVM: FavoriteViewModelProtocol = FavoriteViewModel(networkManager: FavoriteNetworkManager(), storageManager: StorageManager())
+        let settingsVM: SettingsViewModelProtocol = SettingsViewModel(storageManeger: StorageManager())
+        
         viewControllers = [
-            generateVC(HomeViewController(),
+            generateVC(HomeViewController(viewModel: homeVM),
                        title: "Home",
                        image: UIImage(systemName: "house.fill")),
-            generateVC(SearchViewController(),
+            generateVC(SearchViewController(viewModel: searchVM),
                        title: "Search",
                        image: UIImage(systemName: "magnifyingglass")),
-            generateVC(FavoritesViewController(),
+            generateVC(FavoritesViewController(viewModel: favoriteVM),
                        title: "Favorites",
                        image: UIImage(systemName: "star.fill")),
-            generateVC(SettingsViewController(),
+            generateVC(SettingsViewController(viewModel: settingsVM),
                        title: "Settings",
                        image: UIImage(systemName: "gear"))
         ]

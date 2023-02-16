@@ -9,7 +9,17 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     
-    private let viewModel = SettingsViewModel(storageManeger: StorageManager())
+    private let viewModel: SettingsViewModelProtocol?
+    
+    // MARK: - Init
+    init(viewModel: SettingsViewModelProtocol?) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - UI elements
     private var accountInfoView = AccountInfoView()
@@ -34,12 +44,12 @@ class SettingsViewController: UIViewController {
     
     // MARK: - Private
     @objc private func signOutButtonTapped(_ sender: UIButton) {
-        viewModel.signOutOfTheAccount()
+        viewModel?.signOutOfTheAccount()
     }
     
     // MARK: settings
     private func configureAccountInfoView() {
-        guard let accountDetails = viewModel.getAccountDetails() else { return }
+        guard let accountDetails = viewModel?.getAccountDetails() else { return }
         accountInfoView.configure(with: accountDetails)
     }
     

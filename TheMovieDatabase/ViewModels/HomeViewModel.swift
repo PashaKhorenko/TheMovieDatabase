@@ -7,9 +7,25 @@
 
 import Foundation
 
-class HomeViewModel {
+protocol HomeViewModelProtocol {
+    var networkManager: HomeNetworkManagerProtocol? { get }
     
-    private let networkManager: HomeNetworkManagerProtocol?
+    var genres: [Genre] { get set }
+    var moviesDictionary: [Int: [MovieForCollection]] { get set }
+    
+    func getGenres(_ completion: @escaping () -> ())
+    func getMovies(_ completion: @escaping () -> ())
+    
+    func getMoviesForSection(_ index: Int,
+                             _ completion: @escaping ([MovieForCollection]) -> ())
+    
+    func numberOfSection() -> Int
+    func numberOfItemsIn(_ section: Int) -> Int
+}
+
+class HomeViewModel: HomeViewModelProtocol {
+    
+    internal let networkManager: HomeNetworkManagerProtocol?
     
     init(networkManager: HomeNetworkManagerProtocol?) {
         self.networkManager = networkManager
@@ -37,7 +53,7 @@ class HomeViewModel {
         }
     }
     
-    private func getMoviesForSection(_ index: Int,
+    internal func getMoviesForSection(_ index: Int,
                                      _ completion: @escaping ([MovieForCollection]) -> ()) {
         guard let genreId = self.genres[index].id else {
             print("Failed to get genre id for section \(index)")

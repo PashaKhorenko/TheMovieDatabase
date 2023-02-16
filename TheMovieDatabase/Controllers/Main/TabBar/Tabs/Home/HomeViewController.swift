@@ -9,8 +9,19 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    private let viewModel = HomeViewModel(networkManager: HomeNetworkManager())
+    private let viewModel: HomeViewModelProtocol?
     
+    // MARK: - Init
+    init(viewModel: HomeViewModelProtocol?) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Properties
     private var collectionView: UICollectionView! = nil
     private let movieCellID = "MovieCellID"
     private let sectionHeaderID = "SectionHeaderID"
@@ -27,8 +38,8 @@ class HomeViewController: UIViewController {
     
     private func getAllData() {
         DispatchQueue.main.async {
-            self.viewModel.getGenres {
-                self.viewModel.getMovies {
+            self.viewModel?.getGenres {
+                self.viewModel?.getMovies {
                     self.collectionView.reloadData()
                 }
             }
@@ -41,16 +52,16 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        viewModel.numberOfSection()
+        viewModel?.numberOfSection() ?? 0
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfItemsIn(section)
+        viewModel?.numberOfItemsIn(section) ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: movieCellID, for: indexPath) as? PosterCollectionViewCell else { return UICollectionViewCell() }
         
-        let moviesArray = self.viewModel.moviesDictionary[indexPath.section]
+        let moviesArray = self.viewModel?.moviesDictionary[indexPath.section]
         guard let movie = moviesArray?[indexPath.item] else { return UICollectionViewCell() }
         
         cell.configure(forMovie: movie)
@@ -61,7 +72,7 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: sectionHeaderID, for: indexPath) as! HeaderSupplementaryView
         
-        let title = viewModel.genres[indexPath.section].name
+        let title = viewModel?.genres[indexPath.section].name
         headerView.configure(withText: title ?? "Section \(indexPath.section)")
         
         return headerView
@@ -72,15 +83,17 @@ extension HomeViewController: UICollectionViewDataSource {
 
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = DetailsViewController()
+        let detailsVM = DetailsViewModel(networkManager: DetailsNetworkManager(),
+                                         storageManager: StorageManager())
+        let detailsVC = DetailsViewController(viewModel: detailsVM)
         
-        let moviesArray = self.viewModel.moviesDictionary[indexPath.section]
+        let moviesArray = self.viewModel?.moviesDictionary[indexPath.section]
         guard let movie = moviesArray?[indexPath.item],
               let movieID = movie.id else { return }
         
-        vc.movieID = movieID
+        detailsVC.movieID = movieID
         
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(detailsVC, animated: true)
     }
 }
 

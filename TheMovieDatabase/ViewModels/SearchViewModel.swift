@@ -7,9 +7,18 @@
 
 import Foundation
 
-class SearchViewModel {
+protocol SearchViewModelProtocol {
+    var networkManeger: SearchNetworkManagerProtocol? { get }
     
-    private let networkManeger: SearchNetworkManagerProtocol?
+    var movies: [SearchMovie] { get set }
+    
+    func featchMovies(byText text: String, _ completion: @escaping() -> ())
+    func numberOfItemsInSection() -> Int
+}
+
+class SearchViewModel: SearchViewModelProtocol {
+    
+    internal let networkManeger: SearchNetworkManagerProtocol?
     
     init(networkManeger: SearchNetworkManagerProtocol?) {
         self.networkManeger = networkManeger

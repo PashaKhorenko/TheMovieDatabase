@@ -9,8 +9,19 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    private let viewModel = SearchViewModel(networkManeger: SearchNetworkManager())
+    private var viewModel: SearchViewModelProtocol?
     
+    // MARK: - Init
+    init(viewModel: SearchViewModelProtocol?) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Properties
     private let collectionViewCellId = "searchCell"
     private let mockCollectionViewCellId = "mockSearchCell"
     
@@ -63,7 +74,7 @@ extension SearchViewController {
     }
     
     private func clearTheScreen() {
-        self.viewModel.movies = []
+        self.viewModel?.movies = []
         self.collectionView.reloadData()
     }
 }
@@ -72,7 +83,7 @@ extension SearchViewController {
 extension SearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch isSearching {
-        case true: return viewModel.numberOfItemsInSection()
+        case true: return viewModel?.numberOfItemsInSection() ?? 0
         case false: return 4
         }
     }
@@ -87,7 +98,7 @@ extension SearchViewController: UICollectionViewDataSource {
         case true:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellId, for: indexPath) as! SearchCollectionViewCell
             
-            let movie = viewModel.movies[indexPath.item]
+            guard let movie = viewModel?.movies[indexPath.item] else { return UICollectionViewCell() }
             cell.configure(with: movie)
             
             return cell
@@ -99,12 +110,14 @@ extension SearchViewController: UICollectionViewDataSource {
 extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard isSearching else { return }
-        guard let id = viewModel.movies[indexPath.item].id else { return }
+        guard let id = viewModel?.movies[indexPath.item].id else { return }
         
-        let vc = DetailsViewController()
-        vc.movieID = id
+        let detailsVM = DetailsViewModel(networkManager: DetailsNetworkManager(),
+                                         storageManager: StorageManager())
+        let detailsVC = DetailsViewController(viewModel: detailsVM)
+        detailsVC.movieID = id
         
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(detailsVC, animated: true)
     }
 }
 
@@ -130,7 +143,7 @@ extension SearchViewController: UISearchBarDelegate {
             // execute a request for movies one second after entering the symbol
             self.timer = Timer.scheduledTimer(withTimeInterval: 1.0,
                                               repeats: false) { [weak self] _ in
-                self?.viewModel.featchMovies(byText: searchText) { [weak self] in
+                self?.viewModel?.featchMovies(byText: searchText) { [weak self] in
                     guard let self else { return }
                     
                     self.activityIndicator.stopAnimating()

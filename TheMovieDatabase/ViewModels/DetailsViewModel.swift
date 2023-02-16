@@ -7,10 +7,35 @@
 
 import Foundation
 
-class DetailsViewModel {
+protocol DetailsViewModelProtocol {
+    var networkManager: DetailsNetworkManagerProtocol? { get }
+    var storageManager: StorageProtocol? { get }
     
-    private let networkManager: DetailsNetworkManagerProtocol?
-    private let storageManager: StorageProtocol?
+    var movie: MovieForDetails? { get set }
+    var videoArray: Video? { get set }
+    
+    func getMovie(withID movieID: Int, _ completion: @escaping (MovieForDetails) -> ())
+    func getImage(byPath path: String?, completion: @escaping (Data) -> ())
+    func getVideo(byMovieID movieID: Int, _ completion: @escaping () -> ())
+    
+    func numberOfItemsIn(section: Int) -> Int
+    
+    func getGenreNamesFrom(list: [Genre]?) -> String
+    func getAgeRestrictions(_ adult: Bool?) -> String
+    func markAsFavorites(movieID: Int, _ completion: @escaping (Bool)->())
+    
+    func convertReleaseDateToString(_ releaseDate: String?) -> String
+    func convertPopularityToString(_ popularity: Double?) -> String
+    func convertRuntimeToNormalFormat(_ runtime: Int?) -> String
+    func convertBudgetToString(_ budget: Int?) -> String
+    func convertRevenueToString(_ revenue: Int?) -> String
+    func convertCountriesToString(_ contries: [ProductionCountry]?) -> String
+}
+
+class DetailsViewModel: DetailsViewModelProtocol {
+    
+    internal let networkManager: DetailsNetworkManagerProtocol?
+    internal let storageManager: StorageProtocol?
     
     var movie: MovieForDetails?
     var videoArray: Video?
@@ -34,7 +59,7 @@ class DetailsViewModel {
     }
     
     func getImage(byPath path: String?, completion: @escaping (Data) -> ()) {
-        guard let path else { return } 
+        guard let path else { return }
         networkManager?.downloadImageData(byPath: path) { data in
             completion(data)
         }
@@ -89,8 +114,8 @@ class DetailsViewModel {
               let sessionID = storageManager?.getSessionIDFromStorage() else { return }
         
         networkManager?.markAsFavorite(accountID: accountID,
-                                      sessionID: sessionID,
-                                      movieID: movieID) { statusBool in
+                                       sessionID: sessionID,
+                                       movieID: movieID) { statusBool in
             completion(statusBool)
         }
     }

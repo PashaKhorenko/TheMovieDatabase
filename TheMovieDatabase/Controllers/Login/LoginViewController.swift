@@ -10,8 +10,19 @@ import UIKit
 class LoginViewController: UIViewController {
     
     private var uiManager: LoginUIHelperProtocol!
-    private let viewModel = LoginViewModel(networkManager: LoginNetworkManager(),
-                                           storageManager: StorageManager())
+    private let viewModel: LoginViewModelProtocol?
+    
+    // MARK: - Init
+    init(uiManager: LoginUIHelperProtocol! = LoginUIHelper(), viewModel: LoginViewModelProtocol?) {
+        self.uiManager = uiManager
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - UI elements
     private lazy var animationView = uiManager.makeAnimationView()
@@ -60,12 +71,12 @@ class LoginViewController: UIViewController {
         
         self.activityIndicator.startAnimating()
         
-        let username = self.viewModel.getValidText(usernameText)
-        let password = self.viewModel.getValidText(passwordText)
+        guard let username = self.viewModel?.getValidText(usernameText),
+              let password = self.viewModel?.getValidText(passwordText) else { return }
         
-        self.viewModel.fetchRequestToken {
+        self.viewModel?.fetchRequestToken {
             print("Token received")
-            self.viewModel.validateUser(withName: username,
+            self.viewModel?.validateUser(withName: username,
                                         password: password) { isValid in
                 print("Validation User")
                 
@@ -76,16 +87,16 @@ class LoginViewController: UIViewController {
                 }
                     
                 
-                self.viewModel.featchSessionID { id in
+                self.viewModel?.featchSessionID { id in
                     print("SessionID: \(id)")
                     self.activityIndicator.stopAnimating()
-                    self.viewModel.saveSessionID(id)
+                    self.viewModel?.saveSessionID(id)
                     
-                    self.viewModel.featchAccountDetails(id) { accountDetails in
-                        self.viewModel.saveAccountDetails(accountDetails)
+                    self.viewModel?.featchAccountDetails(id) { accountDetails in
+                        self.viewModel?.saveAccountDetails(accountDetails)
                     }
                     
-                    self.viewModel.loginToTheAccount()
+                    self.viewModel?.loginToTheAccount()
                 }
             }
         }

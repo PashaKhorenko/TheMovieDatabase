@@ -78,7 +78,11 @@ extension SignUpViewController {
     }
     
     @objc private func logInButtonPressed(_ sender: UIButton) {
-        navigationController?.pushViewController(LoginViewController(), animated: true)
+        let loginVM = LoginViewModel(networkManager: LoginNetworkManager(),
+                                     storageManager: StorageManager())
+        let loginVC = LoginViewController(viewModel: loginVM)
+        
+        navigationController?.pushViewController(loginVC, animated: true)
     }
 }
 

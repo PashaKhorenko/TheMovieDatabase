@@ -210,10 +210,10 @@
 			children = (
 				4682611F2979627D0031A90D /* LoginViewModel.swift */,
 				46A76191297E911300AF5B39 /* HomeViewModel.swift */,
-				46A429CD297FF22E00DC8DD3 /* DetailsViewModel.swift */,
+				4638F8222993C5BD00ADF2CF /* SearchViewModel.swift */,
 				466520F0298A938000B381BC /* FavoriteViewModel.swift */,
 				466C9DD4298BC9B100DF2F03 /* SettingsViewModel.swift */,
-				4638F8222993C5BD00ADF2CF /* SearchViewModel.swift */,
+				46A429CD297FF22E00DC8DD3 /* DetailsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";

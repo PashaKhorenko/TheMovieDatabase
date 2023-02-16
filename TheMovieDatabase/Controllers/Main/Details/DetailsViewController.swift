@@ -9,8 +9,19 @@ import UIKit
 
 class DetailsViewController: UIViewController {
     
-    private let viewModel = DetailsViewModel(networkManager: DetailsNetworkManager(),
-                                             storageManager: StorageManager())
+    private let viewModel: DetailsViewModelProtocol?
+    
+    // MARK: - Init
+    init(viewModel: DetailsViewModelProtocol?) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Properties
     var movieID: Int = 0
     
     private var isFavoriteMovie: Bool = false
@@ -80,12 +91,12 @@ class DetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.getMovie(withID: movieID) { [weak self] (movie) in
+        viewModel?.getMovie(withID: movieID) { [weak self] (movie) in
             DispatchQueue.main.async {
                 self?.populateUIFor(movie: movie)
             }
         }
-        viewModel.getVideo(byMovieID: movieID) {
+        viewModel?.getVideo(byMovieID: movieID) {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
@@ -114,7 +125,7 @@ class DetailsViewController: UIViewController {
     
     // MARK: - Settings
     @objc func rightBarButtonTapped(_ sender: UIBarButtonItem) {
-        viewModel.markAsFavorites(movieID: self.movieID) { statusBool in
+        viewModel?.markAsFavorites(movieID: self.movieID) { statusBool in
             self.isFavoriteMovie = statusBool
             self.configurationRightBarButtonItem()
         }
@@ -176,7 +187,7 @@ class DetailsViewController: UIViewController {
         reactionSubtitleLabel.text = "Reactions"
         overviewSubtitleLabel.text = "Overview"
         
-        viewModel.getImage(byPath: movie.posterPath) { [weak self] imageData in
+        viewModel?.getImage(byPath: movie.posterPath) { [weak self] imageData in
             guard let self else { return }
             DispatchQueue.main.async {
                 self.posterImageView.image = UIImage(data: imageData)
@@ -186,16 +197,16 @@ class DetailsViewController: UIViewController {
         
         titleLabel.text = movie.title
         
-        releaseDateLabel.text = viewModel.convertReleaseDateToString(movie.releaseDate)
-        runtimeLabel.text = viewModel.convertRuntimeToNormalFormat(movie.runtime)
-        budgetLabel.text = viewModel.convertBudgetToString(movie.budget)
-        popularityLabel.text = viewModel.convertPopularityToString(movie.popularity)
-        revenueLabel.text = viewModel.convertRevenueToString(movie.revenue)
-        contriesLabel.text = viewModel.convertCountriesToString(movie.productionCountries)
+        releaseDateLabel.text = viewModel?.convertReleaseDateToString(movie.releaseDate)
+        runtimeLabel.text = viewModel?.convertRuntimeToNormalFormat(movie.runtime)
+        budgetLabel.text = viewModel?.convertBudgetToString(movie.budget)
+        popularityLabel.text = viewModel?.convertPopularityToString(movie.popularity)
+        revenueLabel.text = viewModel?.convertRevenueToString(movie.revenue)
+        contriesLabel.text = viewModel?.convertCountriesToString(movie.productionCountries)
         overviewLabel.text = movie.overview ?? "Unknown"
         
-        genresLabel.text = viewModel.getGenreNamesFrom(list: movie.genres)
-        ageRestrictionsLabel.text = viewModel.getAgeRestrictions(movie.adult)
+        genresLabel.text = viewModel?.getGenreNamesFrom(list: movie.genres)
+        ageRestrictionsLabel.text = viewModel?.getAgeRestrictions(movie.adult)
     }
 }
 
@@ -206,7 +217,7 @@ extension DetailsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfItemsIn(section: section)
+        viewModel?.numberOfItemsIn(section: section) ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -214,13 +225,13 @@ extension DetailsViewController: UICollectionViewDataSource {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: trailetCellID, for: indexPath) as! TrailerCollectionViewCell
             
-            cell.configureWith(viewModel.videoArray, index: indexPath.item)
+            cell.configureWith(viewModel?.videoArray, index: indexPath.item)
             
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: companyCellID, for: indexPath) as! CompanyCollectionViewCell
             
-            let company = viewModel.movie?.productionCompanies?[indexPath.item]
+            let company = viewModel?.movie?.productionCompanies?[indexPath.item]
             cell.configureWith(company)
             
             return cell

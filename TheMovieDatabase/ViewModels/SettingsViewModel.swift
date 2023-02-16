@@ -7,9 +7,16 @@
 
 import UIKit
 
-class SettingsViewModel {
+protocol SettingsViewModelProtocol {
+    var storageManeger: StorageProtocol? { get }
     
-    private let storageManeger: StorageProtocol?
+    func getAccountDetails() -> AccountDetailsRealm?
+    func signOutOfTheAccount()
+}
+
+class SettingsViewModel: SettingsViewModelProtocol {
+    
+    internal let storageManeger: StorageProtocol?
     
     init(storageManeger: StorageProtocol?) {
         self.storageManeger = storageManeger
