@@ -9,7 +9,8 @@ import UIKit
 
 class DetailsViewController: UIViewController {
     
-    private let viewModel = DetailsViewModel()
+    private let viewModel = DetailsViewModel(networkManager: DetailsNetworkManager(),
+                                             storageManager: StorageManager())
     var movieID: Int = 0
     
     private var isFavoriteMovie: Bool = false

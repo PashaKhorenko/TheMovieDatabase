@@ -8,7 +8,18 @@
 import Foundation
 import Alamofire
 
-class FavoriteNetworkManager {
+protocol FavoriteNetworkManagerProtocol {
+    func downloadFavoriteMovies(accountID: Int,
+                                sessionID: String,
+                                _ completion: @escaping (FavoriteMovies) -> ())
+    
+    func removeFromFavorites(accountID: Int,
+                             sessionID: String,
+                             movieID: Int,
+                             _ completion: @escaping () -> ())
+}
+
+class FavoriteNetworkManager: FavoriteNetworkManagerProtocol {
     private let apiKey = "de9681923f09382fe42f437144685b94"
     
     func downloadFavoriteMovies(accountID: Int, sessionID: String, _ completion: @escaping (FavoriteMovies) -> ()) {

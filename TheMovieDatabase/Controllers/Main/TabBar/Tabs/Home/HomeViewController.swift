@@ -9,7 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    private let viewModel = HomeViewModel()
+    private let viewModel = HomeViewModel(networkManager: HomeNetworkManager())
     
     private var collectionView: UICollectionView! = nil
     private let movieCellID = "MovieCellID"

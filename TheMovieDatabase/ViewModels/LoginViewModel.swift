@@ -9,7 +9,13 @@ import UIKit
 
 class LoginViewModel {
     
-    private let networkManager = LoginNetworkManager()
+    private let networkManager: LoginNetworkManagerProtocol?
+    private let storageManager: StorageProtocol?
+    
+    init(networkManager: LoginNetworkManagerProtocol?, storageManager: StorageProtocol?) {
+        self.networkManager = networkManager
+        self.storageManager = storageManager
+    }
     
     private var requestToken: String?
     private var validUser: Bool?
@@ -20,7 +26,7 @@ class LoginViewModel {
     }
     
     func fetchRequestToken(_ completionHandler: @escaping () -> ()) {
-        networkManager.createNewToken { [weak self] token in
+        networkManager?.createNewToken { [weak self] token in
             self?.requestToken = token
             completionHandler()
         }
@@ -28,7 +34,7 @@ class LoginViewModel {
     
     func validateUser(withName name: String, password: String, _ completionHandler: @escaping (Bool) -> ()) {
         guard let requestToken else { return }
-        networkManager.validateUser(withName: name,
+        networkManager?.validateUser(withName: name,
                                     password: password,
                                     forToken: requestToken) { [weak self] isValid in
             self?.validUser = isValid
@@ -40,17 +46,25 @@ class LoginViewModel {
         guard let requestToken, let validUser else { return }
         
         if validUser {
-            networkManager.makeSession(withToken: requestToken) { id in
+            networkManager?.makeSession(withToken: requestToken) { id in
                 completionHandler(id)
             }
         }
     }
     
+    func saveSessionID(_ id: String) {
+        self.storageManager?.saveSessionIDToStorage(id)
+    }
+    
     
     func featchAccountDetails(_ sessionID: String, _ completionHandler: @escaping (User) -> ()) {
-        networkManager.downloadAccountDetails(sessionID: sessionID) { accountDetails in
+        networkManager?.downloadAccountDetails(sessionID: sessionID) { accountDetails in
             completionHandler(accountDetails)
         }
+    }
+    
+    func saveAccountDetails(_ user: User) {
+        self.storageManager?.saveAccountDetailsToStorage(user)
     }
     
     func loginToTheAccount() {

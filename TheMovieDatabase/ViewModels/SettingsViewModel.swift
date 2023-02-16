@@ -9,10 +9,14 @@ import UIKit
 
 class SettingsViewModel {
     
-    private let storageManeger = StorageManager()
+    private let storageManeger: StorageProtocol?
+    
+    init(storageManeger: StorageProtocol?) {
+        self.storageManeger = storageManeger
+    }
         
     func getAccountDetails() -> AccountDetailsRealm? {
-        let accountDetails = storageManeger.getAccountDetailsFromStorage()
+        let accountDetails = storageManeger?.getAccountDetailsFromStorage()
         return accountDetails
     }
     

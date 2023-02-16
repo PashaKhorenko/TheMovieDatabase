@@ -9,7 +9,8 @@ import UIKit
 
 class FavoritesViewController: UIViewController {
     
-    private let viewModel = FavoriteViewModel()
+    private let viewModel = FavoriteViewModel(networkManager: FavoriteNetworkManager(),
+                                              storageManager: StorageManager())
     
     private var collectionView: UICollectionView! = nil
     private let favoriteCellID = "FavoriteCell"

@@ -9,9 +9,9 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
-    private let storageManager = StorageManager()
     private var uiManager: LoginUIHelperProtocol!
-    private let viewModel = LoginViewModel()
+    private let viewModel = LoginViewModel(networkManager: LoginNetworkManager(),
+                                           storageManager: StorageManager())
     
     // MARK: - UI elements
     private lazy var animationView = uiManager.makeAnimationView()
@@ -79,10 +79,10 @@ class LoginViewController: UIViewController {
                 self.viewModel.featchSessionID { id in
                     print("SessionID: \(id)")
                     self.activityIndicator.stopAnimating()
-                    self.storageManager.saveSessionIDToStorage(id)
+                    self.viewModel.saveSessionID(id)
                     
                     self.viewModel.featchAccountDetails(id) { accountDetails in
-                        self.storageManager.saveAccountDetailsToStorage(accountDetails)
+                        self.viewModel.saveAccountDetails(accountDetails)
                     }
                     
                     self.viewModel.loginToTheAccount()

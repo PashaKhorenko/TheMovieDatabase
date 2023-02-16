@@ -9,13 +9,17 @@ import Foundation
 
 class HomeViewModel {
     
-    private let networkManager = HomeNetworkManager()
+    private let networkManager: HomeNetworkManagerProtocol?
+    
+    init(networkManager: HomeNetworkManagerProtocol?) {
+        self.networkManager = networkManager
+    }
     
     var genres: [Genre] = []
     var moviesDictionary: [Int: [MovieForCollection]] = [:]
     
     func getGenres(_ completion: @escaping () -> ()) {
-        networkManager.downloadGenres { [weak self] genres in
+        networkManager?.downloadGenres { [weak self] genres in
             guard let self else { return }
             self.genres = genres
             completion()
@@ -41,7 +45,7 @@ class HomeViewModel {
         }
         let genreIdString = String(genreId)
         
-        networkManager.downloadMoviesByGenre(genreIdString) { data in
+        networkManager?.downloadMoviesByGenre(genreIdString) { data in
             guard let movieArray = data.results else {
                 print("It was not possible to get an array of films with the genre \(genreIdString)")
                 return

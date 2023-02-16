@@ -9,14 +9,18 @@ import Foundation
 
 class SearchViewModel {
     
-    private let networkManeger = SearchNetworkManager()
+    private let networkManeger: SearchNetworkManagerProtocol?
+    
+    init(networkManeger: SearchNetworkManagerProtocol?) {
+        self.networkManeger = networkManeger
+    }
     
     var movies: [SearchMovie] = []
     
     func featchMovies(byText text: String, _ completion: @escaping() -> ()) {
         let validText = text.lowercased().trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "%20")
         
-        networkManeger.seacthMoviesBy(validText) { [weak self] results in
+        networkManeger?.seacthMoviesBy(validText) { [weak self] results in
             guard let self, let movieArray = results.results else { return }
             
             self.movies = movieArray

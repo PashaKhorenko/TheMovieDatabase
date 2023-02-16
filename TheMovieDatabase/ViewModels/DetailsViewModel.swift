@@ -9,14 +9,24 @@ import Foundation
 
 class DetailsViewModel {
     
-    private let networkManager = DetailsNetworkManager()
-    private let storageManager = StorageManager()
+    private let networkManager: DetailsNetworkManagerProtocol?
+    private let storageManager: StorageProtocol?
     
     var movie: MovieForDetails?
     var videoArray: Video?
     
+    init(networkManager: DetailsNetworkManagerProtocol?,
+         storageManager: StorageProtocol?,
+         movie: MovieForDetails? = nil,
+         videoArray: Video? = nil) {
+        self.networkManager = networkManager
+        self.storageManager = storageManager
+        self.movie = movie
+        self.videoArray = videoArray
+    }
+    
     func getMovie(withID movieID: Int, _ completion: @escaping (MovieForDetails) -> ()) {
-        networkManager.downloadMovie(withID: movieID) { [weak self] (movie) in
+        networkManager?.downloadMovie(withID: movieID) { [weak self] (movie) in
             guard let self else { return }
             self.movie = movie
             completion(movie)
@@ -25,13 +35,13 @@ class DetailsViewModel {
     
     func getImage(byPath path: String?, completion: @escaping (Data) -> ()) {
         guard let path else { return } 
-        networkManager.downloadImageData(byPath: path) { data in
+        networkManager?.downloadImageData(byPath: path) { data in
             completion(data)
         }
     }
     
     func getVideo(byMovieID movieID: Int, _ completion: @escaping () -> ()) {
-        networkManager.downloadVideo(withID: movieID) { [weak self] video in
+        networkManager?.downloadVideo(withID: movieID) { [weak self] video in
             self?.videoArray = video
             completion()
         }
@@ -75,10 +85,10 @@ class DetailsViewModel {
     }
     
     func markAsFavorites(movieID: Int, _ completion: @escaping (Bool)->()) {
-        let accountID = storageManager.getAccountIDFromStorage()
-        let sessionID = storageManager.getSessionIDFromStorage()
+        guard let accountID = storageManager?.getAccountIDFromStorage(),
+              let sessionID = storageManager?.getSessionIDFromStorage() else { return }
         
-        networkManager.markAsFavorite(accountID: accountID,
+        networkManager?.markAsFavorite(accountID: accountID,
                                       sessionID: sessionID,
                                       movieID: movieID) { statusBool in
             completion(statusBool)

@@ -9,7 +9,7 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     
-    private let viewModel = SettingsViewModel()
+    private let viewModel = SettingsViewModel(storageManeger: StorageManager())
     
     // MARK: - UI elements
     private var accountInfoView = AccountInfoView()

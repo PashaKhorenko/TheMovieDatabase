@@ -9,16 +9,21 @@ import Foundation
 
 class FavoriteViewModel {
     
-    private let networkManager = FavoriteNetworkManager()
-    private let storageManager = StorageManager()
+    private let networkManager: FavoriteNetworkManagerProtocol?
+    private let storageManager: StorageProtocol?
+    
+    init(networkManager: FavoriteNetworkManagerProtocol?, storageManager: StorageProtocol?) {
+        self.networkManager = networkManager
+        self.storageManager = storageManager
+    }
     
     var favoriteMovies: FavoriteMovies?
     
     func featchFavoriteMovies(_ completion: @escaping () -> ()) {
-        let accountID = storageManager.getAccountIDFromStorage()
-        let sessionID = storageManager.getSessionIDFromStorage()
+        guard let accountID = storageManager?.getAccountIDFromStorage(),
+              let sessionID = storageManager?.getSessionIDFromStorage() else { return }
         
-        networkManager.downloadFavoriteMovies(accountID: accountID,
+        networkManager?.downloadFavoriteMovies(accountID: accountID,
                                               sessionID: sessionID) { movies in
             self.favoriteMovies = movies
             completion()
@@ -31,10 +36,10 @@ class FavoriteViewModel {
     }
     
     func removeFromFavorites(movieID: Int, _ completion: @escaping () -> ()) {
-        let accountID = storageManager.getAccountIDFromStorage()
-        let sessionID = storageManager.getSessionIDFromStorage()
+        guard let accountID = storageManager?.getAccountIDFromStorage(),
+              let sessionID = storageManager?.getSessionIDFromStorage() else { return }
         
-        networkManager.removeFromFavorites(accountID: accountID,
+        networkManager?.removeFromFavorites(accountID: accountID,
                                            sessionID: sessionID,
                                            movieID: movieID) {
             completion()

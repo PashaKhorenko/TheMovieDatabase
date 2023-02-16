@@ -9,7 +9,8 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    private let viewModel = SearchViewModel()
+    private let viewModel = SearchViewModel(networkManeger: SearchNetworkManager())
+    
     private let collectionViewCellId = "searchCell"
     private let mockCollectionViewCellId = "mockSearchCell"
     
