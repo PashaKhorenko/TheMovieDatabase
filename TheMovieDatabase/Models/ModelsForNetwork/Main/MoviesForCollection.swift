@@ -15,12 +15,14 @@ struct MoviesForCollection: Codable {
 // MARK: - Movie
 struct MovieForCollection: Codable {
     let title: String?
+    let originalTitle: String?
     let posterPath: String?
     let genreIDS: [Int]?
     let id: Int?
 
     enum CodingKeys: String, CodingKey {
         case title
+        case originalTitle = "original_title"
         case posterPath = "poster_path"
         case genreIDS = "genre_ids"
         case id

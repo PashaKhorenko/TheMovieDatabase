@@ -58,6 +58,7 @@ class FavoriteMovieCollectionViewCell: UICollectionViewCell {
             posterImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             posterImageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -8),
             
+            titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 24),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
@@ -66,11 +67,12 @@ class FavoriteMovieCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Public
     func configure(forMovie movie: FavoriteMovie) {
+        
         self.activityIndicator.startAnimating()
-                
-        guard let posterPath = movie.posterPath,
-              let movieTitle = movie.title else {
-            print("Failed to get poster path or title")
+        self.titleLabel.text = movie.title ?? movie.originalTitle ?? "Unknown"
+        
+        guard let posterPath = movie.posterPath else {
+            print("Failed to get poster path")
             return
         }
         let URLstring = "https://image.tmdb.org/t/p/w500/\(posterPath)"
@@ -80,8 +82,7 @@ class FavoriteMovieCollectionViewCell: UICollectionViewCell {
         }
         
         posterImageView.sd_setImage(with: url) { (_, _, _, _) in
-            self.titleLabel.text = movieTitle
             self.activityIndicator.stopAnimating()
-        }
+        }        
     }
 }

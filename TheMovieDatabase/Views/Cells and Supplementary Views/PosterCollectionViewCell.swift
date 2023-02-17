@@ -15,6 +15,7 @@ class PosterCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 8
         imageView.clipsToBounds = true
+        imageView.backgroundColor = .secondarySystemBackground
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -58,6 +59,7 @@ class PosterCollectionViewCell: UICollectionViewCell {
             posterImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
             posterImageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -5),
             
+            titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 19),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
@@ -66,9 +68,9 @@ class PosterCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Public
     func configure(forMovie movie: MovieForCollection) {
-        self.activityIndicator.startAnimating()
         
-        self.titleLabel.text = movie.title
+        self.activityIndicator.startAnimating()
+        self.titleLabel.text = movie.title ?? movie.originalTitle ?? "Unknown"
         
         guard let postenPath = movie.posterPath else {
             print("Failed to get poster path")
