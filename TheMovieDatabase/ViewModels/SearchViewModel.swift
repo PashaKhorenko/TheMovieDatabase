@@ -7,15 +7,6 @@
 
 import Foundation
 
-protocol SearchViewModelProtocol {
-    var networkManeger: SearchNetworkManagerProtocol? { get }
-    
-    var movies: [SearchMovie] { get set }
-    
-    func featchMovies(byText text: String, _ completion: @escaping() -> ())
-    func numberOfItemsInSection() -> Int
-}
-
 class SearchViewModel: SearchViewModelProtocol {
     
     internal let networkManeger: SearchNetworkManagerProtocol?
@@ -24,20 +15,45 @@ class SearchViewModel: SearchViewModelProtocol {
         self.networkManeger = networkManeger
     }
     
-    var movies: [SearchMovie] = []
+    var movies: Dynamic<[SearchMovie]> = Dynamic([])
+    var isSearching: Dynamic<Bool> = Dynamic(false)
+    var timer: Timer?
     
-    func featchMovies(byText text: String, _ completion: @escaping() -> ()) {
-        let validText = text.lowercased().trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "%20")
+    func getValidText(_ searchText: String) -> String {
+        let textInLowercase = searchText.lowercased()
+        let textWithoutExtraSpaces = textInLowercase.trimmingCharacters(in: .whitespaces)
+        let validText = textWithoutExtraSpaces.replacingOccurrences(of: " ", with: "%20")
         
-        networkManeger?.seacthMoviesBy(validText) { [weak self] results in
-            guard let self, let movieArray = results.results else { return }
-            
-            self.movies = movieArray
-            completion()
+        return validText
+    }
+    
+    func featchMovies(byText text: String, _ completion: @escaping () -> Void) {
+        timer?.invalidate()
+        isSearching.value = true
+        
+        let validText = self.getValidText(text)
+        
+        guard !validText.isEmpty else {
+            self.isSearching.value = false
+            return
         }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { (_) in
+            self.networkManeger?.seacthMoviesBy(validText, { [weak self] results in
+                guard let self,
+                      let movieArray = results.results else { return }
+                self.movies.value = movieArray
+                completion()
+            })
+        })
     }
     
     func numberOfItemsInSection() -> Int {
-        return movies.count
+        return movies.value?.count ?? 0
+    }
+    
+    func clearTheScreen() {
+        self.isSearching.value = false
+        self.movies.value = []
     }
 }

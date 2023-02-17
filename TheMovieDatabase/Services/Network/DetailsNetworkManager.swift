@@ -8,18 +8,6 @@
 import Foundation
 import Alamofire
 
-protocol DetailsNetworkManagerProtocol {
-    
-    func downloadMovie(withID movieID: Int, _ completion: @escaping (MovieForDetails) -> Void)
-    func downloadImageData(byPath path: String, _ completion: @escaping (Data) -> ())
-    func downloadVideo(withID movieId: Int, _ completion: @escaping (Video) -> ())
-    
-    func markAsFavorite(accountID: Int,
-                        sessionID: String,
-                        movieID: Int,
-                        _ completion: @escaping (Bool) -> ())
-}
-
 class DetailsNetworkManager: DetailsNetworkManagerProtocol {
     
     private let apiKey = "de9681923f09382fe42f437144685b94"

@@ -9,7 +9,7 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    private var viewModel: SearchViewModelProtocol?
+    let viewModel: SearchViewModelProtocol?
     
     // MARK: - Init
     init(viewModel: SearchViewModelProtocol?) {
@@ -21,14 +21,11 @@ class SearchViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Properties
-    private let collectionViewCellId = "searchCell"
-    private let mockCollectionViewCellId = "mockSearchCell"
+    // MARK: Properties
+    let collectionViewCellId = "searchCell"
+    let mockCollectionViewCellId = "mockSearchCell"
     
-    private var isSearching: Bool = false
-    private var timer: Timer? = nil
-    
-    // MARK: - UI elements
+    // MARK: UI elements
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero,
                                               collectionViewLayout: createCollectionLayout())
@@ -47,18 +44,40 @@ class SearchViewController: UIViewController {
         searchController.searchBar.delegate = self
         return searchController
     }()
-    private let activityIndicator = StandartActivityIndicator(frame: .zero)
+    let activityIndicator = StandartActivityIndicator(frame: .zero)
 
+    
     // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupViews()
+        setupViewModelObserver()
     }
 }
 
-// MARK: - setupViews
+// MARK: - Setup Views
 extension SearchViewController {
+    
+    private func setupViewModelObserver() {
+        self.viewModel?.movies.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+        
+        self.viewModel?.isSearching.bind { [weak self] (isSearching) in
+            guard let isSearching else { return }
+            
+            DispatchQueue.main.async {
+                if isSearching {
+                    self?.activityIndicator.startAnimating()
+                } else {
+                    self?.activityIndicator.stopAnimating()
+                }
+            }
+        }
+    }
     
     private func setupViews() {
         view.backgroundColor = .secondarySystemBackground
@@ -68,97 +87,8 @@ extension SearchViewController {
         
         view.addSubview(collectionView)
         collectionView.addSubview(activityIndicator)
-        activityIndicator.stopAnimating()
         
         setConstraints()
-    }
-    
-    private func clearTheScreen() {
-        self.viewModel?.movies = []
-        self.collectionView.reloadData()
-    }
-}
-
-// MARK: - UICollectionViewDataSource
-extension SearchViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch isSearching {
-        case true: return viewModel?.numberOfItemsInSection() ?? 0
-        case false: return 4
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        switch isSearching {
-        case false:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mockCollectionViewCellId,
-                                                          for: indexPath) as! MockSearchCollectionViewCell
-            return cell
-        case true:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellId, for: indexPath) as! SearchCollectionViewCell
-            
-            guard let movie = viewModel?.movies[indexPath.item] else { return UICollectionViewCell() }
-            cell.configure(with: movie)
-            
-            return cell
-        }
-    }
-}
-
-// MARK: - UICollectionViewDelegate
-extension SearchViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard isSearching else { return }
-        guard let id = viewModel?.movies[indexPath.item].id else { return }
-        
-        let detailsVM = DetailsViewModel(networkManager: DetailsNetworkManager(),
-                                         storageManager: StorageManager())
-        let detailsVC = DetailsViewController(viewModel: detailsVM)
-        detailsVC.movieID = id
-        
-        navigationController?.pushViewController(detailsVC, animated: true)
-    }
-}
-
-// MARK: - UISearchBarDelegate
-extension SearchViewController: UISearchBarDelegate {
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.activityIndicator.startAnimating()
-
-        if searchText == "" {
-            self.isSearching = false
-            self.clearTheScreen()
-            self.activityIndicator.stopAnimating()
-            self.timer?.invalidate()
-            
-        } else {
-            self.isSearching = true
-            self.clearTheScreen()
-            
-            // destroy the previously started timer
-            self.timer?.invalidate()
-            
-            // execute a request for movies one second after entering the symbol
-            self.timer = Timer.scheduledTimer(withTimeInterval: 1.0,
-                                              repeats: false) { [weak self] _ in
-                self?.viewModel?.featchMovies(byText: searchText) { [weak self] in
-                    guard let self else { return }
-                    
-                    self.activityIndicator.stopAnimating()
-                    self.collectionView.reloadData()
-                }
-            }
-        }
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.isSearching = false
-        self.clearTheScreen()
-        self.activityIndicator.stopAnimating()
-        searchBar.text = ""
-        self.timer?.invalidate()
     }
 }
 

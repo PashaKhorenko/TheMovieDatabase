@@ -26,7 +26,7 @@
 		4638F8252993C5E900ADF2CF /* SearchNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638F8242993C5E900ADF2CF /* SearchNetworkManager.swift */; };
 		4638F8272993C6DE00ADF2CF /* SearchMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638F8262993C6DE00ADF2CF /* SearchMovie.swift */; };
 		4638F8292993D78C00ADF2CF /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638F8282993D78C00ADF2CF /* SearchCollectionViewCell.swift */; };
-		4638F82E2993E0C700ADF2CF /* SearchVC+createCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638F82D2993E0C700ADF2CF /* SearchVC+createCollectionLayout.swift */; };
+		4638F82E2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638F82D2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift */; };
 		4648BBD02977E0D1009BA708 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4648BBCF2977E0D1009BA708 /* SignUpViewController.swift */; };
 		4648BBD529780FDF009BA708 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4648BBD429780FDF009BA708 /* LoginViewController.swift */; };
 		466520EF298A91D700B381BC /* FavoriteNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466520EE298A91D700B381BC /* FavoriteNetworkManager.swift */; };
@@ -42,6 +42,22 @@
 		4682612529797A380031A90D /* SessionID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682612429797A380031A90D /* SessionID.swift */; };
 		4682612729797A450031A90D /* ValidUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682612629797A450031A90D /* ValidUser.swift */; };
 		46826129297994EE0031A90D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46826128297994EE0031A90D /* SettingsViewController.swift */; };
+		46841AE9299FB0E9005BD5A2 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841AE8299FB0E9005BD5A2 /* Dynamic.swift */; };
+		46841AEC299FB39F005BD5A2 /* LoginViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841AEB299FB39F005BD5A2 /* LoginViewModelProtocol.swift */; };
+		46841AEE299FB3BD005BD5A2 /* HomeViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841AED299FB3BD005BD5A2 /* HomeViewModelProtocol.swift */; };
+		46841AF0299FB3D8005BD5A2 /* SearchViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841AEF299FB3D8005BD5A2 /* SearchViewModelProtocol.swift */; };
+		46841AF2299FB3F3005BD5A2 /* FavoriteViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841AF1299FB3F3005BD5A2 /* FavoriteViewModelProtocol.swift */; };
+		46841AF4299FB407005BD5A2 /* SettingsViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841AF3299FB407005BD5A2 /* SettingsViewModelProtocol.swift */; };
+		46841AF6299FB41A005BD5A2 /* DetailsViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841AF5299FB41A005BD5A2 /* DetailsViewModelProtocol.swift */; };
+		46841AFB299FB4B2005BD5A2 /* LoginNetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841AFA299FB4B2005BD5A2 /* LoginNetworkManagerProtocol.swift */; };
+		46841AFD299FB4C8005BD5A2 /* HomeNetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841AFC299FB4C8005BD5A2 /* HomeNetworkManagerProtocol.swift */; };
+		46841AFF299FB4DB005BD5A2 /* DetailsNetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841AFE299FB4DB005BD5A2 /* DetailsNetworkManagerProtocol.swift */; };
+		46841B01299FB4EB005BD5A2 /* FavoriteNetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841B00299FB4EB005BD5A2 /* FavoriteNetworkManagerProtocol.swift */; };
+		46841B03299FB500005BD5A2 /* SearchNetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841B02299FB500005BD5A2 /* SearchNetworkManagerProtocol.swift */; };
+		46841B05299FB530005BD5A2 /* StorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841B04299FB530005BD5A2 /* StorageProtocol.swift */; };
+		46841B07299FC81B005BD5A2 /* SearchVC+UICollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841B06299FC81B005BD5A2 /* SearchVC+UICollectionViewDataSource.swift */; };
+		46841B0A299FC8F8005BD5A2 /* SearchVC+UICollectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841B09299FC8F8005BD5A2 /* SearchVC+UICollectionDelegate.swift */; };
+		46841B0C299FC948005BD5A2 /* SearchVC+UISearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46841B0B299FC948005BD5A2 /* SearchVC+UISearchBarDelegate.swift */; };
 		46A0EAA3298D288000B2E29B /* AccountInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A0EAA2298D288000B2E29B /* AccountInfoView.swift */; };
 		46A0EAA5298D3A1B00B2E29B /* UIColor+randomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A0EAA4298D3A1B00B2E29B /* UIColor+randomColor.swift */; };
 		46A429CA297FEBF800DC8DD3 /* MovieForDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A429C9297FEBF800DC8DD3 /* MovieForDetails.swift */; };
@@ -90,7 +106,7 @@
 		4638F8242993C5E900ADF2CF /* SearchNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNetworkManager.swift; sourceTree = "<group>"; };
 		4638F8262993C6DE00ADF2CF /* SearchMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovie.swift; sourceTree = "<group>"; };
 		4638F8282993D78C00ADF2CF /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
-		4638F82D2993E0C700ADF2CF /* SearchVC+createCollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchVC+createCollectionLayout.swift"; sourceTree = "<group>"; };
+		4638F82D2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchVC+UICollectionLayout.swift"; sourceTree = "<group>"; };
 		4648BBCF2977E0D1009BA708 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		4648BBD429780FDF009BA708 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		466520EE298A91D700B381BC /* FavoriteNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteNetworkManager.swift; sourceTree = "<group>"; };
@@ -106,6 +122,22 @@
 		4682612429797A380031A90D /* SessionID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionID.swift; sourceTree = "<group>"; };
 		4682612629797A450031A90D /* ValidUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidUser.swift; sourceTree = "<group>"; };
 		46826128297994EE0031A90D /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		46841AE8299FB0E9005BD5A2 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
+		46841AEB299FB39F005BD5A2 /* LoginViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelProtocol.swift; sourceTree = "<group>"; };
+		46841AED299FB3BD005BD5A2 /* HomeViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelProtocol.swift; sourceTree = "<group>"; };
+		46841AEF299FB3D8005BD5A2 /* SearchViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelProtocol.swift; sourceTree = "<group>"; };
+		46841AF1299FB3F3005BD5A2 /* FavoriteViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewModelProtocol.swift; sourceTree = "<group>"; };
+		46841AF3299FB407005BD5A2 /* SettingsViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelProtocol.swift; sourceTree = "<group>"; };
+		46841AF5299FB41A005BD5A2 /* DetailsViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModelProtocol.swift; sourceTree = "<group>"; };
+		46841AFA299FB4B2005BD5A2 /* LoginNetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkManagerProtocol.swift; sourceTree = "<group>"; };
+		46841AFC299FB4C8005BD5A2 /* HomeNetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNetworkManagerProtocol.swift; sourceTree = "<group>"; };
+		46841AFE299FB4DB005BD5A2 /* DetailsNetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsNetworkManagerProtocol.swift; sourceTree = "<group>"; };
+		46841B00299FB4EB005BD5A2 /* FavoriteNetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteNetworkManagerProtocol.swift; sourceTree = "<group>"; };
+		46841B02299FB500005BD5A2 /* SearchNetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNetworkManagerProtocol.swift; sourceTree = "<group>"; };
+		46841B04299FB530005BD5A2 /* StorageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageProtocol.swift; sourceTree = "<group>"; };
+		46841B06299FC81B005BD5A2 /* SearchVC+UICollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchVC+UICollectionViewDataSource.swift"; sourceTree = "<group>"; };
+		46841B09299FC8F8005BD5A2 /* SearchVC+UICollectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchVC+UICollectionDelegate.swift"; sourceTree = "<group>"; };
+		46841B0B299FC948005BD5A2 /* SearchVC+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchVC+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
 		46A0EAA2298D288000B2E29B /* AccountInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoView.swift; sourceTree = "<group>"; };
 		46A0EAA4298D3A1B00B2E29B /* UIColor+randomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+randomColor.swift"; sourceTree = "<group>"; };
 		46A429C9297FEBF800DC8DD3 /* MovieForDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieForDetails.swift; sourceTree = "<group>"; };
@@ -198,6 +230,7 @@
 				46A2680329756868000208C2 /* Application */,
 				46A26805297568F0000208C2 /* Models */,
 				46A26806297568FB000208C2 /* Views */,
+				46841AEA299FB370005BD5A2 /* Protocols */,
 				46092BB4297693B1002C489D /* ViewModels */,
 				46092BBF2976A861002C489D /* Controllers */,
 				4682612B297996470031A90D /* Services */,
@@ -254,7 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				46092BB729769861002C489D /* SearchViewController.swift */,
-				4638F82D2993E0C700ADF2CF /* SearchVC+createCollectionLayout.swift */,
+				46841B08299FC8D4005BD5A2 /* Extensions */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -384,11 +417,66 @@
 			path = UIHelpers;
 			sourceTree = "<group>";
 		};
+		46841AEA299FB370005BD5A2 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				46841AF7299FB43E005BD5A2 /* ViewModelProtocols */,
+				46841AF8299FB47B005BD5A2 /* NetworkProtocols */,
+				46841AF9299FB48E005BD5A2 /* StorageProtocols */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		46841AF7299FB43E005BD5A2 /* ViewModelProtocols */ = {
+			isa = PBXGroup;
+			children = (
+				46841AEB299FB39F005BD5A2 /* LoginViewModelProtocol.swift */,
+				46841AED299FB3BD005BD5A2 /* HomeViewModelProtocol.swift */,
+				46841AEF299FB3D8005BD5A2 /* SearchViewModelProtocol.swift */,
+				46841AF1299FB3F3005BD5A2 /* FavoriteViewModelProtocol.swift */,
+				46841AF3299FB407005BD5A2 /* SettingsViewModelProtocol.swift */,
+				46841AF5299FB41A005BD5A2 /* DetailsViewModelProtocol.swift */,
+			);
+			path = ViewModelProtocols;
+			sourceTree = "<group>";
+		};
+		46841AF8299FB47B005BD5A2 /* NetworkProtocols */ = {
+			isa = PBXGroup;
+			children = (
+				46841AFA299FB4B2005BD5A2 /* LoginNetworkManagerProtocol.swift */,
+				46841AFC299FB4C8005BD5A2 /* HomeNetworkManagerProtocol.swift */,
+				46841AFE299FB4DB005BD5A2 /* DetailsNetworkManagerProtocol.swift */,
+				46841B00299FB4EB005BD5A2 /* FavoriteNetworkManagerProtocol.swift */,
+				46841B02299FB500005BD5A2 /* SearchNetworkManagerProtocol.swift */,
+			);
+			path = NetworkProtocols;
+			sourceTree = "<group>";
+		};
+		46841AF9299FB48E005BD5A2 /* StorageProtocols */ = {
+			isa = PBXGroup;
+			children = (
+				46841B04299FB530005BD5A2 /* StorageProtocol.swift */,
+			);
+			path = StorageProtocols;
+			sourceTree = "<group>";
+		};
+		46841B08299FC8D4005BD5A2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				46841B06299FC81B005BD5A2 /* SearchVC+UICollectionViewDataSource.swift */,
+				46841B09299FC8F8005BD5A2 /* SearchVC+UICollectionDelegate.swift */,
+				46841B0B299FC948005BD5A2 /* SearchVC+UISearchBarDelegate.swift */,
+				4638F82D2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		46A2680329756868000208C2 /* Application */ = {
 			isa = PBXGroup;
 			children = (
 				4608495A29756696009B7096 /* AppDelegate.swift */,
 				4608495C29756696009B7096 /* SceneDelegate.swift */,
+				46841AE8299FB0E9005BD5A2 /* Dynamic.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -598,8 +686,10 @@
 				46A429D9297FF76A00DC8DD3 /* StandartActivityIndicator.swift in Sources */,
 				4608495F29756696009B7096 /* HomeViewController.swift in Sources */,
 				46BDFF802982BC0500C09A5A /* Video.swift in Sources */,
+				46841B01299FB4EB005BD5A2 /* FavoriteNetworkManagerProtocol.swift in Sources */,
 				466520F3298A9C3E00B381BC /* FavoriteMovieCollectionViewCell.swift in Sources */,
 				46A7619C297EDAAF00AF5B39 /* HeaderSupplementaryView.swift in Sources */,
+				46841B0C299FC948005BD5A2 /* SearchVC+UISearchBarDelegate.swift in Sources */,
 				46826129297994EE0031A90D /* SettingsViewController.swift in Sources */,
 				46D2C44F299BA6530069BE6E /* MockSearchCollectionViewCell.swift in Sources */,
 				46AF4BF8298A5F3A00FE7223 /* SessionIDRealm.swift in Sources */,
@@ -607,39 +697,53 @@
 				46A4B2192994EBC000449A39 /* HomeVC+createCollectionLayout.swift in Sources */,
 				466A7F312989577B00C841D3 /* AccountDetailsRealm.swift in Sources */,
 				468261202979627D0031A90D /* LoginViewModel.swift in Sources */,
+				46841AEE299FB3BD005BD5A2 /* HomeViewModelProtocol.swift in Sources */,
 				46AF4BF6298A5D9300FE7223 /* FavoritesStatusResponse.swift in Sources */,
 				46A429D7297FF72500DC8DD3 /* StandartStackView.swift in Sources */,
 				4638F8292993D78C00ADF2CF /* SearchCollectionViewCell.swift in Sources */,
 				466C9DD5298BC9B100DF2F03 /* SettingsViewModel.swift in Sources */,
+				46841B05299FB530005BD5A2 /* StorageProtocol.swift in Sources */,
 				46092BB829769861002C489D /* SearchViewController.swift in Sources */,
 				46A429CA297FEBF800DC8DD3 /* MovieForDetails.swift in Sources */,
 				46A429D1297FF69600DC8DD3 /* StandartLabel.swift in Sources */,
 				46A0EAA3298D288000B2E29B /* AccountInfoView.swift in Sources */,
+				46841AF0299FB3D8005BD5A2 /* SearchViewModelProtocol.swift in Sources */,
 				4615EFDE29786AAD006C5A54 /* LoginUIHelper.swift in Sources */,
 				46092BBC2976A202002C489D /* FavoritesViewController.swift in Sources */,
 				46A76198297EC29400AF5B39 /* MoviesForCollection.swift in Sources */,
 				4682612729797A450031A90D /* ValidUser.swift in Sources */,
+				46841AF6299FB41A005BD5A2 /* DetailsViewModelProtocol.swift in Sources */,
 				466520EF298A91D700B381BC /* FavoriteNetworkManager.swift in Sources */,
 				46092BC22976AAC5002C489D /* PosterCollectionViewCell.swift in Sources */,
 				46A0EAA5298D3A1B00B2E29B /* UIColor+randomColor.swift in Sources */,
 				4605F92B2978392D004570C6 /* UITextField+setIcon.swift in Sources */,
 				46092BBE2976A47E002C489D /* DetailsViewController.swift in Sources */,
+				46841B07299FC81B005BD5A2 /* SearchVC+UICollectionViewDataSource.swift in Sources */,
+				46841AF2299FB3F3005BD5A2 /* FavoriteViewModelProtocol.swift in Sources */,
 				46092BBA2976A068002C489D /* MainTabBarController.swift in Sources */,
+				46841AEC299FB39F005BD5A2 /* LoginViewModelProtocol.swift in Sources */,
 				4608495B29756696009B7096 /* AppDelegate.swift in Sources */,
 				4638F8232993C5BD00ADF2CF /* SearchViewModel.swift in Sources */,
+				46841AFF299FB4DB005BD5A2 /* DetailsNetworkManagerProtocol.swift in Sources */,
 				46A76192297E911300AF5B39 /* HomeViewModel.swift in Sources */,
 				466A7F2C2989507E00C841D3 /* AccountDetails.swift in Sources */,
+				46841AFB299FB4B2005BD5A2 /* LoginNetworkManagerProtocol.swift in Sources */,
+				46841B0A299FC8F8005BD5A2 /* SearchVC+UICollectionDelegate.swift in Sources */,
+				46841B03299FB500005BD5A2 /* SearchNetworkManagerProtocol.swift in Sources */,
 				4682611E297957670031A90D /* LoginNetworkManager.swift in Sources */,
 				4608495D29756696009B7096 /* SceneDelegate.swift in Sources */,
+				46841AE9299FB0E9005BD5A2 /* Dynamic.swift in Sources */,
 				46A76194297E914500AF5B39 /* HomeNetworkManager.swift in Sources */,
 				4638F8252993C5E900ADF2CF /* SearchNetworkManager.swift in Sources */,
+				46841AFD299FB4C8005BD5A2 /* HomeNetworkManagerProtocol.swift in Sources */,
 				46A429D3297FF6BF00DC8DD3 /* SubtitleLabel.swift in Sources */,
 				46BDFF822982CE8C00C09A5A /* TrailerCollectionViewCell.swift in Sources */,
 				460F60F129913A46006C684D /* CompanyCollectionViewCell.swift in Sources */,
-				4638F82E2993E0C700ADF2CF /* SearchVC+createCollectionLayout.swift in Sources */,
+				4638F82E2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift in Sources */,
 				46AF4BFA298A662500FE7223 /* FavoritesMovies.swift in Sources */,
 				46092BB62976963E002C489D /* Genres.swift in Sources */,
 				4614B707297AAF0400E7E4EF /* SignUpWebViewController.swift in Sources */,
+				46841AF4299FB407005BD5A2 /* SettingsViewModelProtocol.swift in Sources */,
 				46A429CE297FF22E00DC8DD3 /* DetailsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

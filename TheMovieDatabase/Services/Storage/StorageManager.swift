@@ -8,14 +8,6 @@
 import Foundation
 import RealmSwift
 
-protocol StorageProtocol {
-    func saveSessionIDToStorage(_ id: String)
-    func saveAccountDetailsToStorage(_ user: User)
-    func getAccountDetailsFromStorage() -> AccountDetailsRealm?
-    func getAccountIDFromStorage() -> Int
-    func getSessionIDFromStorage() -> String
-}
-
 class StorageManager: StorageProtocol {
     private let realm = try! Realm()
     

@@ -8,20 +8,6 @@
 import Foundation
 import Alamofire
 
-protocol LoginNetworkManagerProtocol {
-    
-    func createNewToken(_ completion: @escaping (String) -> Void)
-    
-    func validateUser(withName name: String,
-                      password: String,
-                      forToken token: String,
-                      _ completion: @escaping (Bool) -> ())
-    
-    func makeSession(withToken token: String, _ completion: @escaping (String) -> ())
-    
-    func downloadAccountDetails(sessionID: String, _ completion: @escaping (User) -> ())
-}
-
 class LoginNetworkManager: LoginNetworkManagerProtocol {
     
     private let apiKey = "de9681923f09382fe42f437144685b94"

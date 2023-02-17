@@ -8,10 +8,6 @@
 import Foundation
 import Alamofire
 
-protocol SearchNetworkManagerProtocol {
-    func seacthMoviesBy(_ query: String, _ completion: @escaping (SearchMovies) -> ())
-}
-
 class SearchNetworkManager: SearchNetworkManagerProtocol {
     private let apiKey = "de9681923f09382fe42f437144685b94"
     

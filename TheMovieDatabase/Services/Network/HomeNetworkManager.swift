@@ -8,12 +8,6 @@
 import Foundation
 import Alamofire
 
-protocol HomeNetworkManagerProtocol {
-    
-    func downloadGenres(_ completion: @escaping ([Genre]) -> Void)
-    func downloadMoviesByGenre(_ genreID: String, _ completion: @escaping (MoviesForCollection) -> Void)
-}
-
 class HomeNetworkManager: HomeNetworkManagerProtocol {
     
     private let apiKey = "de9681923f09382fe42f437144685b94"
