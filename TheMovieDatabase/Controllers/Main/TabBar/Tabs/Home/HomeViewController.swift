@@ -10,7 +10,7 @@ import UIKit
 class HomeViewController: UIViewController {
     
     private let viewModel: HomeViewModelProtocol?
-    
+     
     // MARK: - Init
     init(viewModel: HomeViewModelProtocol?) {
         self.viewModel = viewModel
@@ -30,19 +30,17 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureViewModelObserver()
         getAllData()
         
         configureHierarchy()
         configureDataSource()
     }
     
+    // MARK: - Data
     private func getAllData() {
-        DispatchQueue.main.async {
-            self.viewModel?.getGenres {
-                self.viewModel?.getMovies {
-                    self.collectionView.reloadData()
-                }
-            }
+        self.viewModel?.getGenres {
+            self.viewModel?.getMovies()
         }
     }
 }
@@ -61,7 +59,7 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: movieCellID, for: indexPath) as? PosterCollectionViewCell else { return UICollectionViewCell() }
         
-        let moviesArray = self.viewModel?.moviesDictionary[indexPath.section]
+        let moviesArray = self.viewModel?.moviesDictionary.value?[indexPath.section]
         guard let movie = moviesArray?[indexPath.item] else { return UICollectionViewCell() }
         
         cell.configure(forMovie: movie)
@@ -72,7 +70,7 @@ extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: sectionHeaderID, for: indexPath) as! HeaderSupplementaryView
         
-        let title = viewModel?.genres[indexPath.section].name
+        let title = viewModel?.genres.value?[indexPath.section].name
         headerView.configure(withText: title ?? "Section \(indexPath.section)")
         
         return headerView
@@ -87,7 +85,7 @@ extension HomeViewController: UICollectionViewDelegate {
                                          storageManager: StorageManager())
         let detailsVC = DetailsViewController(viewModel: detailsVM)
         
-        let moviesArray = self.viewModel?.moviesDictionary[indexPath.section]
+        let moviesArray = self.viewModel?.moviesDictionary.value?[indexPath.section]
         guard let movie = moviesArray?[indexPath.item],
               let movieID = movie.id else { return }
         
@@ -122,5 +120,19 @@ extension HomeViewController {
     private func configureDataSource() {
         collectionView.dataSource = self
         collectionView.delegate = self
+    }
+    
+    private func configureViewModelObserver() {
+        self.viewModel?.genres.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+        
+        self.viewModel?.moviesDictionary.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
     }
 }

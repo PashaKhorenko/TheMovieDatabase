@@ -26,17 +26,4 @@ class Dynamic<T> {
     init(_ value: T) {
         self.value = value
     }
-    
-    
-//    var value: T? {
-//        didSet {
-//            listener?(value)
-//        }
-//    }
-//
-//    var listener: ((T?) -> ())?
-//
-//    func bind(listener: @escaping (T?) -> ()) {
-//        self.listener = listener
-//    }
 }

@@ -10,36 +10,34 @@ import Foundation
 class HomeViewModel: HomeViewModelProtocol {
     
     internal let networkManager: HomeNetworkManagerProtocol?
-    
+
     init(networkManager: HomeNetworkManagerProtocol?) {
         self.networkManager = networkManager
     }
     
-    var genres: [Genre] = []
-    var moviesDictionary: [Int: [MovieForCollection]] = [:]
+    var genres: Dynamic<[Genre]> = Dynamic([])
+    var moviesDictionary: Dynamic<[Int: [MovieForCollection]]> = Dynamic([:])
     
     func getGenres(_ completion: @escaping () -> ()) {
         networkManager?.downloadGenres { [weak self] genres in
-            guard let self else { return }
-            self.genres = genres
+            self?.genres.value = genres
             completion()
         }
     }
     
-    func getMovies(_ completion: @escaping () -> ()) {
-        for (index, _) in genres.enumerated() {
+    func getMovies() {
+        guard let array = genres.value else { return }
+        
+        for (index, _) in array.enumerated() {
             self.getMoviesForSection(index) { [weak self] movies in
-                guard let self else { return }
-                self.moviesDictionary[index] = movies
-                
-                completion()
+                self?.moviesDictionary.value?[index] = movies
             }
         }
     }
     
     internal func getMoviesForSection(_ index: Int,
                                      _ completion: @escaping ([MovieForCollection]) -> ()) {
-        guard let genreId = self.genres[index].id else {
+        guard let genreId = self.genres.value?[index].id else {
             print("Failed to get genre id for section \(index)")
             return
         }
@@ -55,12 +53,12 @@ class HomeViewModel: HomeViewModelProtocol {
     }
     
     func numberOfSection() -> Int {
-        return genres.count
+        return genres.value?.count ?? 0
     }
     
     func numberOfItemsIn(_ section: Int) -> Int {
-        guard let array = self.moviesDictionary[section] else { return 0 }
+        guard let array = self.moviesDictionary.value?[section] else { return 0 }
         return array.count
     }
-
+    
 }
