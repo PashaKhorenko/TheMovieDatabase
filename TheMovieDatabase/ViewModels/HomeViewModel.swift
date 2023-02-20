@@ -18,10 +18,9 @@ class HomeViewModel: HomeViewModelProtocol {
     var genres: Dynamic<[Genre]> = Dynamic([])
     var moviesDictionary: Dynamic<[Int: [MovieForCollection]]> = Dynamic([:])
     
-    func getGenres(_ completion: @escaping () -> ()) {
+    func getGenres() {
         networkManager?.downloadGenres { [weak self] genres in
             self?.genres.value = genres
-            completion()
         }
     }
     

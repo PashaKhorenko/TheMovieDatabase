@@ -13,7 +13,7 @@ protocol HomeViewModelProtocol {
     var genres: Dynamic<[Genre]> { get set }
     var moviesDictionary: Dynamic<[Int: [MovieForCollection]]> { get set }
     
-    func getGenres(_ completion: @escaping () -> ())
+    func getGenres()
     func getMovies()
     
     func getMoviesForSection(_ index: Int,

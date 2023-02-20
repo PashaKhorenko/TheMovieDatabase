@@ -81,6 +81,8 @@
 		46C381E42979402D00553768 /* RequestToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C381E32979402D00553768 /* RequestToken.swift */; };
 		46C4D7DC297A9CB200DA3997 /* loginAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 46C4D7DB297A9CB200DA3997 /* loginAnimation.json */; };
 		46D2C44F299BA6530069BE6E /* MockSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D2C44E299BA6530069BE6E /* MockSearchCollectionViewCell.swift */; };
+		46D570FE29A393F100B03210 /* HomeVC+CollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D570FD29A393F100B03210 /* HomeVC+CollectionDataSource.swift */; };
+		46D5710029A3940600B03210 /* HomeVC+CollectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D570FF29A3940600B03210 /* HomeVC+CollectionDelegate.swift */; };
 		57A3740A02EAA20E67DBBB0C /* Pods_TheMovieDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F41EE0F02ABB0EB586B668F /* Pods_TheMovieDatabase.framework */; };
 /* End PBXBuildFile section */
 
@@ -161,6 +163,8 @@
 		46C381E32979402D00553768 /* RequestToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestToken.swift; sourceTree = "<group>"; };
 		46C4D7DB297A9CB200DA3997 /* loginAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loginAnimation.json; sourceTree = "<group>"; };
 		46D2C44E299BA6530069BE6E /* MockSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSearchCollectionViewCell.swift; sourceTree = "<group>"; };
+		46D570FD29A393F100B03210 /* HomeVC+CollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeVC+CollectionDataSource.swift"; sourceTree = "<group>"; };
+		46D570FF29A3940600B03210 /* HomeVC+CollectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeVC+CollectionDelegate.swift"; sourceTree = "<group>"; };
 		7F41EE0F02ABB0EB586B668F /* Pods_TheMovieDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TheMovieDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A15714AB87E7E76211A452D5 /* Pods-TheMovieDatabase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheMovieDatabase.release.xcconfig"; path = "Target Support Files/Pods-TheMovieDatabase/Pods-TheMovieDatabase.release.xcconfig"; sourceTree = "<group>"; };
 		A8F940E5A892D3C80A09006E /* Pods-TheMovieDatabase.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheMovieDatabase.debug.xcconfig"; path = "Target Support Files/Pods-TheMovieDatabase/Pods-TheMovieDatabase.debug.xcconfig"; sourceTree = "<group>"; };
@@ -278,7 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				4608495E29756696009B7096 /* HomeViewController.swift */,
-				46A4B2182994EBC000449A39 /* HomeVC+UICollectionLayout.swift */,
+				46D570FC29A393CD00B03210 /* Extensions */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -542,6 +546,16 @@
 			path = LottieAnimations;
 			sourceTree = "<group>";
 		};
+		46D570FC29A393CD00B03210 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				46A4B2182994EBC000449A39 /* HomeVC+UICollectionLayout.swift */,
+				46D570FD29A393F100B03210 /* HomeVC+CollectionDataSource.swift */,
+				46D570FF29A3940600B03210 /* HomeVC+CollectionDelegate.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		7738AD592E35B53686905B92 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -674,6 +688,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46D570FE29A393F100B03210 /* HomeVC+CollectionDataSource.swift in Sources */,
 				4682612529797A380031A90D /* SessionID.swift in Sources */,
 				46C381E42979402D00553768 /* RequestToken.swift in Sources */,
 				4638F8272993C6DE00ADF2CF /* SearchMovie.swift in Sources */,
@@ -737,6 +752,7 @@
 				4638F8252993C5E900ADF2CF /* SearchNetworkManager.swift in Sources */,
 				46841AFD299FB4C8005BD5A2 /* HomeNetworkManagerProtocol.swift in Sources */,
 				46A429D3297FF6BF00DC8DD3 /* SubtitleLabel.swift in Sources */,
+				46D5710029A3940600B03210 /* HomeVC+CollectionDelegate.swift in Sources */,
 				46BDFF822982CE8C00C09A5A /* TrailerCollectionViewCell.swift in Sources */,
 				460F60F129913A46006C684D /* CompanyCollectionViewCell.swift in Sources */,
 				4638F82E2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift in Sources */,
