@@ -27,6 +27,9 @@
 		4638F8272993C6DE00ADF2CF /* SearchMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638F8262993C6DE00ADF2CF /* SearchMovie.swift */; };
 		4638F8292993D78C00ADF2CF /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638F8282993D78C00ADF2CF /* SearchCollectionViewCell.swift */; };
 		4638F82E2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638F82D2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift */; };
+		463DE6F229A4DA74001CFC09 /* FavoritesVC+UICollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463DE6F129A4DA74001CFC09 /* FavoritesVC+UICollectionDataSource.swift */; };
+		463DE6F429A4DA8B001CFC09 /* FavotritesVC+UICollectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463DE6F329A4DA8B001CFC09 /* FavotritesVC+UICollectionDelegate.swift */; };
+		463DE6F629A4DAA1001CFC09 /* FavoritesVC+UICollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463DE6F529A4DAA1001CFC09 /* FavoritesVC+UICollectionLayout.swift */; };
 		4648BBD02977E0D1009BA708 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4648BBCF2977E0D1009BA708 /* SignUpViewController.swift */; };
 		4648BBD529780FDF009BA708 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4648BBD429780FDF009BA708 /* LoginViewController.swift */; };
 		466520EF298A91D700B381BC /* FavoriteNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466520EE298A91D700B381BC /* FavoriteNetworkManager.swift */; };
@@ -109,6 +112,9 @@
 		4638F8262993C6DE00ADF2CF /* SearchMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovie.swift; sourceTree = "<group>"; };
 		4638F8282993D78C00ADF2CF /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		4638F82D2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchVC+UICollectionLayout.swift"; sourceTree = "<group>"; };
+		463DE6F129A4DA74001CFC09 /* FavoritesVC+UICollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoritesVC+UICollectionDataSource.swift"; sourceTree = "<group>"; };
+		463DE6F329A4DA8B001CFC09 /* FavotritesVC+UICollectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavotritesVC+UICollectionDelegate.swift"; sourceTree = "<group>"; };
+		463DE6F529A4DAA1001CFC09 /* FavoritesVC+UICollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoritesVC+UICollectionLayout.swift"; sourceTree = "<group>"; };
 		4648BBCF2977E0D1009BA708 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		4648BBD429780FDF009BA708 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		466520EE298A91D700B381BC /* FavoriteNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteNetworkManager.swift; sourceTree = "<group>"; };
@@ -300,6 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				46092BBB2976A202002C489D /* FavoritesViewController.swift */,
+				463DE6F029A4DA4C001CFC09 /* Extensions */,
 			);
 			path = Favorite;
 			sourceTree = "<group>";
@@ -342,6 +349,16 @@
 				4638F8262993C6DE00ADF2CF /* SearchMovie.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		463DE6F029A4DA4C001CFC09 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				463DE6F129A4DA74001CFC09 /* FavoritesVC+UICollectionDataSource.swift */,
+				463DE6F329A4DA8B001CFC09 /* FavotritesVC+UICollectionDelegate.swift */,
+				463DE6F529A4DAA1001CFC09 /* FavoritesVC+UICollectionLayout.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		4648BBD329780FC8009BA708 /* Login */ = {
@@ -710,6 +727,7 @@
 				46AF4BF8298A5F3A00FE7223 /* SessionIDRealm.swift in Sources */,
 				46A429CC297FF1C500DC8DD3 /* DetailsNetworkManager.swift in Sources */,
 				46A4B2192994EBC000449A39 /* HomeVC+UICollectionLayout.swift in Sources */,
+				463DE6F429A4DA8B001CFC09 /* FavotritesVC+UICollectionDelegate.swift in Sources */,
 				466A7F312989577B00C841D3 /* AccountDetailsRealm.swift in Sources */,
 				468261202979627D0031A90D /* LoginViewModel.swift in Sources */,
 				46841AEE299FB3BD005BD5A2 /* HomeViewModelProtocol.swift in Sources */,
@@ -737,6 +755,8 @@
 				46841AF2299FB3F3005BD5A2 /* FavoriteViewModelProtocol.swift in Sources */,
 				46092BBA2976A068002C489D /* MainTabBarController.swift in Sources */,
 				46841AEC299FB39F005BD5A2 /* LoginViewModelProtocol.swift in Sources */,
+				463DE6F629A4DAA1001CFC09 /* FavoritesVC+UICollectionLayout.swift in Sources */,
+				463DE6F229A4DA74001CFC09 /* FavoritesVC+UICollectionDataSource.swift in Sources */,
 				4608495B29756696009B7096 /* AppDelegate.swift in Sources */,
 				4638F8232993C5BD00ADF2CF /* SearchViewModel.swift in Sources */,
 				46841AFF299FB4DB005BD5A2 /* DetailsNetworkManagerProtocol.swift in Sources */,
