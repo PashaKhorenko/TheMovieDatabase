@@ -31,6 +31,7 @@ class FavoritesViewController: UIViewController {
         
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
+        configureViewModelObserver()
         configureHierarchy()
         configureDataSource()
     }
@@ -38,9 +39,7 @@ class FavoritesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel?.featchFavoriteMovies {
-            self.collectionView.reloadData()
-        }
+        viewModel?.featchFavoriteMovies()
     }
 }
 
@@ -71,7 +70,7 @@ extension FavoritesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.favoriteCellID, for: indexPath) as? FavoriteMovieCollectionViewCell else { return UICollectionViewCell() }
         
-        guard let movie = viewModel?.favoriteMovies?.results?[indexPath.item] else { return UICollectionViewCell() }
+        guard let movie = viewModel?.favoriteMovies.value?[indexPath.item] else { return UICollectionViewCell() }
         
         cell.configure(forMovie: movie)
         
@@ -87,7 +86,7 @@ extension FavoritesViewController: UICollectionViewDelegate {
                                          storageManager: StorageManager())
         let detailsVC = DetailsViewController(viewModel: detailsVM)
                 
-        let moviesArray = viewModel?.favoriteMovies?.results
+        let moviesArray = viewModel?.favoriteMovies.value
         guard let movieID = moviesArray?[indexPath.item].id else { return }
         
         detailsVC.movieID = movieID
@@ -102,13 +101,9 @@ extension FavoritesViewController: UICollectionViewDelegate {
             guard let self,
                   let indexPath = indexPaths.first,
                   let viewModel = self.viewModel,
-                  let movieID = viewModel.favoriteMovies?.results?[indexPath.item].id  else { return }
+                  let movieID = viewModel.favoriteMovies.value?[indexPath.item].id  else { return }
             
-            viewModel.removeFromFavorites(movieID: movieID) {
-                viewModel.featchFavoriteMovies {
-                    collectionView.reloadData()
-                }
-            }
+            viewModel.removeFromFavorites(movieID: movieID)
         }
         
         let uiMenu = UIMenu(children: [removeFromFavoriteAction])
@@ -142,6 +137,14 @@ extension FavoritesViewController {
     private func configureDataSource() {
         collectionView.dataSource = self
         collectionView.delegate = self
+    }
+    
+    private func configureViewModelObserver() {
+        self.viewModel?.favoriteMovies.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
     }
 }
 
@@ -188,4 +191,3 @@ extension FavoritesViewController {
         return layout
     }
 }
-

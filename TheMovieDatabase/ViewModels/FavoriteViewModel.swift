@@ -17,32 +17,31 @@ class FavoriteViewModel: FavoriteViewModelProtocol {
         self.storageManager = storageManager
     }
     
-    var favoriteMovies: FavoriteMovies?
+    var favoriteMovies: Dynamic<[FavoriteMovie]> = Dynamic([])
     
-    func featchFavoriteMovies(_ completion: @escaping () -> ()) {
+    func featchFavoriteMovies() {
         guard let accountID = storageManager?.getAccountIDFromStorage(),
               let sessionID = storageManager?.getSessionIDFromStorage() else { return }
         
         networkManager?.downloadFavoriteMovies(accountID: accountID,
                                               sessionID: sessionID) { movies in
-            self.favoriteMovies = movies
-            completion()
+            self.favoriteMovies.value = movies
         }
     }
     
     func numberOfItemsInSection() -> Int {
-        guard let count = favoriteMovies?.results?.count else { return 0 }
-        return count
+        guard let array = favoriteMovies.value else { return 0 }
+        return array.count
     }
     
-    func removeFromFavorites(movieID: Int, _ completion: @escaping () -> ()) {
+    func removeFromFavorites(movieID: Int) {
         guard let accountID = storageManager?.getAccountIDFromStorage(),
               let sessionID = storageManager?.getSessionIDFromStorage() else { return }
         
         networkManager?.removeFromFavorites(accountID: accountID,
                                            sessionID: sessionID,
                                            movieID: movieID) {
-            completion()
+            self.featchFavoriteMovies()
         }
     }
     

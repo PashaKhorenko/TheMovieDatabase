@@ -11,7 +11,7 @@ import Alamofire
 class FavoriteNetworkManager: FavoriteNetworkManagerProtocol {
     private let apiKey = "de9681923f09382fe42f437144685b94"
     
-    func downloadFavoriteMovies(accountID: Int, sessionID: String, _ completion: @escaping (FavoriteMovies) -> ()) {
+    func downloadFavoriteMovies(accountID: Int, sessionID: String, _ completion: @escaping ([FavoriteMovie]) -> ()) {
         let url = "https://api.themoviedb.org/3/account/\(accountID)/favorite/movies?api_key=\(apiKey)&session_id=\(sessionID)&sort_by=created_at.asc"
         
         AF.request(url)
@@ -19,7 +19,7 @@ class FavoriteNetworkManager: FavoriteNetworkManagerProtocol {
             .responseDecodable(of: FavoriteMovies.self) { (response) in
                 switch response.result {
                 case .success:
-                    guard let favoriteMovies = response.value else {
+                    guard let favoriteMovies = response.value?.results else {
                         print("Empty response data when downloading favoirite movies")
                         return
                     }

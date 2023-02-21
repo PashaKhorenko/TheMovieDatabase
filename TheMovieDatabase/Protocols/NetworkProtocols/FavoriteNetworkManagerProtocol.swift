@@ -10,7 +10,7 @@ import Foundation
 protocol FavoriteNetworkManagerProtocol {
     func downloadFavoriteMovies(accountID: Int,
                                 sessionID: String,
-                                _ completion: @escaping (FavoriteMovies) -> ())
+                                _ completion: @escaping ([FavoriteMovie]) -> ())
     
     func removeFromFavorites(accountID: Int,
                              sessionID: String,

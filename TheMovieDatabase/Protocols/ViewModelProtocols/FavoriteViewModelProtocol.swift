@@ -11,9 +11,9 @@ protocol FavoriteViewModelProtocol {
     var networkManager: FavoriteNetworkManagerProtocol? { get }
     var storageManager: StorageProtocol? { get }
     
-    var favoriteMovies: FavoriteMovies? { get set }
+    var favoriteMovies: Dynamic<[FavoriteMovie]> { get set }
     
-    func featchFavoriteMovies(_ completion: @escaping () -> ())
+    func featchFavoriteMovies()
     func numberOfItemsInSection() -> Int
-    func removeFromFavorites(movieID: Int, _ completion: @escaping () -> ())
+    func removeFromFavorites(movieID: Int)
 }
