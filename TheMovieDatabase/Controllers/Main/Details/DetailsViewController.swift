@@ -9,7 +9,7 @@ import UIKit
 
 class DetailsViewController: UIViewController {
     
-    private let viewModel: DetailsViewModelProtocol?
+    let viewModel: DetailsViewModelProtocol?
     
     // MARK: - Init
     init(viewModel: DetailsViewModelProtocol?) {
@@ -26,12 +26,12 @@ class DetailsViewController: UIViewController {
     
     private var isFavoriteMovie: Bool = false
     
-    private let trailetCellID = "TrailerCell"
-    private let companyCellID = "CompanyCell"
-    private let sectionHeaderID = "SectionHeader"
+    let trailetCellID = "TrailerCell"
+    let companyCellID = "CompanyCell"
+    let sectionHeaderID = "SectionHeader"
     
     // MARK: - UI elements
-    private lazy var mainScrollView: UIScrollView = {
+    lazy var mainScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.layer.cornerRadius = 30
         scrollView.delegate = self
@@ -46,7 +46,7 @@ class DetailsViewController: UIViewController {
     private let overviewStackView = StandartStackView()
     
     private let activityIndicator = StandartActivityIndicator(frame: .zero)
-    private lazy var posterImageView: UIImageView = {
+    lazy var posterImageView: UIImageView = {
         let viewWidth = self.view.bounds.width
         let frame = CGRect(x: 0, y: 0,
                            width: viewWidth,
@@ -150,6 +150,17 @@ class DetailsViewController: UIViewController {
     }
     
     // MARK: - Settings
+    
+    private func setupViews() {
+        configurationNavigationBar()
+        self.view.backgroundColor = .systemBackground
+        self.posterImageView.backgroundColor = .systemGray
+                
+        addAllSubviews()
+        
+        setConstraints()
+    }
+    
     @objc func rightBarButtonTapped(_ sender: UIBarButtonItem) {
         viewModel?.markAsFavorites(movieID: self.movieID) { statusBool in
             self.isFavoriteMovie = statusBool
@@ -171,16 +182,8 @@ class DetailsViewController: UIViewController {
         self.navigationController?.navigationBar.tintColor = .label
     }
     
-    private func setupViews() {
-        configurationNavigationBar()
-        self.view.backgroundColor = .systemBackground
-        self.posterImageView.backgroundColor = .systemGray
-                
-        posterImageView.addSubview(activityIndicator)
-        
-        view.addSubview(posterImageView)
-        mainScrollView.addSubview(titleLabel)
-        
+    // MARK: - Subview
+    private func addSubviewsToGeneralStackView() {
         generalStackView.addArrangedSubview(generalSubtitleLabel)
         generalStackView.addArrangedSubview(releaseDateLabel)
         generalStackView.addArrangedSubview(runtimeLabel)
@@ -189,24 +192,39 @@ class DetailsViewController: UIViewController {
         generalStackView.addArrangedSubview(revenueLabel)
         generalStackView.addArrangedSubview(ageRestrictionsLabel)
         generalStackView.addArrangedSubview(contriesLabel)
-        
-        mainScrollView.addSubview(generalStackView)
-        
+    }
+    
+    private func addSubviewsToReactionStackView() {
         reactionStackView.addArrangedSubview(reactionSubtitleLabel)
         reactionStackView.addArrangedSubview(popularityLabel)
-        
-        mainScrollView.addSubview(reactionStackView)
-        
+    }
+    
+    private func addSubviewToOverviewStackView() {
         overviewStackView.addArrangedSubview(overviewSubtitleLabel)
         overviewStackView.addArrangedSubview(overviewLabel)
+    }
+    
+    private func addAllSubviews() {
+        posterImageView.addSubview(activityIndicator)
         
+        view.addSubview(posterImageView)
+        mainScrollView.addSubview(titleLabel)
+        
+        addSubviewsToGeneralStackView()
+        mainScrollView.addSubview(generalStackView)
+        
+        addSubviewsToReactionStackView()
+        mainScrollView.addSubview(reactionStackView)
+        
+        addSubviewToOverviewStackView()
         mainScrollView.addSubview(overviewStackView)
+        
         mainScrollView.addSubview(collectionView)
         
         view.addSubview(mainScrollView)
-        
-        setConstraints()
     }
+    
+    // MARK: - Filling the UI
     
     private func populateUIFor(movie: MovieForDetails) {
         generalSubtitleLabel.text = "General Information"
@@ -227,75 +245,6 @@ class DetailsViewController: UIViewController {
         
         genresLabel.text = viewModel?.getGenreNamesFrom(list: movie.genres)
         ageRestrictionsLabel.text = viewModel?.getAgeRestrictions(movie.adult)
-    }
-}
-
-// MARK: - UICollectionViewDataSource
-extension DetailsViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        2
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel?.numberOfItemsIn(section: section) ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: trailetCellID, for: indexPath) as! TrailerCollectionViewCell
-            
-            cell.configureWith(viewModel?.videoArray.value, index: indexPath.item)
-            
-            return cell
-        default:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: companyCellID, for: indexPath) as! CompanyCollectionViewCell
-            
-            let company = viewModel?.movie.value??.productionCompanies?[indexPath.item]
-            cell.configureWith(company)
-            
-            return cell
-        }
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: sectionHeaderID, for: indexPath) as! HeaderSupplementaryView
-        
-        switch indexPath.section {
-        case 0:
-            headerView.configure(withText: "Trailers")
-        default:
-            headerView.configure(withText: "Production Companies")
-        }
-        
-        return headerView
-    }
-}
-
-// MARK: - UIScrollViewDelegate
-extension DetailsViewController: UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard scrollView == self.mainScrollView else { return }
-        
-        let viewWidth = self.view.bounds.width
-        let initialImageHeight = viewWidth * 1.1
-        let scrollPositionY = initialImageHeight + (scrollView.contentOffset.y - initialImageHeight)
-                        
-        if scrollPositionY > 0 {
-            UIView.animate(withDuration: 0.3) {
-                self.posterImageView.frame = CGRect(x: 0, y: 0,
-                                                    width: viewWidth, height: 150)
-                self.view.layoutIfNeeded()
-            }
-        } else {
-            UIView.animate(withDuration: 0.3) {
-                self.posterImageView.frame = CGRect(x: 0, y: 0,
-                                                    width: viewWidth, height: initialImageHeight)
-                self.view.layoutIfNeeded()
-            }
-        }
     }
 }
 
