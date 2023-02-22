@@ -91,16 +91,9 @@ class DetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel?.getMovie(withID: movieID) { [weak self] (movie) in
-            DispatchQueue.main.async {
-                self?.populateUIFor(movie: movie)
-            }
-        }
-        viewModel?.getVideo(byMovieID: movieID) {
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-        }
+        getAllData()
+        
+        configureViewModelObserver()
         
         setupViews()
     }
@@ -122,6 +115,39 @@ class DetailsViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = nil
     }
     
+    // MARK: - Private
+    
+    private func getAllData() {
+        viewModel?.getMovie(withID: movieID)
+        viewModel?.getVideo(byMovieID: movieID)
+    }
+    
+    private func configureViewModelObserver() {
+        self.viewModel?.movie.bind { [weak self] _ in
+            guard let optionalMovie = self?.viewModel?.movie.value else { return }
+            guard let movie = optionalMovie else { return }
+            
+            DispatchQueue.main.async {
+                self?.populateUIFor(movie: movie)
+            }
+        }
+        
+        self.viewModel?.videoArray.bind { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+        
+        self.viewModel?.posterImageData.bind { [weak self] _ in
+            guard let optionalData = self?.viewModel?.posterImageData.value,
+                  let data = optionalData else { return }
+            
+            DispatchQueue.main.async {
+                self?.posterImageView.image = UIImage(data: data)
+                self?.activityIndicator.stopAnimating()
+            }
+        }
+    }
     
     // MARK: - Settings
     @objc func rightBarButtonTapped(_ sender: UIBarButtonItem) {
@@ -187,13 +213,7 @@ class DetailsViewController: UIViewController {
         reactionSubtitleLabel.text = "Reactions"
         overviewSubtitleLabel.text = "Overview"
         
-        viewModel?.getImage(byPath: movie.posterPath) { [weak self] imageData in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                self.posterImageView.image = UIImage(data: imageData)
-                self.activityIndicator.stopAnimating()
-            }
-        }
+        viewModel?.getImage(byPath: movie.posterPath)
         
         titleLabel.text = movie.title
         
@@ -225,13 +245,13 @@ extension DetailsViewController: UICollectionViewDataSource {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: trailetCellID, for: indexPath) as! TrailerCollectionViewCell
             
-            cell.configureWith(viewModel?.videoArray, index: indexPath.item)
+            cell.configureWith(viewModel?.videoArray.value, index: indexPath.item)
             
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: companyCellID, for: indexPath) as! CompanyCollectionViewCell
             
-            let company = viewModel?.movie?.productionCompanies?[indexPath.item]
+            let company = viewModel?.movie.value??.productionCompanies?[indexPath.item]
             cell.configureWith(company)
             
             return cell

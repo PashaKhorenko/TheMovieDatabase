@@ -8,12 +8,12 @@
 import Foundation
 
 // MARK: - Video
-struct Video: Codable {
-    let results: [Result]?
+struct Videos: Codable {
+    let results: [Video]?
 }
 
-// MARK: - Result
-struct Result: Codable {
+// MARK: - Video
+struct Video: Codable {
     let official: Bool?
     let site: String?
     let key: String?

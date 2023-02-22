@@ -53,12 +53,11 @@ class TrailerCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Public
-    func configureWith(_ video: Video?, index: Int) {
+    func configureWith(_ video: [Video]?, index: Int) {
         self.activityIndicator.startAnimating()
         
         guard let video else { return }
-        guard let array = video.results else { return }
-        guard let videoKey = array[index].key else { return }
+        guard let videoKey = video[index].key else { return }
         
         DispatchQueue.main.async {
             self.playerView.load(withVideoId: videoKey)

@@ -11,12 +11,13 @@ protocol DetailsViewModelProtocol {
     var networkManager: DetailsNetworkManagerProtocol? { get }
     var storageManager: StorageProtocol? { get }
     
-    var movie: MovieForDetails? { get set }
-    var videoArray: Video? { get set }
+    var movie: Dynamic<MovieForDetails?> { get set }
+    var videoArray: Dynamic<[Video]> { get set }
+    var posterImageData: Dynamic<Data?> { get set }
     
-    func getMovie(withID movieID: Int, _ completion: @escaping (MovieForDetails) -> ())
-    func getImage(byPath path: String?, completion: @escaping (Data) -> ())
-    func getVideo(byMovieID movieID: Int, _ completion: @escaping () -> ())
+    func getMovie(withID movieID: Int)
+    func getVideo(byMovieID movieID: Int)
+    func getImage(byPath path: String?)
     
     func numberOfItemsIn(section: Int) -> Int
     

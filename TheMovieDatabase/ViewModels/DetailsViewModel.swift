@@ -12,49 +12,44 @@ class DetailsViewModel: DetailsViewModelProtocol {
     internal let networkManager: DetailsNetworkManagerProtocol?
     internal let storageManager: StorageProtocol?
     
-    var movie: MovieForDetails?
-    var videoArray: Video?
+    var movie: Dynamic<MovieForDetails?> = Dynamic(nil)
+    var videoArray: Dynamic<[Video]> = Dynamic([])
+    var posterImageData: Dynamic<Data?> = Dynamic(nil)
     
     init(networkManager: DetailsNetworkManagerProtocol?,
-         storageManager: StorageProtocol?,
-         movie: MovieForDetails? = nil,
-         videoArray: Video? = nil) {
+         storageManager: StorageProtocol?) {
         self.networkManager = networkManager
         self.storageManager = storageManager
-        self.movie = movie
-        self.videoArray = videoArray
     }
     
-    func getMovie(withID movieID: Int, _ completion: @escaping (MovieForDetails) -> ()) {
+    func getMovie(withID movieID: Int) {
         networkManager?.downloadMovie(withID: movieID) { [weak self] (movie) in
             guard let self else { return }
-            self.movie = movie
-            completion(movie)
+            self.movie.value = movie
         }
     }
     
-    func getImage(byPath path: String?, completion: @escaping (Data) -> ()) {
+    func getImage(byPath path: String?) {
         guard let path else { return }
         networkManager?.downloadImageData(byPath: path) { data in
-            completion(data)
+            self.posterImageData.value = data
         }
     }
     
-    func getVideo(byMovieID movieID: Int, _ completion: @escaping () -> ()) {
+    func getVideo(byMovieID movieID: Int) {
         networkManager?.downloadVideo(withID: movieID) { [weak self] video in
-            self?.videoArray = video
-            completion()
+            self?.videoArray.value = video
         }
     }
     
     func numberOfItemsIn(section: Int) -> Int {
         switch section {
         case 0:
-            guard let count = videoArray?.results?.count else { return 0 }
-            return count
+            guard let array = videoArray.value else { return 0 }
+            return array.count
         default:
-            guard let count = movie?.productionCompanies?.count else { return 0 }
-            return count
+            guard let array = movie.value??.productionCompanies else { return 0 }
+            return array.count
         }
     }
     
