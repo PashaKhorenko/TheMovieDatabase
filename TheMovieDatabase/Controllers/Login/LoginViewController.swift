@@ -13,7 +13,8 @@ class LoginViewController: UIViewController {
     private let viewModel: LoginViewModelProtocol?
     
     // MARK: - Init
-    init(uiManager: LoginUIHelperProtocol! = LoginUIHelper(), viewModel: LoginViewModelProtocol?) {
+    init(uiManager: LoginUIHelperProtocol! = LoginUIHelper(),
+         viewModel: LoginViewModelProtocol?) {
         self.uiManager = uiManager
         self.viewModel = viewModel
         
@@ -42,6 +43,7 @@ class LoginViewController: UIViewController {
         
         delegatesSetup()
         setupViews()
+        configureViewModelObserver()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,44 +63,70 @@ class LoginViewController: UIViewController {
     }
     
     private func logIntoAccountAction() {
-        print(#function)
-        
-        guard let usernameText = self.usernameTextField.text, !usernameText.isEmpty,
-              let passwordText = self.passwordTextField.text, !passwordText.isEmpty else {
-            print("Empty username or password text field")
-            return
+        self.activityIndicator.startAnimating()
+        self.viewModel?.fetchRequestToken()
+    }
+    
+    // Data binding
+    private func configureViewModelObserver() {
+        // When we received the RequestToken, we take the text from UITextFieds,
+        // check them and send the data for user validation.
+        self.viewModel?.requestToken.bind { [weak self] _ in
+            guard let requestToken = self?.viewModel?.requestToken.value else { return }
+            print("Request Token: \(requestToken)")
+            
+            guard let usernameText = self?.usernameTextField.text, !usernameText.isEmpty,
+                  let passwordText = self?.passwordTextField.text, !passwordText.isEmpty else {
+                print("Empty username or password text field")
+                return
+            }
+            
+            guard let username = self?.viewModel?.getValidText(usernameText),
+                  let password = self?.viewModel?.getValidText(passwordText) else { return }
+            
+            self?.viewModel?.validateUser(withName: username,
+                                          password: password)
         }
         
-        self.activityIndicator.startAnimating()
-        
-        guard let username = self.viewModel?.getValidText(usernameText),
-              let password = self.viewModel?.getValidText(passwordText) else { return }
-        
-        self.viewModel?.fetchRequestToken {
-            print("Token received")
-            self.viewModel?.validateUser(withName: username,
-                                        password: password) { isValid in
-                print("Validation User")
-                
-                guard isValid else {
-                    self.activityIndicator.stopAnimating()
-                    self.showAlert()
-                    return
-                }
-                    
-                
-                self.viewModel?.featchSessionID { id in
-                    print("SessionID: \(id)")
-                    self.activityIndicator.stopAnimating()
-                    self.viewModel?.saveSessionID(id)
-                    
-                    self.viewModel?.featchAccountDetails(id) { accountDetails in
-                        self.viewModel?.saveAccountDetails(accountDetails)
-                    }
-                    
-                    self.viewModel?.loginToTheAccount()
-                }
+        // When we receive a response about the validity of the user, we make a request
+        // to receive the SessionID or show a message about a validation error.
+        self.viewModel?.isValidUser.bind { [weak self] _ in
+            guard let isValidUserOptional = self?.viewModel?.isValidUser.value,
+                  let isValidUser = isValidUserOptional else { return }
+            print("Is Valid User: \(isValidUser)")
+            
+            guard isValidUser else {
+                self?.activityIndicator.stopAnimating()
+                self?.showAlert()
+                return
             }
+            
+            self?.viewModel?.featchSessionID()
+        }
+        
+        // After receiving the SessionID, we save it to Realm and make a request
+        // to receive AccountDetails.
+        self.viewModel?.sessionId.bind { [weak self] _ in
+            guard let sessionId = self?.viewModel?.sessionId.value else { return }
+            print("Session ID: \(sessionId)")
+            
+            self?.activityIndicator.stopAnimating()
+            self?.viewModel?.saveSessionID()
+            
+            self?.viewModel?.featchAccountDetails()
+            
+        }
+        
+        // After receiving the AccountDetails we save them in Realm and log in to the account.
+        self.viewModel?.accountDetails.bind { [weak self] _ in
+            guard let optionalAccountDetails = self?.viewModel?.accountDetails.value,
+                  let accountDetails = optionalAccountDetails else { return }
+            print("Account Details: \(accountDetails)")
+            
+            self?.viewModel?.saveAccountDetails(accountDetails)
+            
+            self?.activityIndicator.stopAnimating()
+            self?.viewModel?.loginToTheAccount()
         }
     }
     

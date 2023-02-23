@@ -17,49 +17,54 @@ class LoginViewModel: LoginViewModelProtocol {
         self.storageManager = storageManager
     }
     
-    private var requestToken: String?
-    private var validUser: Bool?
+    var requestToken: Dynamic<String> = Dynamic("")
+    var isValidUser: Dynamic<Bool?> = Dynamic(nil)
+    var sessionId: Dynamic<String> = Dynamic("")
+    var accountDetails: Dynamic<User?> = Dynamic(nil)
     
     func getValidText(_ text: String) -> String {
         let trimmedString = text.trimmingCharacters(in: .whitespaces)
         return trimmedString
     }
     
-    func fetchRequestToken(_ completionHandler: @escaping () -> ()) {
+    func fetchRequestToken() {
         networkManager?.createNewToken { [weak self] token in
-            self?.requestToken = token
-            completionHandler()
+            self?.requestToken.value = token
         }
     }
     
-    func validateUser(withName name: String, password: String, _ completionHandler: @escaping (Bool) -> ()) {
-        guard let requestToken else { return }
+    func validateUser(withName name: String, password: String) {
+        guard let requestToken = requestToken.value else { return }
+        
         networkManager?.validateUser(withName: name,
                                     password: password,
                                     forToken: requestToken) { [weak self] isValid in
-            self?.validUser = isValid
-            completionHandler(isValid)
+            self?.isValidUser.value = isValid
         }
     }
     
-    func featchSessionID(_ completionHandler: @escaping (String) -> ()) {
-        guard let requestToken, let validUser else { return }
+    func featchSessionID() {
+        guard let requestToken = requestToken.value,
+              let isValidUserOptional = isValidUser.value,
+              let isValidUser = isValidUserOptional else { return }
         
-        if validUser {
+        if isValidUser {
             networkManager?.makeSession(withToken: requestToken) { id in
-                completionHandler(id)
+                self.sessionId.value = id
             }
         }
     }
     
-    func saveSessionID(_ id: String) {
+    func saveSessionID() {
+        guard let id = self.sessionId.value else { return }
         self.storageManager?.saveSessionIDToStorage(id)
     }
     
     
-    func featchAccountDetails(_ sessionID: String, _ completionHandler: @escaping (User) -> ()) {
-        networkManager?.downloadAccountDetails(sessionID: sessionID) { accountDetails in
-            completionHandler(accountDetails)
+    func featchAccountDetails() {
+        guard let id = self.sessionId.value else { return }
+        networkManager?.downloadAccountDetails(sessionID: id) { accountDetails in
+            self.accountDetails.value = accountDetails
         }
     }
     
