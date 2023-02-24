@@ -108,8 +108,8 @@ class LoginViewController: UIViewController {
         // After receiving the SessionID, we save it to Realm and make a request
         // to receive AccountDetails.
         self.viewModel?.sessionId.bind { [weak self] _ in
-//            guard let sessionIdOptional = self?.viewModel?.sessionId.value,
-//                  let sessionId = sessionIdOptional else { return }
+            guard let sessionIdOptional = self?.viewModel?.sessionId.value,
+                  let _ = sessionIdOptional else { return }
 //            print("Session ID: \(sessionId)")
             
             self?.viewModel?.saveSessionID()
@@ -120,10 +120,10 @@ class LoginViewController: UIViewController {
         // After receiving the AccountDetails we save them in Realm and log in to the account.
         self.viewModel?.accountDetails.bind { [weak self] _ in
             guard let optionalAccountDetails = self?.viewModel?.accountDetails.value,
-                  let accountDetails = optionalAccountDetails else { return }
+                  let _ = optionalAccountDetails else { return }
 //            print("Account Details: \(accountDetails)")
             
-            self?.viewModel?.saveAccountDetails(accountDetails)
+            self?.viewModel?.saveAccountDetails()
             
             self?.activityIndicator.stopAnimating()
             self?.viewModel?.loginToTheAccount()

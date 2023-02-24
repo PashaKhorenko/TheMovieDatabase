@@ -73,8 +73,11 @@ class LoginViewModel: LoginViewModelProtocol {
         }
     }
     
-    func saveAccountDetails(_ user: User) {
-        self.storageManager?.saveAccountDetailsToStorage(user)
+    func saveAccountDetails() {
+        guard let accountDetailsOptional = self.accountDetails.value,
+              let accountDetails = accountDetailsOptional else { return }
+        
+        self.storageManager?.saveAccountDetailsToStorage(accountDetails)
     }
     
     func loginToTheAccount() {

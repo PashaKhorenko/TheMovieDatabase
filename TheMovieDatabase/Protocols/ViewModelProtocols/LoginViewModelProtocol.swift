@@ -28,7 +28,7 @@ protocol LoginViewModelProtocol {
     func featchAccountDetails()
     
     func saveSessionID()
-    func saveAccountDetails(_ user: User)
+    func saveAccountDetails()
     
     func loginToTheAccount()
 }
