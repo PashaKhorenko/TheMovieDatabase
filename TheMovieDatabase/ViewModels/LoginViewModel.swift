@@ -17,9 +17,9 @@ class LoginViewModel: LoginViewModelProtocol {
         self.storageManager = storageManager
     }
     
-    var requestToken: Dynamic<String> = Dynamic("")
+    var requestToken: Dynamic<String?> = Dynamic(nil)
     var isValidUser: Dynamic<Bool?> = Dynamic(nil)
-    var sessionId: Dynamic<String> = Dynamic("")
+    var sessionId: Dynamic<String?> = Dynamic(nil)
     var accountDetails: Dynamic<User?> = Dynamic(nil)
     
     func getValidText(_ text: String) -> String {
@@ -34,7 +34,8 @@ class LoginViewModel: LoginViewModelProtocol {
     }
     
     func validateUser(withName name: String, password: String) {
-        guard let requestToken = requestToken.value else { return }
+        guard let requestTokenOptional = requestToken.value,
+            let requestToken = requestTokenOptional else { return }
         
         networkManager?.validateUser(withName: name,
                                     password: password,
@@ -44,7 +45,8 @@ class LoginViewModel: LoginViewModelProtocol {
     }
     
     func featchSessionID() {
-        guard let requestToken = requestToken.value,
+        guard let requestTokenOptional = requestToken.value,
+              let requestToken = requestTokenOptional,
               let isValidUserOptional = isValidUser.value,
               let isValidUser = isValidUserOptional else { return }
         
@@ -56,13 +58,16 @@ class LoginViewModel: LoginViewModelProtocol {
     }
     
     func saveSessionID() {
-        guard let id = self.sessionId.value else { return }
+        guard let idOptional = self.sessionId.value,
+              let id = idOptional else { return }
+        
         self.storageManager?.saveSessionIDToStorage(id)
     }
     
     
     func featchAccountDetails() {
-        guard let id = self.sessionId.value else { return }
+        guard let idOptional = self.sessionId.value,
+              let id = idOptional else { return }
         networkManager?.downloadAccountDetails(sessionID: id) { accountDetails in
             self.accountDetails.value = accountDetails
         }

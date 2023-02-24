@@ -72,8 +72,9 @@ class LoginViewController: UIViewController {
         // When we received the RequestToken, we take the text from UITextFieds,
         // check them and send the data for user validation.
         self.viewModel?.requestToken.bind { [weak self] _ in
-            guard let requestToken = self?.viewModel?.requestToken.value else { return }
-            print("Request Token: \(requestToken)")
+            guard let requestTokenOptional = self?.viewModel?.requestToken.value,
+                  let _ = requestTokenOptional else { return }
+//            print("Request Token: \(requestToken)")
             
             guard let usernameText = self?.usernameTextField.text, !usernameText.isEmpty,
                   let passwordText = self?.passwordTextField.text, !passwordText.isEmpty else {
@@ -93,7 +94,7 @@ class LoginViewController: UIViewController {
         self.viewModel?.isValidUser.bind { [weak self] _ in
             guard let isValidUserOptional = self?.viewModel?.isValidUser.value,
                   let isValidUser = isValidUserOptional else { return }
-            print("Is Valid User: \(isValidUser)")
+//            print("Is Valid User: \(isValidUser)")
             
             guard isValidUser else {
                 self?.activityIndicator.stopAnimating()
@@ -107,12 +108,11 @@ class LoginViewController: UIViewController {
         // After receiving the SessionID, we save it to Realm and make a request
         // to receive AccountDetails.
         self.viewModel?.sessionId.bind { [weak self] _ in
-            guard let sessionId = self?.viewModel?.sessionId.value else { return }
-            print("Session ID: \(sessionId)")
+//            guard let sessionIdOptional = self?.viewModel?.sessionId.value,
+//                  let sessionId = sessionIdOptional else { return }
+//            print("Session ID: \(sessionId)")
             
-            self?.activityIndicator.stopAnimating()
             self?.viewModel?.saveSessionID()
-            
             self?.viewModel?.featchAccountDetails()
             
         }
@@ -121,7 +121,7 @@ class LoginViewController: UIViewController {
         self.viewModel?.accountDetails.bind { [weak self] _ in
             guard let optionalAccountDetails = self?.viewModel?.accountDetails.value,
                   let accountDetails = optionalAccountDetails else { return }
-            print("Account Details: \(accountDetails)")
+//            print("Account Details: \(accountDetails)")
             
             self?.viewModel?.saveAccountDetails(accountDetails)
             
