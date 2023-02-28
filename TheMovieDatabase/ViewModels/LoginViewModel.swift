@@ -81,16 +81,24 @@ class LoginViewModel: LoginViewModelProtocol {
     }
     
     func loginToTheAccount() {
-        guard let scene = UIApplication.shared.connectedScenes.first else { return }
-        print("Got to scene")
+        // check if the current scene is correctly defined
+        guard let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene else {
+            print("Could not find current window scene")
+            return
+        }
         
-        guard let sceneDelegate: SceneDelegate = scene.delegate as? SceneDelegate else { return }
-        print("Got to sceneDelegate")
+        // get the current scene delegate
+        guard let sceneDelegate = windowScene.delegate as? SceneDelegate else {
+            print("Could not get scene delegate")
+            return
+        }
         
-        guard let window = sceneDelegate.window else { return }
-        print("Got to window")
+        // create a new MainTabBarController
+        let mainTabBarController = MainTabBarController()
         
-        window.rootViewController = MainTabBarController()
-        print("Changed rootViewController to MainTabBarController")
+        // perform root controller change on main thread
+        DispatchQueue.main.async {
+            sceneDelegate.window?.rootViewController = mainTabBarController
+        }
     }
 }
