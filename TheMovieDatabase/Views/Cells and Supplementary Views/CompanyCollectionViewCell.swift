@@ -53,7 +53,7 @@ class CompanyCollectionViewCell: UICollectionViewCell {
     func configureWith(_ company: ProductionCompany?) {
         guard let logoParh = company?.logoPath else { return }
         
-        let URLstring = "https://image.tmdb.org/t/p/w500/\(logoParh)"
+        let URLstring = "\(APIConstants.baseImageURL)/\(logoParh)"
         guard let url = URL(string: URLstring) else {
             print("Failure company logo image url configuration")
             return

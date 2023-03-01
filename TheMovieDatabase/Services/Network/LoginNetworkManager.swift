@@ -9,11 +9,9 @@ import Foundation
 import Alamofire
 
 class LoginNetworkManager: LoginNetworkManagerProtocol {
-    
-    private let apiKey = "de9681923f09382fe42f437144685b94"
-    
+        
     func createNewToken(_ completion: @escaping (String) -> Void) {
-        let url = "https://api.themoviedb.org/3/authentication/token/new?api_key=\(self.apiKey)"
+        let url = "\(APIConstants.baseURL)/authentication/token/new?api_key=\(APIConstants.apiKey)"
 
         AF.request(url, method: .get)
             .validate()
@@ -32,7 +30,7 @@ class LoginNetworkManager: LoginNetworkManagerProtocol {
     }
     
     func validateUser(withName name: String, password: String, forToken token: String, _ completion: @escaping (Bool) -> ()) {
-        let pathString = "https://api.themoviedb.org/3/authentication/token/validate_with_login?api_key=\(self.apiKey)"
+        let pathString = "\(APIConstants.baseURL)/authentication/token/validate_with_login?api_key=\(APIConstants.apiKey)"
         
         let parameters: [String : String] = [
             "username": name,
@@ -63,7 +61,7 @@ class LoginNetworkManager: LoginNetworkManagerProtocol {
     }
     
     func makeSession(withToken token: String, _ completion: @escaping (String) -> ()) {
-        let pathString = "https://api.themoviedb.org/3/authentication/session/new?api_key=\(self.apiKey)"
+        let pathString = "\(APIConstants.baseURL)/authentication/session/new?api_key=\(APIConstants.apiKey)"
         
         let parameters: [String: String] = ["request_token": token]
         
@@ -89,7 +87,7 @@ class LoginNetworkManager: LoginNetworkManagerProtocol {
     }
     
     func downloadAccountDetails(sessionID: String, _ completion: @escaping (User) -> ()) {
-        let url = "https://api.themoviedb.org/3/account?api_key=\(self.apiKey)&session_id=\(sessionID)"
+        let url = "\(APIConstants.baseURL)/account?api_key=\(APIConstants.apiKey)&session_id=\(sessionID)"
         
         AF.request(url, method: .get)
             .validate()

@@ -75,7 +75,7 @@ class FavoriteMovieCollectionViewCell: UICollectionViewCell {
             print("Failed to get poster path")
             return
         }
-        let URLstring = "https://image.tmdb.org/t/p/w500/\(posterPath)"
+        let URLstring = "\(APIConstants.baseImageURL)/\(posterPath)"
         guard let url = URL(string: URLstring) else {
             print("Failure poster image url configuration")
             return

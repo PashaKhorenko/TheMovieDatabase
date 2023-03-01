@@ -9,10 +9,9 @@ import Foundation
 import Alamofire
 
 class FavoriteNetworkManager: FavoriteNetworkManagerProtocol {
-    private let apiKey = "de9681923f09382fe42f437144685b94"
     
     func downloadFavoriteMovies(accountID: Int, sessionID: String, _ completion: @escaping ([FavoriteMovie]) -> ()) {
-        let url = "https://api.themoviedb.org/3/account/\(accountID)/favorite/movies?api_key=\(apiKey)&session_id=\(sessionID)&sort_by=created_at.asc"
+        let url = "\(APIConstants.baseURL)/account/\(accountID)/favorite/movies?api_key=\(APIConstants.apiKey)&session_id=\(sessionID)&sort_by=created_at.asc"
         
         AF.request(url)
             .validate()
@@ -31,7 +30,7 @@ class FavoriteNetworkManager: FavoriteNetworkManagerProtocol {
     }
     
     func removeFromFavorites(accountID: Int, sessionID: String, movieID: Int, _ completion: @escaping () -> ()) {
-        let pathString = "https://api.themoviedb.org/3/account/\(accountID)/favorite?api_key=\(self.apiKey)&session_id=\(sessionID)"
+        let pathString = "\(APIConstants.baseURL)/account/\(accountID)/favorite?api_key=\(APIConstants.apiKey)&session_id=\(sessionID)"
         
         let parameters: [String: Any] = [
             "media_type": "movie",

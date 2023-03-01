@@ -9,11 +9,9 @@ import Foundation
 import Alamofire
 
 class HomeNetworkManager: HomeNetworkManagerProtocol {
-    
-    private let apiKey = "de9681923f09382fe42f437144685b94"
-    
+        
     func downloadGenres(_ completion: @escaping ([Genre]) -> Void) {
-        let url = "https://api.themoviedb.org/3/genre/movie/list?api_key=\(self.apiKey)&language=en-US"
+        let url = "\(APIConstants.baseURL)/genre/movie/list?api_key=\(APIConstants.apiKey)&language=\(APIConstants.language)"
         
         AF.request(url)
             .validate()
@@ -32,7 +30,7 @@ class HomeNetworkManager: HomeNetworkManagerProtocol {
     }
     
     func downloadMoviesByGenre(_ genreID: String, _ completion: @escaping (MoviesForCollection) -> ()) {
-        let url = "https://api.themoviedb.org/3/discover/movie?api_key=\(self.apiKey)&language=en-US&sort_by=popularity.desc&page=1&with_genres=\(genreID)"
+        let url = "\(APIConstants.baseURL)/discover/movie?api_key=\(APIConstants.apiKey)&language=\(APIConstants.language)&sort_by=popularity.desc&page=1&with_genres=\(genreID)"
         
         AF.request(url)
             .validate()

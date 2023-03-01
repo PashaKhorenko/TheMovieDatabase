@@ -9,11 +9,9 @@ import Foundation
 import Alamofire
 
 class DetailsNetworkManager: DetailsNetworkManagerProtocol {
-    
-    private let apiKey = "de9681923f09382fe42f437144685b94"
-    
+        
     func downloadMovie(withID movieID: Int, _ completion: @escaping (MovieForDetails) -> Void) {
-        let url = "https://api.themoviedb.org/3/movie/\(movieID)?api_key=\(self.apiKey)"
+        let url = "\(APIConstants.baseURL)/movie/\(movieID)?api_key=\(APIConstants.apiKey)"
         
         AF.request(url)
             .validate()
@@ -32,7 +30,7 @@ class DetailsNetworkManager: DetailsNetworkManagerProtocol {
     }
     
     func downloadImageData(byPath path: String, _ completion: @escaping (Data) -> ()) {
-        let url = "https://image.tmdb.org/t/p/w500/\(path)"
+        let url = "\(APIConstants.baseImageURL)/\(path)"
         
         AF.request(url)
             .response { response in
@@ -46,7 +44,7 @@ class DetailsNetworkManager: DetailsNetworkManagerProtocol {
     }
     
     func downloadVideo(withID movieId: Int, _ completion: @escaping ([Video]) -> ()) {
-        let url = "https://api.themoviedb.org/3/movie/\(movieId)/videos?api_key=\(self.apiKey)&language=en-US"
+        let url = "\(APIConstants.baseURL)/movie/\(movieId)/videos?api_key=\(APIConstants.apiKey)&language=\(APIConstants.language)"
         
         AF.request(url)
             .validate()
@@ -65,7 +63,7 @@ class DetailsNetworkManager: DetailsNetworkManagerProtocol {
     }
     
     func markAsFavorite(accountID: Int, sessionID: String, movieID: Int, _ completion: @escaping (Bool) -> ()) {
-        let pathString = "https://api.themoviedb.org/3/account/\(accountID)/favorite?api_key=\(self.apiKey)&session_id=\(sessionID)"
+        let pathString = "\(APIConstants.baseURL)/account/\(accountID)/favorite?api_key=\(APIConstants.apiKey)&session_id=\(sessionID)"
         
         let parameters: [String: Any] = [
             "media_type": "movie",

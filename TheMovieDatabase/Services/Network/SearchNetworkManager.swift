@@ -9,10 +9,9 @@ import Foundation
 import Alamofire
 
 class SearchNetworkManager: SearchNetworkManagerProtocol {
-    private let apiKey = "de9681923f09382fe42f437144685b94"
     
     func seacthMoviesBy(_ query: String, _ completion: @escaping (SearchMovies) -> ()) {
-        let url = "https://api.themoviedb.org/3/search/movie?api_key=\(apiKey)&language=en-US&query=\(query)"
+        let url = "\(APIConstants.baseURL)/search/movie?api_key=\(APIConstants.apiKey)&language=\(APIConstants.language)&query=\(query)"
         
         AF.request(url)
             .validate()

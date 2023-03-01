@@ -40,7 +40,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
               let titlet = movie.title,
               let overview = movie.overview else { return }
         
-        let urlString = "https://image.tmdb.org/t/p/w500/\(posterPath)"
+        let urlString = "\(APIConstants.baseImageURL)/\(posterPath)"
         guard let url = URL(string: urlString) else { return }
         
         DispatchQueue.main.async {
