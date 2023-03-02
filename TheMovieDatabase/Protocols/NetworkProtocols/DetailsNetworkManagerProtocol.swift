@@ -9,6 +9,8 @@ import Foundation
 
 protocol DetailsNetworkManagerProtocol {
     
+    func decoder() -> JSONDecoder
+    
     func downloadMovie(withID movieID: Int, _ completion: @escaping (MovieForDetails) -> Void)
     func downloadImageData(byPath path: String, _ completion: @escaping (Data) -> ())
     func downloadVideo(withID movieId: Int, _ completion: @escaping ([Video]) -> ())

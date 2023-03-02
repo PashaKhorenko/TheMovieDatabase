@@ -8,12 +8,12 @@
 import Foundation
 
 // MARK: - Genres
-struct Genres: Codable {
+struct Genres: Decodable {
     var genres: [Genre]?
 }
 
 // MARK: - Genre
-struct Genre: Codable {
+struct Genre: Decodable {
     var id: Int?
     var name: String?
 }

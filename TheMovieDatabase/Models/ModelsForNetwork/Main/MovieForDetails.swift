@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - MovieForDetails
-struct MovieForDetails: Codable {
+struct MovieForDetails: Decodable {
     let adult: Bool?
     let posterPath: String?
     let budget: Int?
@@ -21,33 +21,16 @@ struct MovieForDetails: Codable {
     let releaseDate: String?
     let revenue, runtime: Int?
     let title: String?
-
-    enum CodingKeys: String, CodingKey {
-        case adult
-        case posterPath = "poster_path"
-        case budget, genres, id
-        case overview, popularity
-        case productionCompanies = "production_companies"
-        case productionCountries = "production_countries"
-        case releaseDate = "release_date"
-        case revenue, runtime
-        case title
-    }
 }
 
 
 // MARK: - ProductionCompany
-struct ProductionCompany: Codable {
+struct ProductionCompany: Decodable {
     let logoPath: String?
     let name: String?
-
-    enum CodingKeys: String, CodingKey {
-        case logoPath = "logo_path"
-        case name
-    }
 }
 
 // MARK: - ProductionCountry
-struct ProductionCountry: Codable {
+struct ProductionCountry: Decodable {
     let name: String?
 }
