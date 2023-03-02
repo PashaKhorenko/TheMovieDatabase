@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct ValidUser: Codable {
-    let success: Bool
+struct ValidUser: Decodable {
+    let success: Bool?
 }

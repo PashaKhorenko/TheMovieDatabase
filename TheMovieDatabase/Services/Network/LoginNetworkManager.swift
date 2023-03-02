@@ -9,17 +9,25 @@ import Foundation
 import Alamofire
 
 class LoginNetworkManager: LoginNetworkManagerProtocol {
-        
+    
+    // MARK: Decoder with convertFromSnakeCase
+    func decoder() -> JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }
+    
+    // MARK: - Request Token
     func createNewToken(_ completion: @escaping (String) -> Void) {
         let url = "\(APIConstants.baseURL)/authentication/token/new?api_key=\(APIConstants.apiKey)"
 
-        AF.request(url, method: .get)
+        AF.request(url)
             .validate()
-            .responseDecodable(of: RequestToken.self) { (response) in
+            .responseDecodable(of: RequestToken.self, decoder: decoder()) { (response) in
                 switch response.result {
-                case .success:
-                    guard let requestToken = response.value?.requestToken else {
-                        print("Empty response data when receiving a token")
+                case .success(let responseModel):
+                    guard let requestToken = responseModel.requestToken else {
+                        print("Empty response data when receiving requestToken")
                         return
                     }
                     completion(requestToken)
@@ -29,8 +37,14 @@ class LoginNetworkManager: LoginNetworkManagerProtocol {
             }
     }
     
+    // MARK: - User Validation
     func validateUser(withName name: String, password: String, forToken token: String, _ completion: @escaping (Bool) -> ()) {
         let pathString = "\(APIConstants.baseURL)/authentication/token/validate_with_login?api_key=\(APIConstants.apiKey)"
+        
+        guard let url = URL(string: pathString) else {
+            print("Failed to generate URL for validation")
+            return
+        }
         
         let parameters: [String : String] = [
             "username": name,
@@ -38,21 +52,13 @@ class LoginNetworkManager: LoginNetworkManagerProtocol {
             "request_token": token
         ]
         
-        guard let url = URL(string: pathString) else {
-            print("Failed to generate URL for validation")
-            return
-        }
-        
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .validate()
             .responseDecodable(of: ValidUser.self) { (response) in
                 switch response.result {
-                case .success:
-                    guard let validateStatus = response.value?.success else {
-                        print("Empty response data during user validation")
-                        return
-                    }
-                    completion(validateStatus)
+                case .success(let responseModel):
+                    guard let isValidUser = responseModel.success else { return }
+                    completion(isValidUser)
                 case .failure(let error):
                     completion(false)
                     print(error.localizedDescription)
@@ -60,45 +66,43 @@ class LoginNetworkManager: LoginNetworkManagerProtocol {
             }
     }
     
+    // MARK: - Session ID
     func makeSession(withToken token: String, _ completion: @escaping (String) -> ()) {
         let pathString = "\(APIConstants.baseURL)/authentication/session/new?api_key=\(APIConstants.apiKey)"
-        
-        let parameters: [String: String] = ["request_token": token]
         
         guard let url = URL(string: pathString) else {
             print("Failed to create URL to retrieve sessionID")
             return
         }
         
+        let parameters: [String: String] = ["request_token": token]
+        
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .validate()
-            .responseDecodable(of: SessionID.self) { (response) in
+            .responseDecodable(of: SessionID.self) { response in
                 switch response.result {
-                case .success:
-                    guard let sessionID = response.value?.sessionID else {
+                case .success(let responseModel):
+                    guard let sessionID = responseModel.sessionID else {
                         print("Empty response data when receiving sessionID")
                         return
                     }
                     completion(sessionID)
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    print("Error getting sessionID: \(error.localizedDescription)")
                 }
             }
     }
     
+    // MARK: - Account Details
     func downloadAccountDetails(sessionID: String, _ completion: @escaping (User) -> ()) {
         let url = "\(APIConstants.baseURL)/account?api_key=\(APIConstants.apiKey)&session_id=\(sessionID)"
         
-        AF.request(url, method: .get)
+        AF.request(url)
             .validate()
-            .responseDecodable(of: User.self) { (response) in
+            .responseDecodable(of: User.self, decoder: decoder()) { (response) in
                 switch response.result {
-                case .success:
-                    guard let user = response.value else {
-                        print("Empty response data when receiving account information")
-                        return
-                    }
-                    completion(user)
+                case .success(let responseModel):
+                    completion(responseModel)
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

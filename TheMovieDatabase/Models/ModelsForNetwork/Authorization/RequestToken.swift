@@ -7,13 +7,6 @@
 
 import Foundation
 
-struct RequestToken: Codable {
-    let success: Bool
-    let expiresAt, requestToken: String
-
-    enum CodingKeys: String, CodingKey {
-        case success
-        case expiresAt = "expires_at"
-        case requestToken = "request_token"
-    }
+struct RequestToken: Decodable {
+    let requestToken: String?
 }

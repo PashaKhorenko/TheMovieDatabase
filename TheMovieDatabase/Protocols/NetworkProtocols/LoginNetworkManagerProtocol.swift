@@ -9,6 +9,8 @@ import Foundation
 
 protocol LoginNetworkManagerProtocol {
     
+    func decoder() -> JSONDecoder
+    
     func createNewToken(_ completion: @escaping (String) -> Void)
     
     func validateUser(withName name: String,

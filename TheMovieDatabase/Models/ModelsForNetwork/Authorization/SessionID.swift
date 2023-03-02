@@ -7,12 +7,10 @@
 
 import Foundation
 
-struct SessionID: Codable {
-    let success: Bool
-    let sessionID: String
+struct SessionID: Decodable {
+    let sessionID: String?
     
     enum CodingKeys: String, CodingKey {
-        case success
         case sessionID = "session_id"
     }
 }

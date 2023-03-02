@@ -8,18 +8,18 @@
 import Foundation
 
 // MARK: - User
-struct User: Codable {
+struct User: Decodable {
     let avatar: Avatar?
     let id: Int?
     let name, username: String?
 }
 
 // MARK: - Avatar
-struct Avatar: Codable {
+struct Avatar: Decodable {
     let gravatar: Gravatar?
 }
 
 // MARK: - Gravatar
-struct Gravatar: Codable {
+struct Gravatar: Decodable {
     let hash: String?
 }
