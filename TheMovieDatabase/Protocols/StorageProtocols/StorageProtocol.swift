@@ -13,4 +13,5 @@ protocol StorageProtocol {
     func getAccountDetailsFromStorage() -> AccountDetailsRealm?
     func getAccountIDFromStorage() -> Int
     func getSessionIDFromStorage() -> String
+    func deleteAllData()
 }

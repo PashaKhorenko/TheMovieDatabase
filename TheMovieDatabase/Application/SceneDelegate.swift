@@ -17,7 +17,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        let authNavigationController = UINavigationController(rootViewController: SignUpViewController())
+        let signUpVM = SignUpViewModel(networkManager: SignUpNetworkManager(),
+                                       storageManager: StorageManager())
+        let signUpVC = SignUpViewController(viewModel: signUpVM)
+        let authNavigationController = UINavigationController(rootViewController: signUpVC)
         window.rootViewController = authNavigationController
         window.makeKeyAndVisible()
         

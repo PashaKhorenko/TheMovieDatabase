@@ -7,55 +7,77 @@
 
 import UIKit
 import Lottie
-import RealmSwift
 
 class SignUpViewController: UIViewController {
     
     private var uiManager: LoginUIHelperProtocol!
+    private let viewModel: SignUpViewModelProtocol?
+    
+    // MARK: - Init
+    init(uiManager: LoginUIHelperProtocol! = LoginUIHelper(),
+         viewModel: SignUpViewModelProtocol?) {
+        self.uiManager = uiManager
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - UI elements
-    
     private lazy var titleLabel = uiManager.makeTitleLalel(text: "Create \nyour account")
     private lazy var signUpButton = uiManager.makeSignUpButtonForRegistration()
+    private lazy var continueAsGuestButton = uiManager.makeContinueAsGuestButton()
     private lazy var logInButton = uiManager.makeLogInButtonForRegisration()
     private lazy var animationView = uiManager.makeAnimationView()
         
     // MARK: - View lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        uiManager = LoginUIHelper()
-        
+                
         setupViews()
+        configureViewModelObservers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let realm = try! Realm()
+        self.viewModel?.storageManager?.deleteAllData()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         
-        do {
-            try realm.write({
-                realm.deleteAll()
-                print("Deleted all data from realm storage")
-            })
-        } catch {
-            print(error.localizedDescription)
-        }
+        setConstraints()
     }
     
     // MARK: - Private
-        
     private func createAccountAction() {
-        print(#function)
         self.navigationController?.present(SignUpWebViewController(), animated: true)
+    }
+    
+    private func configureViewModelObservers() {
+        self.viewModel?.guestSessionID.bind { [weak self] _ in
+            guard let optionalID = self?.viewModel?.guestSessionID.value,
+                  let guestSessionID = optionalID else { return }
+            
+            print("guest session id: \(guestSessionID)")
+            
+            self?.viewModel?.saveGuestSessionID()
+            self?.viewModel?.logInToGuestSession()
+        }
+    }
+    
+    private func addButtonsTarget() {
+        signUpButton.addTarget(self, action: #selector(signUpEmailButtonPressed(_:)), for: .touchUpInside)
+        continueAsGuestButton.addTarget(self, action: #selector(continueAsGuestButtonPressed(_:)), for: .touchUpInside)
+        logInButton.addTarget(self, action: #selector(logInButtonPressed(_:)), for: .touchUpInside)
     }
     
 }
 
 // MARK: - Settings
-
 extension SignUpViewController {
     
     private func setupViews() {
@@ -65,16 +87,18 @@ extension SignUpViewController {
         view.addSubview(titleLabel)
         
         view.addSubview(signUpButton)
+        view.addSubview(continueAsGuestButton)
         view.addSubview(logInButton)
         
-        signUpButton.addTarget(self, action: #selector(signUpEmailButtonPressed(_:)), for: .touchUpInside)
-        logInButton.addTarget(self, action: #selector(logInButtonPressed(_:)), for: .touchUpInside)
-        
-        setConstraints()
+        addButtonsTarget()
     }
     
     @objc private func signUpEmailButtonPressed(_ sender: UIButton) {
         createAccountAction()
+    }
+    
+    @objc private func continueAsGuestButtonPressed(_ sender: UIButton) {
+        self.viewModel?.featchGuestSessionID()
     }
     
     @objc private func logInButtonPressed(_ sender: UIButton) {
@@ -87,7 +111,6 @@ extension SignUpViewController {
 }
 
 // MARK: - Constraints
-
 extension SignUpViewController {
     private func setConstraints() {
         NSLayoutConstraint.activate([
@@ -104,6 +127,11 @@ extension SignUpViewController {
             signUpButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             signUpButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             signUpButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            continueAsGuestButton.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 20),
+            continueAsGuestButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            continueAsGuestButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            continueAsGuestButton.heightAnchor.constraint(equalToConstant: 50),
             
             logInButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             logInButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),

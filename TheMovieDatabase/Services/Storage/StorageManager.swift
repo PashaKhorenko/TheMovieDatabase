@@ -59,5 +59,16 @@ class StorageManager: StorageProtocol {
         guard let sessionID = object.first?.id else { return "" }
         return sessionID
     }
+    
+    func deleteAllData() {
+        do {
+            try realm.write() {
+                realm.deleteAll()
+                print("Deleted all data from realm storage")
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
 }
 

@@ -13,6 +13,7 @@ protocol LoginUIHelperProtocol {
     func makeUsernameTextField() -> UITextField
     func makePasswordTextField() -> UITextField
     func makeStackView(asix: NSLayoutConstraint.Axis) -> UIStackView
+    func makeContinueAsGuestButton() -> UIButton
     func makeSignUpButtonForRegistration() -> UIButton
     func makeLogInButtonForRegisration() -> UIButton
     func makeLogInButtonForLogin() -> UIButton
@@ -48,6 +49,15 @@ struct LoginUIHelper: LoginUIHelperProtocol {
     }
 
     // MARK: - For registration
+    func makeContinueAsGuestButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("Continue as guest", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 19)
+        button.setTitleColor(.systemIndigo, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }
+    
     func makeSignUpButtonForRegistration() -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle("Sign Up", for: .normal)

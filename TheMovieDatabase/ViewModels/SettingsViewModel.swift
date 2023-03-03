@@ -9,7 +9,7 @@ import UIKit
 
 class SettingsViewModel: SettingsViewModelProtocol {
     
-    internal let storageManeger: StorageProtocol?
+    let storageManeger: StorageProtocol?
     
     init(storageManeger: StorageProtocol?) {
         self.storageManeger = storageManeger
@@ -34,7 +34,9 @@ class SettingsViewModel: SettingsViewModelProtocol {
         }
         
         // create a authNavigationController with a instance of SignUpViewController
-        let signUpViewController = SignUpViewController()
+        let signUpVM = SignUpViewModel(networkManager: SignUpNetworkManager(),
+                                       storageManager: StorageManager())
+        let signUpViewController = SignUpViewController(viewModel: signUpVM)
         let authNavigationController = UINavigationController(rootViewController: signUpViewController)
         
         // perform root controller change on main thread

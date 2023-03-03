@@ -39,6 +39,11 @@
 		466A7F2F298955FA00C841D3 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466A7F2E298955FA00C841D3 /* StorageManager.swift */; };
 		466A7F312989577B00C841D3 /* AccountDetailsRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466A7F302989577B00C841D3 /* AccountDetailsRealm.swift */; };
 		466C9DD5298BC9B100DF2F03 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466C9DD4298BC9B100DF2F03 /* SettingsViewModel.swift */; };
+		466EACE329B1FA3B0054ED93 /* GuestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466EACE229B1FA3B0054ED93 /* GuestSession.swift */; };
+		466EACE529B1FB090054ED93 /* SignUpNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466EACE429B1FB090054ED93 /* SignUpNetworkManager.swift */; };
+		466EACE729B1FFB10054ED93 /* SignUpNetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466EACE629B1FFB10054ED93 /* SignUpNetworkManagerProtocol.swift */; };
+		466EACE929B2010E0054ED93 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466EACE829B2010E0054ED93 /* SignUpViewModel.swift */; };
+		466EACEB29B2042B0054ED93 /* SignUpViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466EACEA29B2042B0054ED93 /* SignUpViewModelProtocol.swift */; };
 		4677975B29A6489D00D6B254 /* DetailsVC+UICollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4677975A29A6489D00D6B254 /* DetailsVC+UICollectionDataSource.swift */; };
 		4677975F29A648D800D6B254 /* DetailsVC+UIScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4677975E29A648D800D6B254 /* DetailsVC+UIScrollViewDelegate.swift */; };
 		4680679629928C250081AC4D /* DetailsVC+UICollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4680679529928C250081AC4D /* DetailsVC+UICollectionLayout.swift */; };
@@ -127,6 +132,11 @@
 		466A7F2E298955FA00C841D3 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		466A7F302989577B00C841D3 /* AccountDetailsRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailsRealm.swift; sourceTree = "<group>"; };
 		466C9DD4298BC9B100DF2F03 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		466EACE229B1FA3B0054ED93 /* GuestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestSession.swift; sourceTree = "<group>"; };
+		466EACE429B1FB090054ED93 /* SignUpNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpNetworkManager.swift; sourceTree = "<group>"; };
+		466EACE629B1FFB10054ED93 /* SignUpNetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpNetworkManagerProtocol.swift; sourceTree = "<group>"; };
+		466EACE829B2010E0054ED93 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		466EACEA29B2042B0054ED93 /* SignUpViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModelProtocol.swift; sourceTree = "<group>"; };
 		4677975A29A6489D00D6B254 /* DetailsVC+UICollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailsVC+UICollectionDataSource.swift"; sourceTree = "<group>"; };
 		4677975E29A648D800D6B254 /* DetailsVC+UIScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailsVC+UIScrollViewDelegate.swift"; sourceTree = "<group>"; };
 		4680679529928C250081AC4D /* DetailsVC+UICollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailsVC+UICollectionLayout.swift"; sourceTree = "<group>"; };
@@ -257,6 +267,7 @@
 		46092BB4297693B1002C489D /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				466EACE829B2010E0054ED93 /* SignUpViewModel.swift */,
 				4682611F2979627D0031A90D /* LoginViewModel.swift */,
 				46A76191297E911300AF5B39 /* HomeViewModel.swift */,
 				4638F8222993C5BD00ADF2CF /* SearchViewModel.swift */,
@@ -416,6 +427,7 @@
 		4682612329797A000031A90D /* Authorization */ = {
 			isa = PBXGroup;
 			children = (
+				466EACE229B1FA3B0054ED93 /* GuestSession.swift */,
 				46C381E32979402D00553768 /* RequestToken.swift */,
 				4682612429797A380031A90D /* SessionID.swift */,
 				4682612629797A450031A90D /* ValidUser.swift */,
@@ -428,6 +440,7 @@
 			isa = PBXGroup;
 			children = (
 				46F120B229AE1478004C481E /* APIConstants.swift */,
+				466EACE429B1FB090054ED93 /* SignUpNetworkManager.swift */,
 				4682611D297957670031A90D /* LoginNetworkManager.swift */,
 				46A76193297E914500AF5B39 /* HomeNetworkManager.swift */,
 				46A429CB297FF1C500DC8DD3 /* DetailsNetworkManager.swift */,
@@ -468,6 +481,7 @@
 		46841AF7299FB43E005BD5A2 /* ViewModelProtocols */ = {
 			isa = PBXGroup;
 			children = (
+				466EACEA29B2042B0054ED93 /* SignUpViewModelProtocol.swift */,
 				46841AEB299FB39F005BD5A2 /* LoginViewModelProtocol.swift */,
 				46841AED299FB3BD005BD5A2 /* HomeViewModelProtocol.swift */,
 				46841AEF299FB3D8005BD5A2 /* SearchViewModelProtocol.swift */,
@@ -486,6 +500,7 @@
 				46841AFE299FB4DB005BD5A2 /* DetailsNetworkManagerProtocol.swift */,
 				46841B00299FB4EB005BD5A2 /* FavoriteNetworkManagerProtocol.swift */,
 				46841B02299FB500005BD5A2 /* SearchNetworkManagerProtocol.swift */,
+				466EACE629B1FFB10054ED93 /* SignUpNetworkManagerProtocol.swift */,
 			);
 			path = NetworkProtocols;
 			sourceTree = "<group>";
@@ -735,18 +750,21 @@
 				46A429D9297FF76A00DC8DD3 /* StandartActivityIndicator.swift in Sources */,
 				4608495F29756696009B7096 /* HomeViewController.swift in Sources */,
 				46BDFF802982BC0500C09A5A /* Videos.swift in Sources */,
+				466EACE529B1FB090054ED93 /* SignUpNetworkManager.swift in Sources */,
 				46841B01299FB4EB005BD5A2 /* FavoriteNetworkManagerProtocol.swift in Sources */,
 				466520F3298A9C3E00B381BC /* FavoriteMovieCollectionViewCell.swift in Sources */,
 				46A7619C297EDAAF00AF5B39 /* HeaderSupplementaryView.swift in Sources */,
 				46841B0C299FC948005BD5A2 /* SearchVC+UISearchBarDelegate.swift in Sources */,
 				46826129297994EE0031A90D /* SettingsViewController.swift in Sources */,
 				46D2C44F299BA6530069BE6E /* MockSearchCollectionViewCell.swift in Sources */,
+				466EACE929B2010E0054ED93 /* SignUpViewModel.swift in Sources */,
 				46AF4BF8298A5F3A00FE7223 /* SessionIDRealm.swift in Sources */,
 				46A429CC297FF1C500DC8DD3 /* DetailsNetworkManager.swift in Sources */,
 				46A4B2192994EBC000449A39 /* HomeVC+UICollectionLayout.swift in Sources */,
 				463DE6F429A4DA8B001CFC09 /* FavotritesVC+UICollectionDelegate.swift in Sources */,
 				466A7F312989577B00C841D3 /* AccountDetailsRealm.swift in Sources */,
 				468261202979627D0031A90D /* LoginViewModel.swift in Sources */,
+				466EACE329B1FA3B0054ED93 /* GuestSession.swift in Sources */,
 				46841AEE299FB3BD005BD5A2 /* HomeViewModelProtocol.swift in Sources */,
 				46AF4BF6298A5D9300FE7223 /* FavoritesStatusResponse.swift in Sources */,
 				46A429D7297FF72500DC8DD3 /* StandartStackView.swift in Sources */,
@@ -779,6 +797,7 @@
 				4638F8232993C5BD00ADF2CF /* SearchViewModel.swift in Sources */,
 				46841AFF299FB4DB005BD5A2 /* DetailsNetworkManagerProtocol.swift in Sources */,
 				46A76192297E911300AF5B39 /* HomeViewModel.swift in Sources */,
+				466EACEB29B2042B0054ED93 /* SignUpViewModelProtocol.swift in Sources */,
 				466A7F2C2989507E00C841D3 /* AccountDetails.swift in Sources */,
 				46841AFB299FB4B2005BD5A2 /* LoginNetworkManagerProtocol.swift in Sources */,
 				46F120B329AE1478004C481E /* APIConstants.swift in Sources */,
@@ -792,6 +811,7 @@
 				46841AFD299FB4C8005BD5A2 /* HomeNetworkManagerProtocol.swift in Sources */,
 				46A429D3297FF6BF00DC8DD3 /* SubtitleLabel.swift in Sources */,
 				46D5710029A3940600B03210 /* HomeVC+CollectionDelegate.swift in Sources */,
+				466EACE729B1FFB10054ED93 /* SignUpNetworkManagerProtocol.swift in Sources */,
 				46BDFF822982CE8C00C09A5A /* TrailerCollectionViewCell.swift in Sources */,
 				4677975B29A6489D00D6B254 /* DetailsVC+UICollectionDataSource.swift in Sources */,
 				460F60F129913A46006C684D /* CompanyCollectionViewCell.swift in Sources */,
