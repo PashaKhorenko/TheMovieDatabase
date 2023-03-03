@@ -8,6 +8,9 @@
 import Foundation
 
 protocol FavoriteNetworkManagerProtocol {
+    
+    func decoder() -> JSONDecoder
+    
     func downloadFavoriteMovies(accountID: Int,
                                 sessionID: String,
                                 _ completion: @escaping ([FavoriteMovie]) -> ())

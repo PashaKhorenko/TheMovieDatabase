@@ -8,5 +8,6 @@
 import Foundation
 
 protocol SearchNetworkManagerProtocol {
-    func seacthMoviesBy(_ query: String, _ completion: @escaping (SearchMovies) -> ())
+    func decoder() -> JSONDecoder
+    func searchMoviesBy(_ query: String, _ completion: @escaping (SearchMovies) -> ())
 }

@@ -38,14 +38,13 @@ class SearchViewModel: SearchViewModelProtocol {
             return
         }
         
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { (_) in
-            self.networkManeger?.seacthMoviesBy(validText, { [weak self] results in
-                guard let self,
-                      let movieArray = results.results else { return }
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
+            self?.networkManeger?.searchMoviesBy(validText) { [weak self] results in
+                guard let self, let movieArray = results.results else { return }
                 self.movies.value = movieArray
                 completion()
-            })
-        })
+            }
+        }
     }
     
     func numberOfItemsInSection() -> Int {

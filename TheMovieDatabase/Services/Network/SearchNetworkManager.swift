@@ -9,20 +9,24 @@ import Foundation
 import Alamofire
 
 class SearchNetworkManager: SearchNetworkManagerProtocol {
+
+    // MARK: Decoder with convertFromSnakeCase
+    func decoder() -> JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }
     
-    func seacthMoviesBy(_ query: String, _ completion: @escaping (SearchMovies) -> ()) {
+    // MARK: - Search movies
+    func searchMoviesBy(_ query: String, _ completion: @escaping (SearchMovies) -> ()) {
         let url = "\(APIConstants.baseURL)/search/movie?api_key=\(APIConstants.apiKey)&language=\(APIConstants.language)&query=\(query)"
         
         AF.request(url)
             .validate()
-            .responseDecodable(of: SearchMovies.self) { (response) in
+            .responseDecodable(of: SearchMovies.self, decoder: decoder()) { (response) in
                 switch response.result {
-                case .success:
-                    guard let searchMovies = response.value else {
-                        print("Empty response data when searching movies")
-                        return
-                    }
-                    completion(searchMovies)
+                case .success(let responseModel):
+                    completion(responseModel)
                 case .failure(let error):
                     print("Error searching movies: \(error.localizedDescription)")
                 }

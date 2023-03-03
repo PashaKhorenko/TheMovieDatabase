@@ -8,22 +8,14 @@
 import Foundation
 
 // MARK: - FavoriteMovies
-struct FavoriteMovies: Codable {
+struct FavoriteMovies: Decodable {
     let results: [FavoriteMovie]?
 }
 
 // MARK: - FavoriteMovie
-struct FavoriteMovie: Codable {
+struct FavoriteMovie: Decodable {
     let id: Int?
     let title: String?
     let originalTitle: String?
     let posterPath: String?
-    
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case title
-        case originalTitle = "original_title"
-        case posterPath = "poster_path"
-    }
 }
