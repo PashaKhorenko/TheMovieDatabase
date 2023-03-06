@@ -29,6 +29,7 @@ class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = .secondarySystemBackground
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
         configureViewModelObserver()
@@ -50,6 +51,7 @@ extension FavoritesViewController {
     private func configureHierarchy() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.isScrollEnabled = false
         collectionView.backgroundColor = .secondarySystemBackground
         collectionView.register(FavoriteMovieCollectionViewCell.self,
                                 forCellWithReuseIdentifier: self.favoriteCellID)
@@ -57,10 +59,10 @@ extension FavoritesViewController {
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
