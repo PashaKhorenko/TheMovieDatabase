@@ -9,10 +9,10 @@ import UIKit
 
 extension SearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let isSearching = self.viewModel?.isSearching.value else { return 0}
+        guard let isInSearch = self.viewModel?.isInSearch.value else { return 0}
 
-        if isSearching {
-            return viewModel?.numberOfItemsInSection() ?? 0
+        if isInSearch {
+            return viewModel?.numberOfItemsInCollectionSection() ?? 0
         } else {
             return 4
         }
@@ -20,9 +20,9 @@ extension SearchViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let isSearching = self.viewModel?.isSearching.value else { return UICollectionViewCell()}
+        guard let isInSearch = self.viewModel?.isInSearch.value else { return UICollectionViewCell()}
         
-        if isSearching {
+        if isInSearch {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellId, for: indexPath) as! SearchCollectionViewCell
             
             guard let movie = viewModel?.movies.value?[indexPath.item] else { return UICollectionViewCell() }

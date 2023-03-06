@@ -22,6 +22,8 @@
 		460F60F129913A46006C684D /* CompanyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460F60F029913A46006C684D /* CompanyCollectionViewCell.swift */; };
 		4614B707297AAF0400E7E4EF /* SignUpWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4614B706297AAF0400E7E4EF /* SignUpWebViewController.swift */; };
 		4615EFDE29786AAD006C5A54 /* LoginUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4615EFDD29786AAD006C5A54 /* LoginUIHelper.swift */; };
+		46329A1029B5D4FD008B4656 /* SearchVC+UITableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46329A0F29B5D4FD008B4656 /* SearchVC+UITableViewDelegate.swift */; };
+		46329A1229B5D525008B4656 /* SearchVC+UITableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46329A1129B5D525008B4656 /* SearchVC+UITableViewDataSource.swift */; };
 		4638F8232993C5BD00ADF2CF /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638F8222993C5BD00ADF2CF /* SearchViewModel.swift */; };
 		4638F8252993C5E900ADF2CF /* SearchNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638F8242993C5E900ADF2CF /* SearchNetworkManager.swift */; };
 		4638F8272993C6DE00ADF2CF /* SearchMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4638F8262993C6DE00ADF2CF /* SearchMovie.swift */; };
@@ -115,6 +117,8 @@
 		460F60F029913A46006C684D /* CompanyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyCollectionViewCell.swift; sourceTree = "<group>"; };
 		4614B706297AAF0400E7E4EF /* SignUpWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpWebViewController.swift; sourceTree = "<group>"; };
 		4615EFDD29786AAD006C5A54 /* LoginUIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIHelper.swift; sourceTree = "<group>"; };
+		46329A0F29B5D4FD008B4656 /* SearchVC+UITableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchVC+UITableViewDelegate.swift"; sourceTree = "<group>"; };
+		46329A1129B5D525008B4656 /* SearchVC+UITableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchVC+UITableViewDataSource.swift"; sourceTree = "<group>"; };
 		4638F8222993C5BD00ADF2CF /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		4638F8242993C5E900ADF2CF /* SearchNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNetworkManager.swift; sourceTree = "<group>"; };
 		4638F8262993C6DE00ADF2CF /* SearchMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovie.swift; sourceTree = "<group>"; };
@@ -520,6 +524,8 @@
 				46841B09299FC8F8005BD5A2 /* SearchVC+UICollectionDelegate.swift */,
 				46841B0B299FC948005BD5A2 /* SearchVC+UISearchBarDelegate.swift */,
 				4638F82D2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift */,
+				46329A0F29B5D4FD008B4656 /* SearchVC+UITableViewDelegate.swift */,
+				46329A1129B5D525008B4656 /* SearchVC+UITableViewDataSource.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -778,6 +784,7 @@
 				46841AF0299FB3D8005BD5A2 /* SearchViewModelProtocol.swift in Sources */,
 				4615EFDE29786AAD006C5A54 /* LoginUIHelper.swift in Sources */,
 				46092BBC2976A202002C489D /* FavoritesViewController.swift in Sources */,
+				46329A1029B5D4FD008B4656 /* SearchVC+UITableViewDelegate.swift in Sources */,
 				4677975F29A648D800D6B254 /* DetailsVC+UIScrollViewDelegate.swift in Sources */,
 				46A76198297EC29400AF5B39 /* MoviesForCollection.swift in Sources */,
 				4682612729797A450031A90D /* ValidUser.swift in Sources */,
@@ -813,6 +820,7 @@
 				46D5710029A3940600B03210 /* HomeVC+CollectionDelegate.swift in Sources */,
 				466EACE729B1FFB10054ED93 /* SignUpNetworkManagerProtocol.swift in Sources */,
 				46BDFF822982CE8C00C09A5A /* TrailerCollectionViewCell.swift in Sources */,
+				46329A1229B5D525008B4656 /* SearchVC+UITableViewDataSource.swift in Sources */,
 				4677975B29A6489D00D6B254 /* DetailsVC+UICollectionDataSource.swift in Sources */,
 				460F60F129913A46006C684D /* CompanyCollectionViewCell.swift in Sources */,
 				4638F82E2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift in Sources */,

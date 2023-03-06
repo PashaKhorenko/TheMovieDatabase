@@ -9,16 +9,33 @@ import Foundation
 
 class SearchViewModel: SearchViewModelProtocol {
     
-    internal let networkManeger: SearchNetworkManagerProtocol?
+    let networkManeger: SearchNetworkManagerProtocol?
     
+    // MARK: - Init
     init(networkManeger: SearchNetworkManagerProtocol?) {
         self.networkManeger = networkManeger
     }
     
+    // MARK: - Properties
     var movies: Dynamic<[SearchMovie]> = Dynamic([])
-    var isSearching: Dynamic<Bool> = Dynamic(false)
-    var timer: Timer?
+    var arrayPreviousSearches: Dynamic<[String]> = Dynamic([])
     
+    var isSearchBarActive: Dynamic<Bool> = Dynamic(false)
+    var isInSearch: Dynamic<Bool> = Dynamic(false)
+     
+    // MARK: - Add new search to array
+    func addNewSearchTextToArray(_ text: String) {
+        guard let array = self.arrayPreviousSearches.value else { return }
+        
+        if array.contains(text) {
+            guard let currentIndex = array.firstIndex(of: text) else { return }
+            self.arrayPreviousSearches.value?.swapAt(currentIndex, 0)
+        } else {
+            self.arrayPreviousSearches.value?.insert(text, at: 0)
+        }
+    }
+    
+    // MARK: - Text validation
     func getValidText(_ searchText: String) -> String {
         let textInLowercase = searchText.lowercased()
         let textWithoutExtraSpaces = textInLowercase.trimmingCharacters(in: .whitespaces)
@@ -27,32 +44,36 @@ class SearchViewModel: SearchViewModelProtocol {
         return validText
     }
     
-    func featchMovies(byText text: String, _ completion: @escaping () -> Void) {
-        timer?.invalidate()
-        isSearching.value = true
+    // MARK: - Featch movies
+    func featchMovies(byText text: String) {
+        self.isInSearch.value = true
         
-        let validText = self.getValidText(text)
+        let validTextForSearching = self.getValidText(text)
         
-        guard !validText.isEmpty else {
-            self.isSearching.value = false
+        guard !validTextForSearching.isEmpty else {
+            self.isInSearch.value = false
             return
         }
         
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
-            self?.networkManeger?.searchMoviesBy(validText) { [weak self] results in
-                guard let self, let movieArray = results.results else { return }
-                self.movies.value = movieArray
-                completion()
-            }
+        self.networkManeger?.searchMoviesBy(validTextForSearching) { [weak self] responseModel in
+            guard let movieArray = responseModel.results else { return }
+            self?.movies.value = movieArray
         }
     }
     
-    func numberOfItemsInSection() -> Int {
-        return movies.value?.count ?? 0
+    // MARK: - Number of items
+    func numberOfItemsInCollectionSection() -> Int {
+        movies.value?.count ?? 0
     }
     
+    func numberOfItemsInTableSection() -> Int {
+        arrayPreviousSearches.value?.count ?? 0
+    }
+    
+    // MARK: - Clear the screen
     func clearTheScreen() {
-        self.isSearching.value = false
+        self.isSearchBarActive.value = false
+        self.isInSearch.value = false
         self.movies.value = []
     }
 }

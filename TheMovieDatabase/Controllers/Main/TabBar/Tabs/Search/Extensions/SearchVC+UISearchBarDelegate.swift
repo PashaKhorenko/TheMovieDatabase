@@ -9,14 +9,19 @@ import UIKit
 
 extension SearchViewController: UISearchBarDelegate {
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText == "" {
-            self.viewModel?.clearTheScreen()
-        } else {
-            self.viewModel?.featchMovies(byText: searchText) { [weak self] in
-                self?.activityIndicator.stopAnimating()
-            }
-        }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.viewModel?.isSearchBarActive.value = true
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.viewModel?.isSearchBarActive.value = false
+        
+        guard let searchText = searchBar.text else { return }
+        let validSearchText = searchText.trimmingCharacters(in: .whitespaces)
+        guard !validSearchText.isEmpty else { return }
+        
+        self.viewModel?.featchMovies(byText: validSearchText)
+        self.viewModel?.addNewSearchTextToArray(validSearchText)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

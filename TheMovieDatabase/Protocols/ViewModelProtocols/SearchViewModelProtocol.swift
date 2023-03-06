@@ -11,13 +11,18 @@ protocol SearchViewModelProtocol {
     var networkManeger: SearchNetworkManagerProtocol? { get }
     
     var movies: Dynamic<[SearchMovie]> { get set }
-    var isSearching: Dynamic<Bool> { get set }
-    var timer: Timer? { get set }
+    var arrayPreviousSearches: Dynamic<[String]> { get set }
+    var isSearchBarActive: Dynamic<Bool> { get set }
+    var isInSearch: Dynamic<Bool> { get set }
+    
+    func addNewSearchTextToArray(_ text: String)
     
     func getValidText(_ searchText: String) -> String
     
-    func featchMovies(byText text: String, _ completion: @escaping () -> Void)
-    func numberOfItemsInSection() -> Int
+    func featchMovies(byText text: String)
+    
+    func numberOfItemsInCollectionSection() -> Int
+    func numberOfItemsInTableSection() -> Int
     
     func clearTheScreen()
 }

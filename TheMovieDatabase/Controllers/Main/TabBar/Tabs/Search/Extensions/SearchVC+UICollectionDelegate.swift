@@ -10,8 +10,8 @@ import UIKit
 extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        guard let isSearching = self.viewModel?.isSearching.value else { return }
-        guard isSearching else { return }
+        guard let isInSearch = self.viewModel?.isInSearch.value else { return }
+        guard isInSearch else { return }
         
         guard let id = viewModel?.movies.value?[indexPath.item].id else { return }
         
