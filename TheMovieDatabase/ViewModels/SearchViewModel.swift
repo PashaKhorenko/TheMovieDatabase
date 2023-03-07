@@ -10,29 +10,47 @@ import Foundation
 class SearchViewModel: SearchViewModelProtocol {
     
     let networkManeger: SearchNetworkManagerProtocol?
+    let storageManager: StorageProtocol?
     
     // MARK: - Init
-    init(networkManeger: SearchNetworkManagerProtocol?) {
+    init(networkManeger: SearchNetworkManagerProtocol?, storageManager: StorageProtocol?) {
         self.networkManeger = networkManeger
+        self.storageManager = storageManager
     }
     
     // MARK: - Properties
     var movies: Dynamic<[SearchMovie]> = Dynamic([])
-    var arrayPreviousSearches: Dynamic<[String]> = Dynamic([])
+    var previousSearchesArray: Dynamic<[String]> = Dynamic([])
     
     var isSearchBarActive: Dynamic<Bool> = Dynamic(false)
     var isInSearch: Dynamic<Bool> = Dynamic(false)
      
     // MARK: - Add new search to array
     func addNewSearchTextToArray(_ text: String) {
-        guard let array = self.arrayPreviousSearches.value else { return }
+        guard let array = self.previousSearchesArray.value else { return }
         
         if array.contains(text) {
             guard let currentIndex = array.firstIndex(of: text) else { return }
-            self.arrayPreviousSearches.value?.swapAt(currentIndex, 0)
+            self.previousSearchesArray.value?.swapAt(currentIndex, 0)
         } else {
-            self.arrayPreviousSearches.value?.insert(text, at: 0)
+            self.previousSearchesArray.value?.insert(text, at: 0)
         }
+        
+        self.savePreviousSearchsToStorage()
+    }
+    
+    // MARK: - Actions with storage
+    func savePreviousSearchsToStorage() {
+        guard let array = self.previousSearchesArray.value else { return }
+        
+        for item in array {
+            self.storageManager?.savePreviousSearchesToStorage(item)
+        }
+    }
+    
+    func getPreviousSearchesArrayFromStarage() {
+        let array = self.storageManager?.getPreviousSearchesFromStorage()
+        self.previousSearchesArray.value = array
     }
     
     // MARK: - Text validation
@@ -67,7 +85,7 @@ class SearchViewModel: SearchViewModelProtocol {
     }
     
     func numberOfItemsInTableSection() -> Int {
-        arrayPreviousSearches.value?.count ?? 0
+        previousSearchesArray.value?.count ?? 0
     }
     
     // MARK: - Clear the screen

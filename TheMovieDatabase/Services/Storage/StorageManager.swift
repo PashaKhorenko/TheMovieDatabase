@@ -42,6 +42,20 @@ class StorageManager: StorageProtocol {
         }
     }
     
+    func savePreviousSearchesToStorage(_ searchText: String) {
+        do {
+            try realm.write {
+                let object = PreviousSearchesRealm()
+                
+                object.previousSearch = searchText
+                
+                realm.add(object, update: .modified)
+            }
+        } catch {
+            print("Error previous searches saving: \(error.localizedDescription)")
+        }
+    }
+    
     func getAccountDetailsFromStorage() -> AccountDetailsRealm? {
         let object = realm.objects(AccountDetailsRealm.self)
         let accountDetails = object.first
@@ -60,11 +74,28 @@ class StorageManager: StorageProtocol {
         return sessionID
     }
     
-    func deleteAllData() {
+    func getPreviousSearchesFromStorage() -> [String] {
+        let objects = realm.objects(PreviousSearchesRealm.self)
+
+        var previousSearchesArray: [String] = []
+        
+        for object in objects {
+            previousSearchesArray.append(object.previousSearch)
+        }
+        
+        return previousSearchesArray.reversed()
+    }
+    
+    func deleteAccountDetailsAndSessionId() {
         do {
             try realm.write() {
-                realm.deleteAll()
-                print("Deleted all data from realm storage")
+                let accountDetailsObject = realm.objects(AccountDetailsRealm.self)
+                let sessionIdObject = realm.objects(SessionIDRealm.self)
+                
+                realm.delete(accountDetailsObject)
+                realm.delete(sessionIdObject)
+                
+                print("Delete accountDetails and session Id from Realm storage")
             }
         } catch {
             print(error.localizedDescription)

@@ -10,8 +10,10 @@ import Foundation
 protocol StorageProtocol {
     func saveSessionIDToStorage(_ id: String)
     func saveAccountDetailsToStorage(_ user: User)
+    func savePreviousSearchesToStorage(_ searchText: String)
     func getAccountDetailsFromStorage() -> AccountDetailsRealm?
     func getAccountIDFromStorage() -> Int
     func getSessionIDFromStorage() -> String
-    func deleteAllData()
+    func getPreviousSearchesFromStorage() -> [String]
+    func deleteAccountDetailsAndSessionId()
 }

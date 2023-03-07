@@ -15,7 +15,7 @@ extension SearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.tableViewCellID, for: indexPath)
         
-        guard let searchText = self.viewModel?.arrayPreviousSearches.value?[indexPath.row] else { return UITableViewCell() }
+        guard let searchText = self.viewModel?.previousSearchesArray.value?[indexPath.row] else { return UITableViewCell() }
         
         cell.textLabel?.text = searchText
         

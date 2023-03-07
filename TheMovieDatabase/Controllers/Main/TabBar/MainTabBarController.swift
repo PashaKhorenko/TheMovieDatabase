@@ -17,7 +17,7 @@ class MainTabBarController: UITabBarController {
     
     private func generateTabBar() {
         let homeVM: HomeViewModelProtocol = HomeViewModel(networkManager: HomeNetworkManager())
-        let searchVM: SearchViewModelProtocol = SearchViewModel(networkManeger: SearchNetworkManager())
+        let searchVM: SearchViewModelProtocol = SearchViewModel(networkManeger: SearchNetworkManager(), storageManager: StorageManager())
         let favoriteVM: FavoriteViewModelProtocol = FavoriteViewModel(networkManager: FavoriteNetworkManager(), storageManager: StorageManager())
         let settingsVM: SettingsViewModelProtocol = SettingsViewModel(storageManeger: StorageManager())
         

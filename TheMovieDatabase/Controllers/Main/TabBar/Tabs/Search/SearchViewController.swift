@@ -65,11 +65,17 @@ class SearchViewController: UIViewController {
         setupViews()
         setupViewModelObserver()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.viewModel?.getPreviousSearchesArrayFromStarage()
+    }
 }
 
-// MARK: - Setup Views
 extension SearchViewController {
     
+    // MARK: - Data binding
     private func setupViewModelObserver() {
         self.viewModel?.movies.bind { [weak self] _ in
             DispatchQueue.main.async {
@@ -78,7 +84,7 @@ extension SearchViewController {
             }
         }
         
-        self.viewModel?.arrayPreviousSearches.bind { [weak self] _ in
+        self.viewModel?.previousSearchesArray.bind { [weak self] _ in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
@@ -105,6 +111,7 @@ extension SearchViewController {
         }
     }
     
+    // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .secondarySystemBackground
         self.navigationController?.navigationBar.prefersLargeTitles = true
