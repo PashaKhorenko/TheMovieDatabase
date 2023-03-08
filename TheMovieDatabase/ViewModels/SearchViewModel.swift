@@ -39,6 +39,15 @@ class SearchViewModel: SearchViewModelProtocol {
         self.savePreviousSearchsToStorage()
     }
     
+    // MARK: - Delete search from array
+    func deletePreviousSearchByIndex(_ index: Int) {
+        guard let arrayCount = self.previousSearchesArray.value?.count else { return }
+        let reverseIndex = arrayCount - 1 - index
+        
+        self.previousSearchesArray.value?.remove(at: index)
+        self.storageManager?.deletePreviousSearchByIndex(reverseIndex)
+    }
+    
     // MARK: - Actions with storage
     func savePreviousSearchsToStorage() {
         guard let array = self.previousSearchesArray.value else { return }

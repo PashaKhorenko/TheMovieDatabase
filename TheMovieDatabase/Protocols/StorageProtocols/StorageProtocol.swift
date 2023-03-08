@@ -16,4 +16,5 @@ protocol StorageProtocol {
     func getSessionIDFromStorage() -> String
     func getPreviousSearchesFromStorage() -> [String]
     func deleteAccountDetailsAndSessionId()
+    func deletePreviousSearchByIndex(_ index: Int)
 }

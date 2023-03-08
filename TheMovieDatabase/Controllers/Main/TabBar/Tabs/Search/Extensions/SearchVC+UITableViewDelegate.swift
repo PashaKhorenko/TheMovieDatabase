@@ -17,6 +17,24 @@ extension SearchViewController: UITableViewDelegate {
             self.searchController.searchBar.text = selectedText
             self.tableView.deselectRow(at: indexPath, animated: true)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (_, _, completion) in
+            
+            // Delete content from data
+            self.viewModel?.deletePreviousSearchByIndex(indexPath.row)
+            
+            // Delete the cell at the index path
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            // Call the completion handler to indicate that the action was performed
+            completion(true)
+        }
         
+        deleteAction.image = UIImage(systemName: "trash")
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
     }
 }

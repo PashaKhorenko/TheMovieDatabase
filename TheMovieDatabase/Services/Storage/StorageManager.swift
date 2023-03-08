@@ -101,5 +101,18 @@ class StorageManager: StorageProtocol {
             print(error.localizedDescription)
         }
     }
+    
+    func deletePreviousSearchByIndex(_ index: Int) {
+        do {
+            try realm.write() {
+                let objects = realm.objects(PreviousSearchesRealm.self)                
+                let objectToDelete = objects[index]
+                
+                realm.delete(objectToDelete)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
 }
 

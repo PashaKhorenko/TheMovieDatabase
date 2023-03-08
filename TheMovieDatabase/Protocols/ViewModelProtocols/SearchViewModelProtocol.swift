@@ -20,6 +20,7 @@ protocol SearchViewModelProtocol {
     
     func savePreviousSearchsToStorage()
     func getPreviousSearchesArrayFromStarage()
+    func deletePreviousSearchByIndex(_ index: Int)
     
     func getValidText(_ searchText: String) -> String
     
