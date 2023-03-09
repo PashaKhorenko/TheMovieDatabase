@@ -115,7 +115,7 @@ class DetailsViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = nil
     }
     
-    // MARK: - Private
+    // MARK: - Data binding
     
     private func getAllData() {
         viewModel?.getMovie(withID: movieID)
@@ -161,6 +161,21 @@ class DetailsViewController: UIViewController {
         setConstraints()
     }
     
+    private func configurationRightBarButtonItem() {
+        let imageName = isFavoriteMovie ? "star.fill" : "star"
+        let image = UIImage(systemName: imageName)
+        
+        let customButton = UIButton(type: .system)
+        customButton.setImage(image, for: .normal)
+        customButton.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+        customButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        customButton.layer.cornerRadius = 10
+        customButton.addTarget(self, action: #selector(rightBarButtonTapped(_:)), for: .touchUpInside)
+        
+        let customBarButtonItem = UIBarButtonItem(customView: customButton)
+        navigationItem.rightBarButtonItem = customBarButtonItem
+    }
+    
     @objc func rightBarButtonTapped(_ sender: UIBarButtonItem) {
         viewModel?.markAsFavorites(movieID: self.movieID) { statusBool in
             self.isFavoriteMovie = statusBool
@@ -168,16 +183,38 @@ class DetailsViewController: UIViewController {
         }
     }
     
-    private func configurationRightBarButtonItem() {
-        let imageName = isFavoriteMovie ? "star.fill" : "star"
-        let image = UIImage(systemName: imageName)
+    private func configurationBackBarButtonItem() {
+        // Add a UIScreenEdgePanGestureRecognizer to the view
+        let swipeBackGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleBackSwipe))
+        swipeBackGesture.edges = .left
+        view.addGestureRecognizer(swipeBackGesture)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: nil, image: image, target: self, action: #selector(rightBarButtonTapped(_:)))
+        // Add a custom back button item to the navigation bar
+        let customButton = UIButton(type: .system)
+        customButton.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
+        customButton.setTitleColor(.label, for: .normal)
+        customButton.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+        customButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        customButton.layer.cornerRadius = 10
+        customButton.addTarget(self, action: #selector(backBarButtonTapped(_:)), for: .touchUpInside)
+        
+        let customBackBarButtomItem = UIBarButtonItem(customView: customButton)
+        navigationItem.leftBarButtonItem = customBackBarButtomItem
+    }
+    
+    @objc private func handleBackSwipe(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
+        if gestureRecognizer.state == .recognized {
+            navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    @objc private func backBarButtonTapped(_ sender: UIBarButtonItem) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     private func configurationNavigationBar() {
-        // Some settings
         configurationRightBarButtonItem()
+        configurationBackBarButtonItem()
         self.navigationController?.navigationItem.largeTitleDisplayMode = .never
         self.navigationController?.navigationBar.tintColor = .label
     }
