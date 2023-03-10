@@ -41,6 +41,12 @@ class PosterCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setConstraints()
+        self.layer.cornerRadius = 10
+    }
+    
     // MARK: - Private
     private func setupViews() {
         posterImageView.addSubview(activityIndicator)
@@ -48,8 +54,9 @@ class PosterCollectionViewCell: UICollectionViewCell {
         addSubview(titleLabel)
         
         backgroundColor = .systemBackground
-        layer.cornerRadius = 10
-        
+    }
+    
+    private func setConstraints() {
         NSLayoutConstraint.activate([
             activityIndicator.centerXAnchor.constraint(equalTo: posterImageView.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: posterImageView.centerYAnchor),

@@ -42,6 +42,11 @@ class SettingsViewController: UIViewController {
        setupViews()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setConstraints()
+    }
+    
     // MARK: - Private
     @objc private func signOutButtonTapped(_ sender: UIButton) {
         viewModel?.signOutOfTheAccount()
@@ -61,10 +66,7 @@ class SettingsViewController: UIViewController {
         view.addSubview(signOutButton)
         
         configureAccountInfoView()
-        
-        setConstraints()
     }
-    
 }
 
 // MARK: - Constraints

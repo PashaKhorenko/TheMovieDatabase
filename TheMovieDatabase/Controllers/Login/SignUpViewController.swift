@@ -46,8 +46,8 @@ class SignUpViewController: UIViewController {
         self.viewModel?.storageManager?.deleteAccountDetailsAndSessionId()
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
         setConstraints()
     }

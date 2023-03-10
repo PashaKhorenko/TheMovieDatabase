@@ -29,10 +29,16 @@ class HeaderSupplementaryView: UICollectionReusableView {
          setupViews()
      }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setConstraints()
+    }
+    
     private func setupViews() {
-//        self.backgroundColor = UIColor.purple
         self.addSubview(titleLabel)
-        
+    }
+    
+    private func setConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),

@@ -24,7 +24,5 @@ class StandartActivityIndicator: UIActivityIndicatorView {
         style = .large
         hidesWhenStopped = true
         translatesAutoresizingMaskIntoConstraints = false
-        
     }
-
 }

@@ -10,6 +10,7 @@ import WebKit
 
 class SignUpWebViewController: UIViewController {
     
+    // MARK: - UI Elements
     private lazy var webView: WKWebView = WKWebView()
     private let spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView()
@@ -28,6 +29,7 @@ class SignUpWebViewController: UIViewController {
         return progressView
     }()
     
+    // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,9 +51,14 @@ class SignUpWebViewController: UIViewController {
         super.viewWillAppear(animated)
         
         loadHomePage()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         setConstraints()
     }
     
+    // MARK: - Home page
     private func loadHomePage() {
         let homePage = "https://www.themoviedb.org/signup"
         guard let url =  URL(string: homePage) else {
@@ -66,7 +73,10 @@ class SignUpWebViewController: UIViewController {
             print(self.webView.isLoading)
         }
     }
-    
+}
+
+// MARK: - Constraints
+extension SignUpWebViewController {
     private func setConstraints() {
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -82,9 +92,9 @@ class SignUpWebViewController: UIViewController {
             spinner.centerYAnchor.constraint(equalTo: webView.centerYAnchor, constant: -40)
         ])
     }
-
 }
 
+// MARK: - Delegate
 extension SignUpWebViewController: WKUIDelegate, WKNavigationDelegate {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if (keyPath == "estimatedProgress") {

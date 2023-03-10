@@ -32,15 +32,22 @@ class TrailerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setConstraints()
+        self.layer.cornerRadius = 15
+    }
+    
     // MARK: - Private
     private func setupViews() {
         addSubview(playerView)
         playerView.addSubview(activityIndicator)
         
         backgroundColor = .systemGray
-        layer.cornerRadius = 15
         clipsToBounds = true
-        
+    }
+    
+    private func setConstraints() {
         NSLayoutConstraint.activate([
             playerView.topAnchor.constraint(equalTo: topAnchor),
             playerView.leadingAnchor.constraint(equalTo: leadingAnchor),

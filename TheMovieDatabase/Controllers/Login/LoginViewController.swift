@@ -38,9 +38,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        uiManager = LoginUIHelper()
-        
+
         delegatesSetup()
         setupViews()
         configureViewModelObserver()
@@ -54,6 +52,11 @@ class LoginViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeKeyboardObservers()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setConstraints()
     }
     
     // MARK: - Private
@@ -167,9 +170,7 @@ extension LoginViewController {
         view.addSubview(logInButton)
         view.addSubview(activityIndicator)
         
-        logInButton.addTarget(self, action: #selector(logInButtonPressed(_:)), for: .touchUpInside)
-        
-        setConstraints()
+        logInButton.addTarget(self, action: #selector(logInButtonPressed(_:)), for: .touchUpInside)        
     }
     
     @objc private func logInButtonPressed(_ sender: UIButton) {

@@ -43,19 +43,22 @@ class MockSearchCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = 15
+        setConstraints()
+    }
+    
     // MARK: - Private
-    func setupViews() {
+    private func setupViews() {
         backgroundColor = .systemBackground
-        layer.cornerRadius = 15
         
         addSubview(mockPosterView)
         addSubview(mockTitleView)
         addSubview(mockOverviewView)
-        
-        setConstraints()
     }
     
-    func setConstraints() {
+    private func setConstraints() {
         NSLayoutConstraint.activate([
             mockPosterView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             mockPosterView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),

@@ -34,6 +34,12 @@ class SearchCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = 15
+        setConstraints()
+    }
+    
     // MARK: - Public
     func configure(with movie: SearchMovie) {
         guard let posterPath = movie.posterPath,
@@ -53,19 +59,16 @@ class SearchCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Private
-    func setupViews() {
+    private func setupViews() {
         backgroundColor = .systemBackground
-        layer.cornerRadius = 15
-        
+
         posterImageView.addSubview(activityIndicator)
         addSubview(posterImageView)
         addSubview(titleLabel)
         addSubview(overviewLabel)
-        
-        setConstraints()
     }
     
-    func setConstraints() {
+    private func setConstraints() {
         NSLayoutConstraint.activate([
             activityIndicator.centerYAnchor.constraint(equalTo: posterImageView.centerYAnchor),
             activityIndicator.centerXAnchor.constraint(equalTo: posterImageView.centerXAnchor),

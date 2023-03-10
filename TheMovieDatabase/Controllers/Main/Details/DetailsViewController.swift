@@ -115,6 +115,11 @@ class DetailsViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = nil
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setConstraints()
+    }
+    
     // MARK: - Data binding
     
     private func getAllData() {
@@ -157,8 +162,6 @@ class DetailsViewController: UIViewController {
         self.posterImageView.backgroundColor = .systemGray
                 
         addAllSubviews()
-        
-        setConstraints()
     }
     
     private func configurationRightBarButtonItem() {

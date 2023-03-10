@@ -71,6 +71,11 @@ class SearchViewController: UIViewController {
         
         self.viewModel?.getPreviousSearchesArrayFromStarage()
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setConstraints()
+    }
 }
 
 extension SearchViewController {
@@ -121,8 +126,6 @@ extension SearchViewController {
         view.addSubview(collectionView)
         view.addSubview(tableView)
         collectionView.addSubview(activityIndicator)
-        
-        setConstraints()
     }
 }
 

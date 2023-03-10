@@ -40,6 +40,12 @@ class FavoriteMovieCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = 25
+        setConstraints()
+    }
+    
     // MARK: - Private
     private func setupViews() {
         posterImageView.addSubview(activityIndicator)
@@ -47,8 +53,10 @@ class FavoriteMovieCollectionViewCell: UICollectionViewCell {
         addSubview(titleLabel)
         
         backgroundColor = .systemBackground
-        layer.cornerRadius = 25
         
+    }
+    
+    private func setConstraints() {
         NSLayoutConstraint.activate([
             activityIndicator.centerXAnchor.constraint(equalTo: posterImageView.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: posterImageView.centerYAnchor),

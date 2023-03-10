@@ -69,6 +69,7 @@ class AccountInfoView: UIView {
         super.layoutSubviews()
         
         self.avatarView.layer.cornerRadius = self.avatarView.frame.height / 2
+        setConstraints()
     }
     
     // MARK: - Private
@@ -84,9 +85,6 @@ class AccountInfoView: UIView {
         labelsStackView.addArrangedSubview(usernameLabel)
         labelsStackView.addArrangedSubview(accountIdLabel)
         self.addSubview(labelsStackView)
-              
-        // constraints
-        setConstraints()
     }
     
     private func setConstraints() {

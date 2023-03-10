@@ -29,15 +29,22 @@ class CompanyCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = 20
+        setConstraints()
+    }
+    
     // MARK: - Private
     private func setupViews() {
         backgroundColor = .secondarySystemBackground
-        layer.cornerRadius = 20
         clipsToBounds = true
         
         companyLogoImageView.addSubview(activityIndicator)
         addSubview(companyLogoImageView)
-        
+    }
+    
+    private func setConstraints() {
         NSLayoutConstraint.activate([
             companyLogoImageView.topAnchor.constraint(equalTo: topAnchor),
             companyLogoImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
