@@ -17,5 +17,5 @@ protocol SignUpViewModelProtocol {
     func featchGuestSessionID()
     func saveGuestSessionID()
     func logInToGuestSession()
-    
+    func deleteDataFromStorage()
 }

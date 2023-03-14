@@ -22,6 +22,11 @@ class SettingsViewModel: SettingsViewModelProtocol {
         return accountDetails
     }
     
+    func getSessionType() -> SessionType {
+        guard let sessionType = storageManeger?.getSessionType() else { return .guest }
+        return sessionType
+    }
+    
     func deleteCurrentSessionID(completion: @escaping (Bool) -> Void) {
         guard let sessionID = storageManeger?.getSessionIDFromStorage() else { return }
         

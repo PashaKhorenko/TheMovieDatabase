@@ -30,6 +30,12 @@ class SignUpViewModel: SignUpViewModelProtocol {
               let guestSessionID = optionalID else { return }
         
         self.storageManager?.saveSessionIDToStorage(guestSessionID)
+        self.storageManager?.saveSessionType(.guest)
+    }
+    
+    func deleteDataFromStorage() {
+        self.storageManager?.deleteAccountDetailsAndSessionId()
+        self.storageManager?.deleteSessionTypeFromStorage()
     }
     
     func logInToGuestSession() {

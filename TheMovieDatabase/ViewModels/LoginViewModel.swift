@@ -62,6 +62,7 @@ class LoginViewModel: LoginViewModelProtocol {
               let id = idOptional else { return }
         
         self.storageManager?.saveSessionIDToStorage(id)
+        self.storageManager?.saveSessionType(.authorized)
     }
     
     

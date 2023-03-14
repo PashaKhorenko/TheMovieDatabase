@@ -12,6 +12,7 @@ protocol SettingsViewModelProtocol {
     var networkManager: SettingsNetworkManagerProtocol? { get }
     
     func getAccountDetails() -> AccountDetailsRealm?
+    func getSessionType() -> SessionType
     func deleteCurrentSessionID(completion: @escaping (Bool) -> Void)
     func signOutOfTheAccount()
 }

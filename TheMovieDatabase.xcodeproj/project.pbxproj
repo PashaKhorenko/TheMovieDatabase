@@ -99,6 +99,7 @@
 		46DE9F9129C083DC0000F6B6 /* SettingsNetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DE9F9029C083DC0000F6B6 /* SettingsNetworkManagerProtocol.swift */; };
 		46DE9F9329C085070000F6B6 /* ResponseDeletingSessionID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DE9F9229C085070000F6B6 /* ResponseDeletingSessionID.swift */; };
 		46DE9F9529C085650000F6B6 /* SettingsNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DE9F9429C085650000F6B6 /* SettingsNetworkManager.swift */; };
+		46DE9F9729C091BE0000F6B6 /* SessionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DE9F9629C091BE0000F6B6 /* SessionType.swift */; };
 		46F120B329AE1478004C481E /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F120B229AE1478004C481E /* APIConstants.swift */; };
 		57A3740A02EAA20E67DBBB0C /* Pods_TheMovieDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F41EE0F02ABB0EB586B668F /* Pods_TheMovieDatabase.framework */; };
 /* End PBXBuildFile section */
@@ -198,6 +199,7 @@
 		46DE9F9029C083DC0000F6B6 /* SettingsNetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNetworkManagerProtocol.swift; sourceTree = "<group>"; };
 		46DE9F9229C085070000F6B6 /* ResponseDeletingSessionID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseDeletingSessionID.swift; sourceTree = "<group>"; };
 		46DE9F9429C085650000F6B6 /* SettingsNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNetworkManager.swift; sourceTree = "<group>"; };
+		46DE9F9629C091BE0000F6B6 /* SessionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionType.swift; sourceTree = "<group>"; };
 		46F120B229AE1478004C481E /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		7F41EE0F02ABB0EB586B668F /* Pods_TheMovieDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TheMovieDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A15714AB87E7E76211A452D5 /* Pods-TheMovieDatabase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheMovieDatabase.release.xcconfig"; path = "Target Support Files/Pods-TheMovieDatabase/Pods-TheMovieDatabase.release.xcconfig"; sourceTree = "<group>"; };
@@ -446,6 +448,7 @@
 				4682612429797A380031A90D /* SessionID.swift */,
 				4682612629797A450031A90D /* ValidUser.swift */,
 				466A7F2B2989507E00C841D3 /* AccountDetails.swift */,
+				46DE9F9629C091BE0000F6B6 /* SessionType.swift */,
 			);
 			path = Authorization;
 			sourceTree = "<group>";
@@ -841,6 +844,7 @@
 				4638F82E2993E0C700ADF2CF /* SearchVC+UICollectionLayout.swift in Sources */,
 				46AF4BFA298A662500FE7223 /* FavoritesMovies.swift in Sources */,
 				46092BB62976963E002C489D /* Genres.swift in Sources */,
+				46DE9F9729C091BE0000F6B6 /* SessionType.swift in Sources */,
 				4614B707297AAF0400E7E4EF /* SignUpWebViewController.swift in Sources */,
 				46DE9F9329C085070000F6B6 /* ResponseDeletingSessionID.swift in Sources */,
 				46841AF4299FB407005BD5A2 /* SettingsViewModelProtocol.swift in Sources */,

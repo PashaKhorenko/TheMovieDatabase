@@ -43,7 +43,7 @@ class SignUpViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.viewModel?.storageManager?.deleteAccountDetailsAndSessionId()
+        self.viewModel?.deleteDataFromStorage()
     }
     
     override func viewDidLayoutSubviews() {

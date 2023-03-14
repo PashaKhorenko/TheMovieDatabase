@@ -10,6 +10,7 @@ import UIKit
 class SettingsViewController: UIViewController {
     
     private let viewModel: SettingsViewModelProtocol?
+    private var sessionType: SessionType?
     
     // MARK: - Init
     init(viewModel: SettingsViewModelProtocol?) {
@@ -34,12 +35,19 @@ class SettingsViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    private lazy var activityIndicator = StandartActivityIndicator(frame: .zero)
 
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-       setupViews()
+        
+        self.sessionType = self.viewModel?.getSessionType()
+        setupViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.activityIndicator.stopAnimating()
     }
     
     override func viewDidLayoutSubviews() {
@@ -49,8 +57,22 @@ class SettingsViewController: UIViewController {
     
     // MARK: - Private
     @objc private func signOutButtonTapped(_ sender: UIButton) {
-        viewModel?.deleteCurrentSessionID { [weak self] _ in
-            self?.viewModel?.signOutOfTheAccount()
+        self.activityIndicator.startAnimating()
+        
+        guard let sessionType else {
+            self.activityIndicator.stopAnimating()
+            return
+        }
+                
+        switch sessionType {
+        case .guest:
+            self.activityIndicator.stopAnimating()
+            self.viewModel?.signOutOfTheAccount()
+        case .authorized:
+            self.viewModel?.deleteCurrentSessionID { [weak self] _ in
+                self?.activityIndicator.stopAnimating()
+                self?.viewModel?.signOutOfTheAccount()
+            }
         }
     }
     
@@ -64,8 +86,11 @@ class SettingsViewController: UIViewController {
         view.backgroundColor = .secondarySystemBackground
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
-        view.addSubview(accountInfoView)
+        if self.sessionType == .authorized {
+            view.addSubview(accountInfoView)
+        }
         view.addSubview(signOutButton)
+        view.addSubview(activityIndicator)
         
         configureAccountInfoView()
     }
@@ -74,16 +99,24 @@ class SettingsViewController: UIViewController {
 // MARK: - Constraints
 extension SettingsViewController {
     private func setConstraints() {
+        
+        if self.sessionType == .authorized {
+            NSLayoutConstraint.activate([
+                accountInfoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+                accountInfoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                accountInfoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                accountInfoView.heightAnchor.constraint(equalToConstant: 100),
+            ])
+        }
+        
         NSLayoutConstraint.activate([
-            accountInfoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            accountInfoView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            accountInfoView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            accountInfoView.heightAnchor.constraint(equalToConstant: 100),
-            
             signOutButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
             signOutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             signOutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             signOutButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
 }
