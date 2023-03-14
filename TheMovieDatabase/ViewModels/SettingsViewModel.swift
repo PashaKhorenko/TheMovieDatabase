@@ -10,14 +10,24 @@ import UIKit
 class SettingsViewModel: SettingsViewModelProtocol {
     
     let storageManeger: StorageProtocol?
+    let networkManager: SettingsNetworkManagerProtocol?
     
-    init(storageManeger: StorageProtocol?) {
+    init(storageManeger: StorageProtocol?, networkManager: SettingsNetworkManagerProtocol?) {
         self.storageManeger = storageManeger
+        self.networkManager = networkManager
     }
         
     func getAccountDetails() -> AccountDetailsRealm? {
         let accountDetails = storageManeger?.getAccountDetailsFromStorage()
         return accountDetails
+    }
+    
+    func deleteCurrentSessionID(completion: @escaping (Bool) -> Void) {
+        guard let sessionID = storageManeger?.getSessionIDFromStorage() else { return }
+        
+        networkManager?.deleteCurrent(sessiondID: sessionID) { isSessionIdDeleted in
+            completion(isSessionIdDeleted)
+        }
     }
     
     func signOutOfTheAccount() {

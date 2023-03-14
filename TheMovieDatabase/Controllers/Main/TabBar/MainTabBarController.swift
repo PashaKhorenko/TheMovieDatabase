@@ -19,7 +19,7 @@ class MainTabBarController: UITabBarController {
         let homeVM: HomeViewModelProtocol = HomeViewModel(networkManager: HomeNetworkManager())
         let searchVM: SearchViewModelProtocol = SearchViewModel(networkManeger: SearchNetworkManager(), storageManager: StorageManager())
         let favoriteVM: FavoriteViewModelProtocol = FavoriteViewModel(networkManager: FavoriteNetworkManager(), storageManager: StorageManager())
-        let settingsVM: SettingsViewModelProtocol = SettingsViewModel(storageManeger: StorageManager())
+        let settingsVM: SettingsViewModelProtocol = SettingsViewModel(storageManeger: StorageManager(), networkManager: SettingsNetworkManager())
         
         viewControllers = [
             generateVC(HomeViewController(viewModel: homeVM),

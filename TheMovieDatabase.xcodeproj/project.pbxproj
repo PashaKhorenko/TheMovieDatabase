@@ -96,6 +96,9 @@
 		46D2C44F299BA6530069BE6E /* MockSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D2C44E299BA6530069BE6E /* MockSearchCollectionViewCell.swift */; };
 		46D570FE29A393F100B03210 /* HomeVC+CollectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D570FD29A393F100B03210 /* HomeVC+CollectionDataSource.swift */; };
 		46D5710029A3940600B03210 /* HomeVC+CollectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D570FF29A3940600B03210 /* HomeVC+CollectionDelegate.swift */; };
+		46DE9F9129C083DC0000F6B6 /* SettingsNetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DE9F9029C083DC0000F6B6 /* SettingsNetworkManagerProtocol.swift */; };
+		46DE9F9329C085070000F6B6 /* ResponseDeletingSessionID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DE9F9229C085070000F6B6 /* ResponseDeletingSessionID.swift */; };
+		46DE9F9529C085650000F6B6 /* SettingsNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DE9F9429C085650000F6B6 /* SettingsNetworkManager.swift */; };
 		46F120B329AE1478004C481E /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F120B229AE1478004C481E /* APIConstants.swift */; };
 		57A3740A02EAA20E67DBBB0C /* Pods_TheMovieDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F41EE0F02ABB0EB586B668F /* Pods_TheMovieDatabase.framework */; };
 /* End PBXBuildFile section */
@@ -192,6 +195,9 @@
 		46D2C44E299BA6530069BE6E /* MockSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		46D570FD29A393F100B03210 /* HomeVC+CollectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeVC+CollectionDataSource.swift"; sourceTree = "<group>"; };
 		46D570FF29A3940600B03210 /* HomeVC+CollectionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeVC+CollectionDelegate.swift"; sourceTree = "<group>"; };
+		46DE9F9029C083DC0000F6B6 /* SettingsNetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNetworkManagerProtocol.swift; sourceTree = "<group>"; };
+		46DE9F9229C085070000F6B6 /* ResponseDeletingSessionID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseDeletingSessionID.swift; sourceTree = "<group>"; };
+		46DE9F9429C085650000F6B6 /* SettingsNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNetworkManager.swift; sourceTree = "<group>"; };
 		46F120B229AE1478004C481E /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		7F41EE0F02ABB0EB586B668F /* Pods_TheMovieDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TheMovieDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A15714AB87E7E76211A452D5 /* Pods-TheMovieDatabase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TheMovieDatabase.release.xcconfig"; path = "Target Support Files/Pods-TheMovieDatabase/Pods-TheMovieDatabase.release.xcconfig"; sourceTree = "<group>"; };
@@ -370,6 +376,7 @@
 				46AF4BF5298A5D9300FE7223 /* FavoritesStatusResponse.swift */,
 				46AF4BF9298A662500FE7223 /* FavoritesMovies.swift */,
 				4638F8262993C6DE00ADF2CF /* SearchMovie.swift */,
+				46DE9F9229C085070000F6B6 /* ResponseDeletingSessionID.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -453,6 +460,7 @@
 				46A429CB297FF1C500DC8DD3 /* DetailsNetworkManager.swift */,
 				466520EE298A91D700B381BC /* FavoriteNetworkManager.swift */,
 				4638F8242993C5E900ADF2CF /* SearchNetworkManager.swift */,
+				46DE9F9429C085650000F6B6 /* SettingsNetworkManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -507,6 +515,7 @@
 				46841AFE299FB4DB005BD5A2 /* DetailsNetworkManagerProtocol.swift */,
 				46841B00299FB4EB005BD5A2 /* FavoriteNetworkManagerProtocol.swift */,
 				46841B02299FB500005BD5A2 /* SearchNetworkManagerProtocol.swift */,
+				46DE9F9029C083DC0000F6B6 /* SettingsNetworkManagerProtocol.swift */,
 				466EACE629B1FFB10054ED93 /* SignUpNetworkManagerProtocol.swift */,
 			);
 			path = NetworkProtocols;
@@ -765,6 +774,7 @@
 				46A7619C297EDAAF00AF5B39 /* HeaderSupplementaryView.swift in Sources */,
 				46841B0C299FC948005BD5A2 /* SearchVC+UISearchBarDelegate.swift in Sources */,
 				46826129297994EE0031A90D /* SettingsViewController.swift in Sources */,
+				46DE9F9529C085650000F6B6 /* SettingsNetworkManager.swift in Sources */,
 				46D2C44F299BA6530069BE6E /* MockSearchCollectionViewCell.swift in Sources */,
 				466EACE929B2010E0054ED93 /* SignUpViewModel.swift in Sources */,
 				46AF4BF8298A5F3A00FE7223 /* SessionIDRealm.swift in Sources */,
@@ -801,6 +811,7 @@
 				46841B07299FC81B005BD5A2 /* SearchVC+UICollectionViewDataSource.swift in Sources */,
 				46841AF2299FB3F3005BD5A2 /* FavoriteViewModelProtocol.swift in Sources */,
 				46092BBA2976A068002C489D /* MainTabBarController.swift in Sources */,
+				46DE9F9129C083DC0000F6B6 /* SettingsNetworkManagerProtocol.swift in Sources */,
 				46841AEC299FB39F005BD5A2 /* LoginViewModelProtocol.swift in Sources */,
 				463DE6F629A4DAA1001CFC09 /* FavoritesVC+UICollectionLayout.swift in Sources */,
 				463DE6F229A4DA74001CFC09 /* FavoritesVC+UICollectionDataSource.swift in Sources */,
@@ -831,6 +842,7 @@
 				46AF4BFA298A662500FE7223 /* FavoritesMovies.swift in Sources */,
 				46092BB62976963E002C489D /* Genres.swift in Sources */,
 				4614B707297AAF0400E7E4EF /* SignUpWebViewController.swift in Sources */,
+				46DE9F9329C085070000F6B6 /* ResponseDeletingSessionID.swift in Sources */,
 				46841AF4299FB407005BD5A2 /* SettingsViewModelProtocol.swift in Sources */,
 				46A429CE297FF22E00DC8DD3 /* DetailsViewModel.swift in Sources */,
 			);

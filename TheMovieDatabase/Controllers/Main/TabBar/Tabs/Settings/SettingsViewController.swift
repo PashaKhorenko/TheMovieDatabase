@@ -49,7 +49,9 @@ class SettingsViewController: UIViewController {
     
     // MARK: - Private
     @objc private func signOutButtonTapped(_ sender: UIButton) {
-        viewModel?.signOutOfTheAccount()
+        viewModel?.deleteCurrentSessionID { [weak self] _ in
+            self?.viewModel?.signOutOfTheAccount()
+        }
     }
     
     // MARK: settings
