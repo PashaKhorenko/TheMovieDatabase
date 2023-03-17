@@ -172,6 +172,7 @@ class DetailsViewController: UIViewController {
         customButton.setImage(image, for: .normal)
         customButton.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
         customButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        customButton.tintColor = .systemBackground
         customButton.layer.cornerRadius = 10
         customButton.addTarget(self, action: #selector(rightBarButtonTapped(_:)), for: .touchUpInside)
         
@@ -198,6 +199,7 @@ class DetailsViewController: UIViewController {
         customButton.setTitleColor(.label, for: .normal)
         customButton.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
         customButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        customButton.tintColor = .systemBackground
         customButton.layer.cornerRadius = 10
         customButton.addTarget(self, action: #selector(backBarButtonTapped(_:)), for: .touchUpInside)
         
