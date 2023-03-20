@@ -17,6 +17,7 @@ extension FavoritesViewController: UICollectionViewDelegate {
         guard let movieID = moviesArray?[indexPath.item].id else { return }
         
         detailsVC.movieID = movieID
+        detailsVC.isFavoriteMovie = true
         
         navigationController?.pushViewController(detailsVC, animated: true)
     }

@@ -9,8 +9,8 @@ import Foundation
 
 class HomeViewModel: HomeViewModelProtocol {
     
-    internal let networkManager: HomeNetworkManagerProtocol?
-
+    let networkManager: HomeNetworkManagerProtocol?
+    
     init(networkManager: HomeNetworkManagerProtocol?) {
         self.networkManager = networkManager
     }
@@ -34,8 +34,8 @@ class HomeViewModel: HomeViewModelProtocol {
         }
     }
     
-    internal func getMoviesForSection(_ index: Int,
-                                     _ completion: @escaping ([MovieForCollection]) -> ()) {
+    func getMoviesForSection(_ index: Int,
+                             _ completion: @escaping ([MovieForCollection]) -> ()) {
         guard let genreId = self.genres.value?[index].id else {
             print("Failed to get genre id for section \(index)")
             return

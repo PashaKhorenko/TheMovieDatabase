@@ -13,6 +13,7 @@ protocol FavoriteViewModelProtocol {
     
     var favoriteMovies: Dynamic<[FavoriteMovie]> { get set }
     
+    func getMessagesDependingOnTheSessionType() -> String
     func featchFavoriteMovies()
     func numberOfItemsInSection() -> Int
     func removeFromFavorites(movieID: Int)

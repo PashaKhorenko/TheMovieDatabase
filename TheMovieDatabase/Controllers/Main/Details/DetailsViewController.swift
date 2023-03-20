@@ -24,7 +24,7 @@ class DetailsViewController: UIViewController {
     // MARK: - Properties
     var movieID: Int = 0
     
-    private var isFavoriteMovie: Bool = false
+    var isFavoriteMovie: Bool = false
     
     let trailetCellID = "TrailerCell"
     let companyCellID = "CompanyCell"

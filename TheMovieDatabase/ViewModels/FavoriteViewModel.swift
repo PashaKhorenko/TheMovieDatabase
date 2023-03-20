@@ -9,8 +9,8 @@ import Foundation
 
 class FavoriteViewModel: FavoriteViewModelProtocol {
     
-    internal let networkManager: FavoriteNetworkManagerProtocol?
-    internal let storageManager: StorageProtocol?
+    let networkManager: FavoriteNetworkManagerProtocol?
+    let storageManager: StorageProtocol?
     
     init(networkManager: FavoriteNetworkManagerProtocol?, storageManager: StorageProtocol?) {
         self.networkManager = networkManager
@@ -18,6 +18,19 @@ class FavoriteViewModel: FavoriteViewModelProtocol {
     }
     
     var favoriteMovies: Dynamic<[FavoriteMovie]> = Dynamic([])
+    
+    func getMessagesDependingOnTheSessionType() -> String {
+        guard let sessionType = self.storageManager?.getSessionType() else {
+            return "This list is empty"
+        }
+        
+        switch sessionType {
+        case .guest:
+            return "Unfortunately, the list of favorite movies\n is not available in guest mode. Log in to your account to see a list of your favorite movies."
+        case .authorized:
+            return "Sorry but your favorite movies list is empty.\n Add some movies and you will see them here."
+        }
+    }
     
     func featchFavoriteMovies() {
         guard let accountID = storageManager?.getAccountIDFromStorage(),
@@ -44,6 +57,4 @@ class FavoriteViewModel: FavoriteViewModelProtocol {
             self.featchFavoriteMovies()
         }
     }
-    
-
 }

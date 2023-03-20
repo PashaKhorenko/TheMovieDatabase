@@ -14,12 +14,14 @@ extension FavoritesViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let numberOfItems = viewModel?.numberOfItemsInSection() ?? 0
+        let message = viewModel?.getMessagesDependingOnTheSessionType()
         
         if numberOfItems == 0 {
             let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0,
                                                    width: self.view.bounds.size.width,
                                                    height: self.view.bounds.size.height))
-            emptyLabel.text = "The list of favorite movies is empty."
+            emptyLabel.text = message
+            emptyLabel.numberOfLines = 0
             emptyLabel.textAlignment = NSTextAlignment.center
             collectionView.backgroundView = emptyLabel
             return 0

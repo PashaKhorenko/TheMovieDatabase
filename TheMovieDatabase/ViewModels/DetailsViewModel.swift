@@ -9,8 +9,8 @@ import Foundation
 
 class DetailsViewModel: DetailsViewModelProtocol {
     
-    internal let networkManager: DetailsNetworkManagerProtocol?
-    internal let storageManager: StorageProtocol?
+    let networkManager: DetailsNetworkManagerProtocol?
+    let storageManager: StorageProtocol?
     
     var movie: Dynamic<MovieForDetails?> = Dynamic(nil)
     var videoArray: Dynamic<[Video]> = Dynamic([])
