@@ -155,7 +155,6 @@ class DetailsViewController: UIViewController {
     }
     
     // MARK: - Settings
-    
     private func setupViews() {
         configurationNavigationBar()
         self.view.backgroundColor = .systemBackground
@@ -164,6 +163,14 @@ class DetailsViewController: UIViewController {
         addAllSubviews()
     }
     
+    private func configurationNavigationBar() {
+        configurationRightBarButtonItem()
+        configurationBackBarButtonItem()
+        self.navigationController?.navigationItem.largeTitleDisplayMode = .never
+        self.navigationController?.navigationBar.tintColor = .label
+    }
+    
+    // MARK: Configuration right bar button
     private func configurationRightBarButtonItem() {
         let imageName = isFavoriteMovie ? "star.fill" : "star"
         let image = UIImage(systemName: imageName)
@@ -180,13 +187,37 @@ class DetailsViewController: UIViewController {
         navigationItem.rightBarButtonItem = customBarButtonItem
     }
     
+    // Action when right button tapped
     @objc func rightBarButtonTapped(_ sender: UIBarButtonItem) {
-        viewModel?.markAsFavorites(movieID: self.movieID) { statusBool in
+        guard let sessionType = self.viewModel?.storageManager?.getSessionType() else { return }
+        
+        switch sessionType {
+        case .guest: self.showAlertAboutGuestSessionLimit()
+        case .authorized: self.markAsFavorites()
+        }
+    }
+    
+    // Action options when clicking on the button depending on the type of session
+    private func showAlertAboutGuestSessionLimit() {
+        let message = "You cannot add a movie to your favorites list if you are using the guest version. Sign in or create an account to continue."
+        
+        let alertController = UIAlertController(title: "Oops...",
+                                                message: message,
+                                                preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
+    
+    private func markAsFavorites() {
+        self.viewModel?.markAsFavorites(movieID: self.movieID) { statusBool in
             self.isFavoriteMovie = statusBool
             self.configurationRightBarButtonItem()
         }
     }
     
+    // MARK: Configuaretion back bar button
     private func configurationBackBarButtonItem() {
         // Add a UIScreenEdgePanGestureRecognizer to the view
         let swipeBackGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleBackSwipe))
@@ -207,21 +238,16 @@ class DetailsViewController: UIViewController {
         navigationItem.leftBarButtonItem = customBackBarButtomItem
     }
     
-    @objc private func handleBackSwipe(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
-        if gestureRecognizer.state == .recognized {
-            navigationController?.popViewController(animated: true)
-        }
-    }
-    
+    // Action when back button tapped
     @objc private func backBarButtonTapped(_ sender: UIBarButtonItem) {
         self.navigationController?.popViewController(animated: true)
     }
     
-    private func configurationNavigationBar() {
-        configurationRightBarButtonItem()
-        configurationBackBarButtonItem()
-        self.navigationController?.navigationItem.largeTitleDisplayMode = .never
-        self.navigationController?.navigationBar.tintColor = .label
+    // Action for the right swipe gesture to return to the previous controller
+    @objc private func handleBackSwipe(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
+        if gestureRecognizer.state == .recognized {
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     // MARK: - Subview
