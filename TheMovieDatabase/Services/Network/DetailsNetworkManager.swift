@@ -69,7 +69,11 @@ class DetailsNetworkManager: DetailsNetworkManagerProtocol {
     }
     
     // MARK: - Mark as favorite
-    func markAsFavorite(accountID: Int, sessionID: String, movieID: Int, _ completion: @escaping (Bool) -> ()) {
+    func markAsFavoriteOrUnfavorite(accountID: Int,
+                                    sessionID: String,
+                                    movieID: Int,
+                                    favoritesState: Bool,
+                                    _ completion: @escaping (Bool) -> ()) {
         let pathString = "\(APIConstants.baseURL)/account/\(accountID)/favorite?api_key=\(APIConstants.apiKey)&session_id=\(sessionID)"
         
         guard let url = URL(string: pathString) else {
@@ -80,7 +84,7 @@ class DetailsNetworkManager: DetailsNetworkManagerProtocol {
         let parameters: [String: Any] = [
             "media_type": "movie",
               "media_id": movieID,
-              "favorite": true
+              "favorite": favoritesState
         ]
         
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
@@ -88,16 +92,21 @@ class DetailsNetworkManager: DetailsNetworkManagerProtocol {
             .responseDecodable(of: FavoritesStatusResponse.self, decoder: decoder()) { (response) in
                 switch response.result {
                 case .success(let responseModel):
-                    guard let statusMessage = responseModel.statusMessage else {
+                    guard let statusMessage = responseModel.statusMessage,
+                          let statusCode = responseModel.statusCode else {
                         print("Empty response data during user validation")
                         return
                     }
-                    switch statusMessage {
-                    case "Success.": completion(true)
-                    default: completion(false)
+                    print("Status code: \(statusCode), Status massege: \(statusMessage)")
+                    
+                    switch statusCode {
+                    case 1: completion(true)
+                    case 12: completion(!favoritesState)
+                    case 13: completion(false)
+                    case 15: completion(!favoritesState)
+                    default: print("Some another status code: \(statusCode)")
                     }
                 case .failure(let error):
-                    completion(false)
                     print(error.localizedDescription)
                 }
             }

@@ -23,7 +23,7 @@ protocol DetailsViewModelProtocol {
     
     func getGenreNamesFrom(list: [Genre]?) -> String
     func getAgeRestrictions(_ adult: Bool?) -> String
-    func markAsFavorites(movieID: Int, _ completion: @escaping (Bool)->())
+    func markAsFavoritesOrUnfavorites(movieID: Int, favoritesState: Bool, _ completion: @escaping (Bool)->())
     
     func convertReleaseDateToString(_ releaseDate: String?) -> String
     func convertPopularityToString(_ popularity: Double?) -> String

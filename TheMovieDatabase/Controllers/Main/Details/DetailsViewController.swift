@@ -211,7 +211,7 @@ class DetailsViewController: UIViewController {
     }
     
     private func markAsFavorites() {
-        self.viewModel?.markAsFavorites(movieID: self.movieID) { statusBool in
+        self.viewModel?.markAsFavoritesOrUnfavorites(movieID: self.movieID, favoritesState: !isFavoriteMovie) { statusBool in
             self.isFavoriteMovie = statusBool
             self.configurationRightBarButtonItem()
         }

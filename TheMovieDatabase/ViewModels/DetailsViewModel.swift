@@ -79,13 +79,16 @@ class DetailsViewModel: DetailsViewModelProtocol {
         }
     }
     
-    func markAsFavorites(movieID: Int, _ completion: @escaping (Bool)->()) {
+    func markAsFavoritesOrUnfavorites(movieID: Int,
+                                      favoritesState: Bool,
+                                      _ completion: @escaping (Bool)->()) {
         guard let accountID = storageManager?.getAccountIDFromStorage(),
               let sessionID = storageManager?.getSessionIDFromStorage() else { return }
         
-        networkManager?.markAsFavorite(accountID: accountID,
-                                       sessionID: sessionID,
-                                       movieID: movieID) { statusBool in
+        networkManager?.markAsFavoriteOrUnfavorite(accountID: accountID,
+                                                   sessionID: sessionID,
+                                                   movieID: movieID,
+                                                   favoritesState: favoritesState) { statusBool in
             completion(statusBool)
         }
     }

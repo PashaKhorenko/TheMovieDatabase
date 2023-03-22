@@ -15,8 +15,9 @@ protocol DetailsNetworkManagerProtocol {
     func downloadImageData(byPath path: String, _ completion: @escaping (Data) -> ())
     func downloadVideo(withID movieId: Int, _ completion: @escaping ([Video]) -> ())
     
-    func markAsFavorite(accountID: Int,
-                        sessionID: String,
-                        movieID: Int,
-                        _ completion: @escaping (Bool) -> ())
+    func markAsFavoriteOrUnfavorite(accountID: Int,
+                                    sessionID: String,
+                                    movieID: Int,
+                                    favoritesState: Bool,
+                                    _ completion: @escaping (Bool) -> ())
 }
