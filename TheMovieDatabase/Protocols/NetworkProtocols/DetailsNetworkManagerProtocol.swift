@@ -19,5 +19,5 @@ protocol DetailsNetworkManagerProtocol {
                                     sessionID: String,
                                     movieID: Int,
                                     favoritesState: Bool,
-                                    _ completion: @escaping (Bool) -> ())
+                                    _ completion: @escaping (String, Bool) -> ())
 }

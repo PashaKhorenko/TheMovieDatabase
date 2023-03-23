@@ -81,15 +81,15 @@ class DetailsViewModel: DetailsViewModelProtocol {
     
     func markAsFavoritesOrUnfavorites(movieID: Int,
                                       favoritesState: Bool,
-                                      _ completion: @escaping (Bool)->()) {
+                                      _ completion: @escaping (String, Bool) -> ()) {
         guard let accountID = storageManager?.getAccountIDFromStorage(),
               let sessionID = storageManager?.getSessionIDFromStorage() else { return }
         
         networkManager?.markAsFavoriteOrUnfavorite(accountID: accountID,
                                                    sessionID: sessionID,
                                                    movieID: movieID,
-                                                   favoritesState: favoritesState) { statusBool in
-            completion(statusBool)
+                                                   favoritesState: favoritesState) { (statusMessage, favoriteStatus) in
+            completion(statusMessage, favoriteStatus)
         }
     }
     

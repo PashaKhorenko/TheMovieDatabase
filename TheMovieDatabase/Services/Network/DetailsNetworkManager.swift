@@ -73,7 +73,7 @@ class DetailsNetworkManager: DetailsNetworkManagerProtocol {
                                     sessionID: String,
                                     movieID: Int,
                                     favoritesState: Bool,
-                                    _ completion: @escaping (Bool) -> ()) {
+                                    _ completion: @escaping (String, Bool) -> ()) {
         let pathString = "\(APIConstants.baseURL)/account/\(accountID)/favorite?api_key=\(APIConstants.apiKey)&session_id=\(sessionID)"
         
         guard let url = URL(string: pathString) else {
@@ -100,11 +100,14 @@ class DetailsNetworkManager: DetailsNetworkManagerProtocol {
                     print("Status code: \(statusCode), Status massege: \(statusMessage)")
                     
                     switch statusCode {
-                    case 1: completion(true)
-                    case 12: completion(!favoritesState)
-                    case 13: completion(false)
-                    case 15: completion(!favoritesState)
-                    default: print("Some another status code: \(statusCode)")
+                    case 1:
+                        let message = "The movie has been successfully added to your favorites list."
+                        completion(message, true)
+                    case 2...11: completion(statusMessage, false)
+                    case 13:
+                        let message = "The movie has been successfully removed from your favorites list."
+                        completion(message, false)
+                    default: completion(statusMessage, !favoritesState)
                     }
                 case .failure(let error):
                     print(error.localizedDescription)

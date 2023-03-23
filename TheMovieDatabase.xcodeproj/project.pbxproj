@@ -471,9 +471,9 @@
 		4682612B297996470031A90D /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				4682612A297996300031A90D /* Network */,
 				466A7F2D298955D900C841D3 /* Storage */,
 				4682612C2979978D0031A90D /* UIHelpers */,
-				4682612A297996300031A90D /* Network */,
 			);
 			path = Services;
 			sourceTree = "<group>";

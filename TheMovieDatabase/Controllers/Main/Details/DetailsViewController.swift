@@ -192,29 +192,33 @@ class DetailsViewController: UIViewController {
         guard let sessionType = self.viewModel?.storageManager?.getSessionType() else { return }
         
         switch sessionType {
-        case .guest: self.showAlertAboutGuestSessionLimit()
-        case .authorized: self.markAsFavorites()
+        case .guest:
+            let alertTitle = "Oops..."
+            let alertMessage = "You cannot add a movie to your favorites list if you are using the guest version. Sign in or create an account to continue."
+            self.showAlert(withTitle: alertTitle, message: alertMessage)
+            
+        case .authorized:
+            self.markAsFavoritesOrUnfavorites()
         }
     }
     
-    // Action options when clicking on the button depending on the type of session
-    private func showAlertAboutGuestSessionLimit() {
-        let message = "You cannot add a movie to your favorites list if you are using the guest version. Sign in or create an account to continue."
-        
-        let alertController = UIAlertController(title: "Oops...",
+    private func markAsFavoritesOrUnfavorites() {
+        self.viewModel?.markAsFavoritesOrUnfavorites(movieID: self.movieID,
+                                                     favoritesState: !self.isFavoriteMovie) { (message, isFavoriteMovie) in
+            self.isFavoriteMovie = isFavoriteMovie
+            self.showAlert(withTitle: nil, message: message)
+            self.configurationRightBarButtonItem()
+        }
+    }
+    
+    private func showAlert(withTitle title: String?, message: String?) {
+        let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default)
         
         alertController.addAction(okAction)
         present(alertController, animated: true)
-    }
-    
-    private func markAsFavorites() {
-        self.viewModel?.markAsFavoritesOrUnfavorites(movieID: self.movieID, favoritesState: !isFavoriteMovie) { statusBool in
-            self.isFavoriteMovie = statusBool
-            self.configurationRightBarButtonItem()
-        }
     }
     
     // MARK: Configuaretion back bar button
