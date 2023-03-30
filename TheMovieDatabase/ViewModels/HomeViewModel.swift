@@ -11,13 +11,16 @@ class HomeViewModel: HomeViewModelProtocol {
     
     let networkManager: HomeNetworkManagerProtocol?
     
+    // MARK: - Init
     init(networkManager: HomeNetworkManagerProtocol?) {
         self.networkManager = networkManager
     }
     
+    // MARK: - Properties
     var genres: Dynamic<[Genre]> = Dynamic([])
     var moviesDictionary: Dynamic<[Int: [MovieForCollection]]> = Dynamic([:])
     
+    // MARK: - Downloading necessary data
     func getGenres() {
         networkManager?.downloadGenres { [weak self] genres in
             self?.genres.value = genres
@@ -51,6 +54,7 @@ class HomeViewModel: HomeViewModelProtocol {
         }
     }
     
+    // MARK: - Number of sections / items in collection view
     func numberOfSection() -> Int {
         return genres.value?.count ?? 0
     }

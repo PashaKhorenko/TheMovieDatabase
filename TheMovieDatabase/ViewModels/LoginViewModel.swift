@@ -12,21 +12,25 @@ class LoginViewModel: LoginViewModelProtocol {
     let networkManager: LoginNetworkManagerProtocol?
     let storageManager: StorageProtocol?
     
+    // MARK: - Init
     init(networkManager: LoginNetworkManagerProtocol?, storageManager: StorageProtocol?) {
         self.networkManager = networkManager
         self.storageManager = storageManager
     }
     
+    // MARK: - Properties
     var requestToken: Dynamic<String?> = Dynamic(nil)
     var isValidUser: Dynamic<Bool?> = Dynamic(nil)
     var sessionId: Dynamic<String?> = Dynamic(nil)
     var accountDetails: Dynamic<User?> = Dynamic(nil)
     
+    // MARK: - TextField text formatting
     func getValidText(_ text: String) -> String {
         let trimmedString = text.trimmingCharacters(in: .whitespaces)
         return trimmedString
     }
     
+    // MARK: - Actions with token
     func fetchRequestToken() {
         networkManager?.createNewToken { [weak self] token in
             self?.requestToken.value = token
@@ -44,6 +48,7 @@ class LoginViewModel: LoginViewModelProtocol {
         }
     }
     
+    // MARK: - Actions with session id
     func featchSessionID() {
         guard let requestTokenOptional = requestToken.value,
               let requestToken = requestTokenOptional,
@@ -65,7 +70,7 @@ class LoginViewModel: LoginViewModelProtocol {
         self.storageManager?.saveSessionType(.authorized)
     }
     
-    
+    // MARK: - Actions wuth account details
     func featchAccountDetails() {
         guard let idOptional = self.sessionId.value,
               let id = idOptional else { return }
@@ -81,6 +86,7 @@ class LoginViewModel: LoginViewModelProtocol {
         self.storageManager?.saveAccountDetailsToStorage(accountDetails)
     }
     
+    // MARK: - Continue with account session
     func loginToTheAccount() {
         // check if the current scene is correctly defined
         guard let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene else {

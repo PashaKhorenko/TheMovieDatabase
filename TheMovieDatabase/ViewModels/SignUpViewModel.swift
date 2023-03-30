@@ -12,13 +12,16 @@ class SignUpViewModel: SignUpViewModelProtocol {
     let networkManager: SignUpNetworkManagerProtocol?
     let storageManager: StorageProtocol?
     
+    // MARK: - Init
     init(networkManager: SignUpNetworkManagerProtocol?, storageManager: StorageProtocol?) {
         self.networkManager = networkManager
         self.storageManager = storageManager
     }
     
+    // MARK: - Properties
     var guestSessionID: Dynamic<String?> = Dynamic(nil)
     
+    // MARK: - Actionc with session id
     func featchGuestSessionID() {
         self.networkManager?.createGuestSessionID() { [weak self] guestSessionID in
             self?.guestSessionID.value = guestSessionID
@@ -33,11 +36,13 @@ class SignUpViewModel: SignUpViewModelProtocol {
         self.storageManager?.saveSessionType(.guest)
     }
     
+    // MARK: - Delete data from storage
     func deleteDataFromStorage() {
         self.storageManager?.deleteAccountDetailsAndSessionId()
         self.storageManager?.deleteSessionTypeFromStorage()
     }
     
+    // MARK: - Continue with guest session
     func logInToGuestSession() {
         // check if the current scene is correctly defined
         guard let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene else {
