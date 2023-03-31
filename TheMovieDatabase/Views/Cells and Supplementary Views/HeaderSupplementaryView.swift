@@ -9,6 +9,7 @@ import UIKit
 
 class HeaderSupplementaryView: UICollectionReusableView {
     
+    // MARK: - UI elements
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Test Header"
@@ -17,23 +18,25 @@ class HeaderSupplementaryView: UICollectionReusableView {
         return label
     }()
     
+    // MARK: - View lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         setupViews()
-     }
-
-     required init?(coder aDecoder: NSCoder) {
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-         
-         setupViews()
-     }
+        
+        setupViews()
+    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         setConstraints()
     }
     
+    // MARK: - Private
     private func setupViews() {
         self.addSubview(titleLabel)
     }
@@ -47,6 +50,7 @@ class HeaderSupplementaryView: UICollectionReusableView {
         ])
     }
     
+    // MARK: - Public
     func configure(withText text: String) {
         self.titleLabel.text = text
     }

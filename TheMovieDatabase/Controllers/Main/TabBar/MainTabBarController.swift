@@ -9,12 +9,14 @@ import UIKit
 
 class MainTabBarController: UITabBarController {
 
+    // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         generateTabBar()
     }
     
+    // MARK: - Setup tab bar
     private func generateTabBar() {
         let homeVM: HomeViewModelProtocol = HomeViewModel(networkManager: HomeNetworkManager())
         let searchVM: SearchViewModelProtocol = SearchViewModel(networkManeger: SearchNetworkManager(), storageManager: StorageManager())
@@ -39,6 +41,7 @@ class MainTabBarController: UITabBarController {
         UITabBar.appearance().tintColor = .systemIndigo
     }
     
+    // MARK: - Generate vc
     private func generateVC(_ viewController: UIViewController, title: String, image: UIImage?) -> UINavigationController {
         
         viewController.navigationItem.title = title
@@ -49,5 +52,4 @@ class MainTabBarController: UITabBarController {
         
         return navigationVC
     }
-
 }
